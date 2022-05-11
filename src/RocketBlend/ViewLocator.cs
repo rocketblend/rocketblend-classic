@@ -1,30 +1,26 @@
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using RocketBlend.ViewModels;
-using System;
+using ReactiveUI;
+using Splat;
 
-namespace RocketBlend
+namespace RocketBlend;
+
+/// <summary>
+/// The view locator.
+/// </summary>
+public sealed class ViewLocator : IDataTemplate
 {
-    public class ViewLocator : IDataTemplate
+    public bool SupportsRecycling => false;
+
+    public IControl Build(object data)
     {
-        public IControl Build(object data)
-        {
-            var name = data.GetType().FullName!.Replace("ViewModel", "View");
-            var type = Type.GetType(name);
+        var view = Locator.Current.GetService(typeof(IViewFor<>).MakeGenericType(data.GetType()));
 
-            if (type != null)
-            {
-                return (Control)Activator.CreateInstance(type)!;
-            }
-            else
-            {
-                return new TextBlock { Text = "Not Found: " + name };
-            }
-        }
-
-        public bool Match(object data)
-        {
-            return data is ViewModelBase;
-        }
+        return view is IControl control
+            ? control
+            : new TextBlock { Text = "Not Found: " + view?.GetType().FullName };
     }
+
+    public bool Match(object data) =>
+        data is ReactiveObject;
 }

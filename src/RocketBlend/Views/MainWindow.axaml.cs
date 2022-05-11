@@ -1,12 +1,20 @@
-using Avalonia.Controls;
+using Avalonia.ReactiveUI;
+using ReactiveUI;
+using RocketBlend.Core.ViewModels;
 
-namespace RocketBlend.Views
+namespace RocketBlend.Views;
+
+/// <summary>
+/// The main window.
+/// </summary>
+public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
 {
-    public partial class MainWindow : Window
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MainWindow"/> class.
+    /// </summary>
+    public MainWindow()
     {
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
+        this.WhenActivated(disposables => { });
+        this.InitializeComponent();
     }
 }

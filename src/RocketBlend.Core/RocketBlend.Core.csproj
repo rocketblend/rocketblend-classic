@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="10.0.1" />
+    <PackageReference Include="ReactiveUI" Version="18.0.7" />
+    <PackageReference Include="ReactiveUI.Fody" Version="18.0.7" />
+    <PackageReference Include="ReactiveUI.Validation" Version="2.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RocketBlend.Application\RocketBlend.Application.csproj" />
+    <ProjectReference Include="..\RocketBlend.Blender.Interfaces\RocketBlend.Blender.Interfaces.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+
+</Project>

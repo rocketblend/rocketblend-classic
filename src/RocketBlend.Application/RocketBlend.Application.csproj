@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RocketBlend.Common.Application\RocketBlend.Common.Application.csproj" />
+    <ProjectReference Include="..\RocketBlend.Domain\RocketBlend.Domain.csproj" />
+    <ProjectReference Include="..\RocketBlend.FileDownloader.Interfaces\RocketBlend.FileDownloader.Interfaces.csproj" />
+    <ProjectReference Include="..\RocketBlend.WebScraper.Blender.Core\RocketBlend.WebScraper.Blender.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="EventHandlers\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.4.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+  </ItemGroup>
+
+</Project>
