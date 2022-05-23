@@ -19,7 +19,7 @@ public partial class App : Avalonia.Application, IApplication
     public override void Initialize()
     {
         ApplicationConfigurator.ConfigureServiceMSProvider();
-        ApplicationConfigurator.ConfigureServices(Locator.CurrentMutable, this);
+        ApplicationConfigurator.ConfigureApplicationServices(Locator.CurrentMutable, this);
 
         var logger = Locator.Current.GetRequiredService<ILogger<App>>();
 
@@ -34,7 +34,7 @@ public partial class App : Avalonia.Application, IApplication
     public override void OnFrameworkInitializationCompleted()
     {
         if(this.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
+        {
             var viewModel = new MainWindowViewModel();
 
             desktop.MainWindow = new MainWindow()

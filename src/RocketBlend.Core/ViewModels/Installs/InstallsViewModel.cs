@@ -1,29 +1,27 @@
-﻿using System.Collections.ObjectModel;
-using System.Reactive.Concurrency;
-using System.Reactive.Disposables;
+﻿using System.Reactive.Concurrency;
+using DynamicData.Binding;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using RocketBlend.Application.Commands.Builds;
 using RocketBlend.Application.Commands.Installs;
 using RocketBlend.Application.Queries.Builds.External;
 using RocketBlend.Application.Queries.Installs;
+using RocketBlend.Core.Models;
 using RocketBlend.WebScraper.Blender.Core.Enums;
 
 namespace RocketBlend.Core.ViewModels.Installs;
 
-/// <summary>
-/// The build browser view model.
-/// </summary>
-public class InstallBrowserViewModel : ViewModelBase, IRoutableViewModel
+public class InstallsViewModel : ViewModelBase, IRoutableViewModel
 {
-    private InstallViewModel? _selectedInstall;
+    public IScreen HostScreen { get; }
 
-    private CancellationTokenSource? _cancellationTokenSource;
+    public string UrlPathSegment { get; } = Guid.NewGuid().ToString()[..5];
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="InstallBrowserViewModel"/> class.
-    /// </summary>
-    /// <param name="screen">The screen.</param>
-    public InstallBrowserViewModel(IScreen screen)
+    public ObservableCollectionExtended<InstallModel> Items { get; } = new();
+
+    [Reactive] public InstallModel? SelectedInstall { get; set; }
+
+    public InstallsViewModel(IScreen screen)
     {
         this.HostScreen = screen;
 
@@ -31,28 +29,6 @@ public class InstallBrowserViewModel : ViewModelBase, IRoutableViewModel
 
         // this.RefreshAvailableBuilds();
         // this.CreateInstall();
-
-        this.WhenActivated((CompositeDisposable disposables) =>
-        {
-        });
-    }
-
-    /// <inheritdoc />
-    public IScreen HostScreen { get; }
-
-    /// <inheritdoc />
-    public string UrlPathSegment { get; } = Guid.NewGuid().ToString()[..5];
-
-    ///<inheritdoc />
-    public ObservableCollection<InstallViewModel> Installs { get; } = new();
-
-    /// <summary>
-    /// Gets or sets the selected install.
-    /// </summary>
-    public InstallViewModel? SelectedInstall
-    {
-        get => this._selectedInstall;
-        set => this.RaiseAndSetIfChanged(ref this._selectedInstall, value);
     }
 
     /// <summary>
@@ -60,15 +36,25 @@ public class InstallBrowserViewModel : ViewModelBase, IRoutableViewModel
     /// </summary>
     private async void LoadInstalls()
     {
-        this._cancellationTokenSource?.Cancel();
-        this._cancellationTokenSource = new CancellationTokenSource();
-        var cancellationToken = this._cancellationTokenSource.Token;
+        this.Items.Clear();
 
-        var installs = await this.Mediator.Send(new GetInstallsQuery(), cancellationToken);
+        var installs = await this.Mediator.Send(new GetInstallsQuery());
 
         foreach (var install in installs.Items)
         {
-            this.Installs.Add(new InstallViewModel(install));
+            this.Items.Add(new InstallModel()
+            {
+                Id = install.Id,
+                FileName = install.FileName,
+                FileLocation = install.FileLocation,
+                Build = new()
+                {
+                    Id = install.Build.Id,
+                    Name = install.Build.Name,
+                    Tag = install.Build.Tag,
+                    Hash = install.Build.Hash
+                }
+            });
         }
     }
 
@@ -95,14 +81,6 @@ public class InstallBrowserViewModel : ViewModelBase, IRoutableViewModel
             Guid.NewGuid(),
             Guid.Parse(buildId),
             string.Empty));
-    }
-
-    /// <summary>
-    /// Loads the builds.
-    /// </summary>
-    private void LoadBuilds()
-    {
-        return;
     }
 
     /// <summary>

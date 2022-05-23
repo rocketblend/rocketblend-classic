@@ -17,23 +17,23 @@ public record GetProjectQuery(Guid Id) : IRequest<ProjectDto>;
 /// </summary>
 public class GetProjectQueryHandler : IRequestHandler<GetProjectQuery, ProjectDto>
 {
-    private readonly IProjectRepository _collectionRepository;
+    private readonly IProjectRepository _projectRepository;
     private readonly IMapper _mapper;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GetProjectQueryHandler"/> class.
     /// </summary>
     /// <param name="mapper">The mapper.</param>
-    public GetProjectQueryHandler(IProjectRepository collectionRepository, IMapper mapper)
+    public GetProjectQueryHandler(IProjectRepository projectRepository, IMapper mapper)
     {
-        this._collectionRepository = collectionRepository;
+        this._projectRepository = projectRepository;
         this._mapper = mapper;
     }
 
     /// <inheritdoc />
     public async Task<ProjectDto> Handle(GetProjectQuery request, CancellationToken cancellationToken)
     {
-        var query = this._collectionRepository.Get(new ProjectQueryOptions
+        var query = this._projectRepository.Get(new ProjectQueryOptions
         {
             AsNoTracking = true,
         });
@@ -42,8 +42,8 @@ public class GetProjectQueryHandler : IRequestHandler<GetProjectQuery, ProjectDt
             .Where(x => x.Id == request.Id)
             .ProjectTo<ProjectDto>(this._mapper.ConfigurationProvider);
 
-        var collection = await this._collectionRepository.FirstOrDefaultAsync(mapped, cancellationToken);
+        var project = await this._projectRepository.FirstOrDefaultAsync(mapped, cancellationToken);
 
-        return collection ?? throw new NotFoundException("Project", request.Id);
+        return project ?? throw new NotFoundException("Project", request.Id);
     }
 }

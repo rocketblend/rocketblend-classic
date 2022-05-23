@@ -10,6 +10,11 @@ namespace RocketBlend.Blender;
 public class BlenderClient: IBlenderClient
 {
     /// <summary>
+    /// The create project script.
+    /// </summary>
+    private const string CreateProjectScript = "import bpy;bpy.ops.wm.save_as_mainfile(filepath=r'{0}')";
+
+    /// <summary>
     /// Gets the client.
     /// </summary>
     private Command Client => Cli.Wrap(this.Executable).WithWorkingDirectory(this.WorkingDirectory);
@@ -21,9 +26,15 @@ public class BlenderClient: IBlenderClient
     public string Executable { get; set; } = "blender.exe";
 
     /// <inheritdoc />
-    public async void OpenProject(string path)
+    public async Task OpenProject(string path)
     {
         await this.Client.WithArguments(EscapeArguments(path)).ExecuteAsync();
+    }
+
+    /// <inheritdoc />
+    public async Task CreateProject(string path)
+    {
+        await this.Client.WithArguments($"-b --python-expr {EscapeArguments(string.Format(CreateProjectScript, path))}").ExecuteAsync();
     }
 
     /// <inheritdoc />

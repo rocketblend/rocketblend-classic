@@ -24,7 +24,7 @@ public class InstallConfiguration : IEntityTypeConfiguration<Install>
             .IsRequired()
             .HasMaxLength(256);
 
-        builder.Property(t => t.FileLocation)
+        builder.Property(t => t.FilePath)
             .IsRequired()
             .HasMaxLength(512);
 

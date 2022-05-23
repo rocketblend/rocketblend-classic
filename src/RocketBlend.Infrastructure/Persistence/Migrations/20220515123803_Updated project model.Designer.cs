@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReadyAbout.Services.Resource.Infrastructure.Persistence;
 
@@ -10,9 +11,10 @@ using ReadyAbout.Services.Resource.Infrastructure.Persistence;
 namespace RocketBlend.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220515123803_Updated project model")]
+    partial class Updatedprojectmodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.5");
@@ -71,14 +73,14 @@ namespace RocketBlend.Infrastructure.Persistence.Migrations
                     b.Property<DateTimeOffset?>("CreatedDateTime")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("FileLocation")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FilePath")
-                        .IsRequired()
-                        .HasMaxLength(512)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LaunchArgs")
@@ -105,14 +107,14 @@ namespace RocketBlend.Infrastructure.Persistence.Migrations
                     b.Property<DateTimeOffset?>("CreatedDateTime")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("FileLocation")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FilePath")
-                        .IsRequired()
-                        .HasMaxLength(512)
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("InstallId")

@@ -19,7 +19,13 @@ public interface IBlenderClient
     /// Opens the project.
     /// </summary>
     /// <param name="path">The path.</param>
-    public void OpenProject(string path);
+    public Task OpenProject(string path);
+
+    /// <summary>
+    /// Creates the project.
+    /// </summary>
+    /// <param name="path">The path.</param>
+    public Task CreateProject(string path);
 
     /// <summary>
     /// Renders the single image.

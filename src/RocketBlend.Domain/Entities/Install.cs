@@ -1,12 +1,11 @@
-﻿using RocketBlend.Common.Domain.Entities;
-using RocketBlend.Domain.Events.Installs;
+﻿using RocketBlend.Domain.Events.Installs;
 
 namespace RocketBlend.Domain.Entities;
 
 /// <summary>
 /// The install.
 /// </summary>
-public class Install : AggregateRoot<Guid>, IFileEntry<Guid>
+public class Install : File<Guid>
 {
     /// <summary>
     /// EF constructor
@@ -22,12 +21,12 @@ public class Install : AggregateRoot<Guid>, IFileEntry<Guid>
     /// <param name="fileName">The file name.</param>
     /// <param name="fileLocation">The file location.</param>
     /// <param name="launchArgs">The launch args.</param>
-    public Install(Guid id, Guid buildId, string fileName, string fileLocation, string launchArgs)
+    public Install(Guid id, Guid buildId, string fileName, string fileLocation, string launchArgs): base()
     {
         this.Id = id;
         this.BuildId = buildId;
         this.FileName = fileName;
-        this.FileLocation = fileLocation;
+        this.FilePath = fileLocation;
         this.LaunchArgs = launchArgs;
 
         this.AddDomainEvent(new InstallCreatedEvent(this));
@@ -37,12 +36,6 @@ public class Install : AggregateRoot<Guid>, IFileEntry<Guid>
     /// Gets the build id.
     /// </summary>
     public Guid BuildId { get; private set; }
-
-    /// <inheritdoc />
-    public string FileName { get; private set; } = string.Empty;
-
-    /// <inheritdoc />
-    public string FileLocation { get; private set; } = string.Empty;
 
     /// <summary>
     /// Gets the launch args.

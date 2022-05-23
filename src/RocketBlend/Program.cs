@@ -1,13 +1,5 @@
 using Avalonia;
-using Avalonia.ReactiveUI;
-using Microsoft.EntityFrameworkCore;
-using ReactiveUI;
-using ReadyAbout.Services.Resource.Infrastructure.Persistence;
-using RocketBlend.DependencyInjection;
-using RocketBlend.Views;
-using Splat;
 using System;
-using System.Reflection;
 
 namespace RocketBlend;
 
@@ -38,8 +30,7 @@ internal class Program
     {
         var result = AppBuilder.Configure<App>()
                   .UsePlatformDetect()
-                  .LogToTrace()
-                  .UseReactiveUI();
+                  .LogToTrace();
 
         return result;
     }

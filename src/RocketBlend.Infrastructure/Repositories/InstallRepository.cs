@@ -32,7 +32,17 @@ public class InstallRepository : BaseRepository<Install, Guid>, IInstallReposito
             query = query.AsNoTracking();
         }
 
-        query = query.OrderBy(p => p.FileName);
+        if (!string.IsNullOrWhiteSpace(queryOptions.SearchQuery))
+        {
+            query = query.Where(p => EF.Functions.Like(p.Build!.Name, $"%{queryOptions.SearchQuery}%"));
+        }
+
+        if (!string.IsNullOrWhiteSpace(queryOptions.BuildTag))
+        {
+            query = query.Where(p => p.Build!.Tag == queryOptions.BuildTag);
+        }
+
+        query = query.OrderByDescending(p => p.FileName);
 
         return query;
     }

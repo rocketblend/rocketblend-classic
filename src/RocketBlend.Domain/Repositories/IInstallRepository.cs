@@ -9,6 +9,17 @@ namespace RocketBlend.Domain.Repositories;
 public class InstallQueryOptions
 {
     /// <summary>
+    /// Gets or sets the search query.
+    /// </summary>
+    public string? SearchQuery { get; set; }
+
+    /// <summary>
+    /// Gets or sets the build tag.
+    /// </summary>
+    public string? BuildTag { get; set; }
+
+
+    /// <summary>
     /// Gets or sets a value indicating whether as no tracking.
     /// </summary>
     public bool AsNoTracking { get; set; }

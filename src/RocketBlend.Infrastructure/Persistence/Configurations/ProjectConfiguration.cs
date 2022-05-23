@@ -21,8 +21,14 @@ public class ProjectConfiguration : IEntityTypeConfiguration<Project>
 
         builder.Property(t => t.Name)
             .IsRequired()
-            .HasMaxLength(64);
-        builder.Property(t => t.Path)
-            .HasMaxLength(255);
+            .HasMaxLength(128);
+
+        builder.Property(t => t.FileName)
+            .IsRequired()
+            .HasMaxLength(256);
+
+        builder.Property(t => t.FilePath)
+            .IsRequired()
+            .HasMaxLength(512);
     }
 }

@@ -61,9 +61,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RocketBlend.Blender", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RocketBlend.Blender.Interfaces", "src\RocketBlend.Blender.Interfaces\RocketBlend.Blender.Interfaces.csproj", "{23888AFB-9CC3-480C-8965-1EE7676E9C1B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CommandLine", "CommandLine", "{B49A2074-FE87-4211-A0BA-ADE0F6EF08AA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketBlend.Core", "src\RocketBlend.Core\RocketBlend.Core.csproj", "{722022C7-F6A5-4D9A-8B23-128E6BC94C50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RocketBlend.Core", "src\RocketBlend.Core\RocketBlend.Core.csproj", "{722022C7-F6A5-4D9A-8B23-128E6BC94C50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -180,7 +178,6 @@ Global
 		{FB701168-2A4D-44F5-A311-00FAF03C5D21} = {3A2B5BA6-0842-477F-A84E-F480B24F4B28}
 		{BA9A23FC-2BE2-493C-8BDD-FCC2459589E6} = {FB701168-2A4D-44F5-A311-00FAF03C5D21}
 		{23888AFB-9CC3-480C-8965-1EE7676E9C1B} = {FB701168-2A4D-44F5-A311-00FAF03C5D21}
-		{B49A2074-FE87-4211-A0BA-ADE0F6EF08AA} = {3A2B5BA6-0842-477F-A84E-F480B24F4B28}
 		{722022C7-F6A5-4D9A-8B23-128E6BC94C50} = {B00C1513-1659-4AA4-AA3C-D4F031D84BC7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

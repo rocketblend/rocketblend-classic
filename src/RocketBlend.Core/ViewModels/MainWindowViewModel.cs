@@ -30,8 +30,8 @@ public class MainWindowViewModel : ReactiveObject, IActivatableViewModel, IScree
     {
         this.Tabs = new List<IRoutableViewModel>()
         {
-            new ProjectBrowserViewModel(this),
-            new InstallBrowserViewModel(this)
+            new ProjectsViewModel(this),
+            new InstallsViewModel(this),
         };
 
         this.WhenAnyValue(x => x.SelectedTabIndex).Subscribe(i => this.NavigateToTab(i));

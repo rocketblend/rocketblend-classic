@@ -10,7 +10,7 @@ namespace RocketBlend.Application.Queries.Installs;
 /// <summary>
 /// The get projects query.
 /// </summary>
-public record GetInstallsQuery(int PageNumber = 1, int PageSize = 25) : IRequest<PaginatedList<InstallDto>>;
+public record GetInstallsQuery(string? SearchQuery = null, string? BuildTag = null, int PageNumber = 1, int PageSize = 25) : IRequest<PaginatedList<InstallDto>>;
 
 /// <summary>
 /// The get projects handler.
@@ -35,7 +35,9 @@ public class GetInstallsHandler : IRequestHandler<GetInstallsQuery, PaginatedLis
     {
         var query = this._projectRepository.Get(new InstallQueryOptions
         {
-            AsNoTracking = true,
+            AsNoTracking = false,
+            SearchQuery = request.SearchQuery,
+            BuildTag = request.BuildTag,
         });
 
         return Task.FromResult(query

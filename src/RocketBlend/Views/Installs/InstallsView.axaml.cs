@@ -1,19 +1,17 @@
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
-using ReactiveUI;
 using RocketBlend.Core.ViewModels.Installs;
 
-namespace RocketBlend.Views;
-public partial class InstallBrowserView : ReactiveUserControl<InstallBrowserViewModel>
+namespace RocketBlend.Views.Installs;
+public partial class InstallsView : ReactiveUserControl<InstallsViewModel>
 {
-    public InstallBrowserView()
+    public InstallsView()
     {
         InitializeComponent();
     }
 
     private void InitializeComponent()
     {
-        this.WhenActivated(disposables => { });
         AvaloniaXamlLoader.Load(this);
     }
 }

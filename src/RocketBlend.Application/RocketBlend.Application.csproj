@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RocketBlend.Blender.Interfaces\RocketBlend.Blender.Interfaces.csproj" />
     <ProjectReference Include="..\RocketBlend.Common.Application\RocketBlend.Common.Application.csproj" />
     <ProjectReference Include="..\RocketBlend.Domain\RocketBlend.Domain.csproj" />
     <ProjectReference Include="..\RocketBlend.FileDownloader.Interfaces\RocketBlend.FileDownloader.Interfaces.csproj" />
@@ -14,13 +15,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="EventHandlers\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.4.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.0.1" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
   </ItemGroup>

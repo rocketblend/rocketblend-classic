@@ -2,7 +2,7 @@
 
 PROJECT = RocketBlend
 CONTEXT = ApplicationDbContext
-MIGRATION_NAME = Init
+MIGRATION_NAME = File name to file path
 
 all: migrations
 

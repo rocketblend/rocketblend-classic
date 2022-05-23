@@ -55,14 +55,14 @@ public static class DependencyInjection
         services.AddFileDownloaderService();
         services.AddZipFileExtractorService();
 
-        services.AddScoped<IRepository<Project, Guid>, BaseRepository<Project, Guid>>();
-        services.AddScoped<IProjectRepository, ProjectRepository>();
+        services.AddTransient<IRepository<Project, Guid>, BaseRepository<Project, Guid>>();
+        services.AddTransient<IProjectRepository, ProjectRepository>();
 
-        services.AddScoped<IRepository<Install, Guid>, BaseRepository<Install, Guid>>();
-        services.AddScoped<IInstallRepository, InstallRepository>();
+        services.AddTransient<IRepository<Install, Guid>, BaseRepository<Install, Guid>>();
+        services.AddTransient<IInstallRepository, InstallRepository>();
 
-        services.AddScoped<IRepository<Build, Guid>, BaseRepository<Build, Guid>>();
-        services.AddScoped<IBuildRepository, BuildRepository>();
+        services.AddTransient<IRepository<Build, Guid>, BaseRepository<Build, Guid>>();
+        services.AddTransient<IBuildRepository, BuildRepository>();
 
         services.AddScoped<ICurrentUser, CurrentLocalUser>();
         services.AddScoped<IFileService, FileService>();

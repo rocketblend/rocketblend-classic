@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+using Avalonia.ReactiveUI;
+using Avalonia.Threading;
 using ReactiveUI;
 using RocketBlend.Core;
 using RocketBlend.Core.Services.Interfaces;
@@ -25,12 +27,16 @@ public static class ApplicationConfigurator
     /// </summary>
     /// <param name="services">The services.</param>
     /// <param name="app">The app.</param>
-    public static void ConfigureServices(IMutableDependencyResolver services, IApplication app)
+    public static void ConfigureApplicationServices(IMutableDependencyResolver services, IApplication app)
     {
+
+
         services.AddApplication(app);
         services.AddApplicationInfo();
 
         services.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
+
+        services.UseReactiveUI();
     }
 
     /// <summary>

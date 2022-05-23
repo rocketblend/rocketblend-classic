@@ -49,8 +49,6 @@ public static class MicrosoftBootstrapper
         services.AddApplicationServices();
         services.AddInfrastructure(settingsConfig);
 
-        // services.AddSingleton<IViewLocator, ConventionalViewLocator>();
-
         services.AddScoped<IBlenderClient, BlenderClient>();
 
         services.UseMicrosoftDependencyResolver();

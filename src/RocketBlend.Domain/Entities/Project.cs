@@ -1,5 +1,4 @@
 ﻿using RocketBlend.Common.CrossCuttingConcerns.Guards;
-using RocketBlend.Common.Domain.Entities;
 using RocketBlend.Domain.Events.Projects;
 
 namespace RocketBlend.Domain.Entities;
@@ -7,7 +6,7 @@ namespace RocketBlend.Domain.Entities;
 /// <summary>
 /// The project.
 /// </summary>
-public class Project : AggregateRoot<Guid>
+public class Project : File<Guid>
 {
     /// <summary>
     /// EF constructor
@@ -20,13 +19,14 @@ public class Project : AggregateRoot<Guid>
     /// </summary>
     /// <param name="name">The name.</param>
     /// <param name="path">The path.</param>
-    public Project(Guid id, string name, string path, Guid? installId = null)
+    public Project(Guid id, string name, string fileName, string filePath, Guid installId)
     {
         Guard.ArgumentNotNull(id, nameof(id));
 
         this.Id = id;
         this.Name = name;
-        this.Path = path;
+        this.FileName = fileName;
+        this.FilePath = filePath;
         this.InstallId = installId;
 
         this.AddDomainEvent(new ProjectCreatedEvent(this));
@@ -35,7 +35,7 @@ public class Project : AggregateRoot<Guid>
     /// <summary>
     /// Gets or sets the install id.
     /// </summary>
-    public Guid? InstallId { get; private set; }
+    public Guid InstallId { get; private set; } = Guid.Empty;
 
     /// <summary>
     /// Gets the name.
@@ -43,13 +43,8 @@ public class Project : AggregateRoot<Guid>
     public string Name { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the path.
-    /// </summary>
-    public string Path { get; private set; } = string.Empty;
-
-    /// <summary>
     /// Gets the install to run against.
-    /// </summary>s
+    /// </summary>
     public virtual Install? Install { get; private set; }
 
     /// <summary>
@@ -57,12 +52,15 @@ public class Project : AggregateRoot<Guid>
     /// </summary>
     /// <param name="name">The name.</param>
     /// <param name="path">The path.</param>
-    public void Update(string name, string path)
+    public void Update(string name, string fileName, string filePath, Guid installId)
     {
         Guard.ArgumentNotNullOrWhiteSpace(name, nameof(name));
-        Guard.ArgumentNotNullOrWhiteSpace(path, nameof(path));
+        Guard.ArgumentNotNullOrWhiteSpace(fileName, nameof(fileName));
+        Guard.ArgumentNotNullOrWhiteSpace(filePath, nameof(filePath));
 
         this.Name = name;
-        this.Path = path;
+        this.FileName = fileName;
+        this.FilePath = filePath;
+        this.InstallId = installId;
     }
 }

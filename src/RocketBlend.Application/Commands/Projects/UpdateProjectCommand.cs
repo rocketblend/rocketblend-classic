@@ -8,7 +8,7 @@ namespace RocketBlend.Application.Commands.Projects;
 /// <summary>
 /// The update project command.
 /// </summary>
-public record UpdateProjectCommand(Guid Id, string Name, string Path) : ICommand;
+public record UpdateProjectCommand(Guid Id, string Name, string FileName, string FilePath, Guid InstallId) : ICommand;
 
 /// <summary>
 /// The update project command handler.
@@ -31,7 +31,7 @@ public class UpdateProjectCommandHandler : ICommandHandler<UpdateProjectCommand>
     {
         var entity = await this._crudService.GetByIdAsync(request.Id, true);
 
-        entity!.Update(request.Name, request.Path);
+        entity!.Update(request.Name, request.FileName, request.FilePath, request.InstallId);
 
         await this._crudService.UpdateAsync(entity, cancellationToken);
         return Unit.Value;

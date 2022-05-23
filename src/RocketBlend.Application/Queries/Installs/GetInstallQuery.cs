@@ -17,7 +17,7 @@ public record GetInstallQuery(Guid Id) : IRequest<InstallDto>;
 /// </summary>
 public class GetInstallQueryHandler : IRequestHandler<GetInstallQuery, InstallDto>
 {
-    private readonly IInstallRepository _buildRepository;
+    private readonly IInstallRepository _installRepository;
     private readonly IMapper _mapper;
 
     /// <summary>
@@ -26,14 +26,14 @@ public class GetInstallQueryHandler : IRequestHandler<GetInstallQuery, InstallDt
     /// <param name="mapper">The mapper.</param>
     public GetInstallQueryHandler(IInstallRepository collectionRepository, IMapper mapper)
     {
-        this._buildRepository = collectionRepository;
+        this._installRepository = collectionRepository;
         this._mapper = mapper;
     }
 
     /// <inheritdoc />
     public async Task<InstallDto> Handle(GetInstallQuery request, CancellationToken cancellationToken)
     {
-        var query = this._buildRepository.Get(new InstallQueryOptions
+        var query = this._installRepository.Get(new InstallQueryOptions
         {
             AsNoTracking = true,
         });
@@ -42,7 +42,7 @@ public class GetInstallQueryHandler : IRequestHandler<GetInstallQuery, InstallDt
             .Where(x => x.Id == request.Id)
             .ProjectTo<InstallDto>(this._mapper.ConfigurationProvider);
 
-        var collection = await this._buildRepository.FirstOrDefaultAsync(mapped, cancellationToken);
+        var collection = await this._installRepository.FirstOrDefaultAsync(mapped, cancellationToken);
 
         return collection ?? throw new NotFoundException("Install", request.Id);
     }
