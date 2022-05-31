@@ -1,0 +1,54 @@
+<Window
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:views="clr-namespace:RocketBlend.Presentation.Avalonia.Views"
+    xmlns:interfaces="clr-namespace:RocketBlend.Presentation.Interfaces;assembly=RocketBlend.Presentation"
+    xmlns:designTime="clr-namespace:RocketBlend.Presentation.DesignTime;assembly=RocketBlend.Presentation"
+    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+    x:Class="RocketBlend.Presentation.Avalonia.Views.MainWindow"
+    ExtendClientAreaToDecorationsHint="True"
+    ExtendClientAreaTitleBarHeightHint="-1"
+    WindowStartupLocation="CenterScreen"
+    MinWidth="900" MinHeight="480"
+    Icon="/Assets/avalonia-logo.ico"
+    Title="RocketBlend">
+
+    <Design.DataContext>
+        <designTime:DesignTimeMainWindowViewModel />
+    </Design.DataContext>
+
+    <DockPanel LastChildFill="True">
+        <DockPanel DockPanel.Dock="Top" LastChildFill="True">
+            <Panel Height="30" IsHitTestVisible="False" Background="{DynamicResource SystemControlBackgroundAltLowBrush}"/>
+        </DockPanel>
+
+        <DockPanel LastChildFill="True">
+            <StackPanel DockPanel.Dock="Top" Background="{DynamicResource SystemControlBackgroundAltLowBrush}">
+                <DockPanel LastChildFill="True" Margin="55, 0, 55, 30">
+                    <Image Height="60" Source="/Assets/Images/blender_logo_no_socket_white.png" HorizontalAlignment="Left" />
+                    <TabControl VerticalAlignment="Center" Margin="25, 5, 0, 0" >
+                        <TabItem Header="Installs"></TabItem>
+                    </TabControl>
+                </DockPanel>
+                <Line
+                    Stroke="#262626"
+                    StrokeThickness="2"
+                    StartPoint="0,0" 
+                    EndPoint="900, 0"
+                    Stretch="UniformToFill"/>
+            </StackPanel>
+
+            <Panel>
+                <TextBlock
+                    Text="{Binding Greeting}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+            </Panel>
+
+        </DockPanel>
+    </DockPanel>
+
+
+</Window>
