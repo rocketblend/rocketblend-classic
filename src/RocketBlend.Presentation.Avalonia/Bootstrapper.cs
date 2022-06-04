@@ -20,5 +20,6 @@ public static class Bootstrapper
         LoggingBootstrapper.RegisterLogging(services, resolver);
         AvaloniaServicesBootstrapper.RegisterAvaloniaServices(services);
         ServicesBootstrapper.RegisterServices(services, resolver);
+        ViewModelsBootstrapper.RegisterViewModels(services, resolver);
     }
 }

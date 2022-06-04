@@ -3,7 +3,7 @@
 /// <summary>
 /// The application interface.
 /// </summary>
-internal interface IApplication
+internal interface IApplicationCloser
 {
     /// <summary>
     /// Shutdown the application.

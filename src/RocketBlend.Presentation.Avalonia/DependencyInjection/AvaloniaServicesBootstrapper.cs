@@ -1,5 +1,8 @@
-﻿using RocketBlend.Avalonia.Core;
+﻿using ReactiveUI;
+using RocketBlend.Avalonia.Core;
 using RocketBlend.Avalonia.Interfaces;
+using RocketBlend.Presentation.Avalonia.Services.Implementations;
+using RocketBlend.Presentation.Services.Interfaces;
 using Splat;
 
 namespace RocketBlend.Presentation.Avalonia.DependencyInjection;
@@ -17,5 +20,7 @@ public static class AvaloniaServicesBootstrapper
     {
         services.RegisterLazySingleton<IClipboardService>(() => new ClipboardService());
         services.RegisterLazySingleton<IMainWindowProvider>(() => new MainWindowProvider());
+        services.RegisterLazySingleton<IApplicationCloser>(() => new ApplicationCloser());
+        services.RegisterLazySingleton<IApplicationVersionProvider>(() => new ApplicationVersionProvider());
     }
 }

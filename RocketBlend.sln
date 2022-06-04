@@ -77,7 +77,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RocketBlend.Avalonia.Interf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RocketBlend.Avalonia.Core", "src\RocketBlend.Avalonia.Core\RocketBlend.Avalonia.Core.csproj", "{9EE7263A-AE20-4E66-92FB-6FC8E72EAC64}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03.Services", "03.Services", "{61506C71-05DF-4373-A0F6-AECC352CE17B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "06.Services", "06.Services", "{61506C71-05DF-4373-A0F6-AECC352CE17B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RocketBlend.Services.Environment", "src\RocketBlend.Services.Environment\RocketBlend.Services.Environment.csproj", "{FCC56EAB-763F-476E-9F66-55484C67E540}"
 EndProject
@@ -85,11 +85,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RocketBlend.Services", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RocketBlend.Extensions", "src\RocketBlend.Extensions\RocketBlend.Extensions.csproj", "{80CCF5E8-471F-4DA6-B972-99111426D08D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04.Themes", "04.Themes", "{554C4DA1-538C-40C7-AB71-9FC584AF97BF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03.Themes", "03.Themes", "{554C4DA1-538C-40C7-AB71-9FC584AF97BF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05.Presentation", "05.Presentation", "{98864387-DDCE-48C6-BF69-36188FE2DB1E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04.Presentation", "04.Presentation", "{98864387-DDCE-48C6-BF69-36188FE2DB1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketBlend.Services.Abstractions", "src\RocketBlend.Services.Abstractions\RocketBlend.Services.Abstractions.csproj", "{A287B25F-4F13-413F-8567-459B1720DC40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RocketBlend.Services.Abstractions", "src\RocketBlend.Services.Abstractions\RocketBlend.Services.Abstractions.csproj", "{A287B25F-4F13-413F-8567-459B1720DC40}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

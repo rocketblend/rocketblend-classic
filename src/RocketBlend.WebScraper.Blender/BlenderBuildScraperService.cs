@@ -51,7 +51,7 @@ public class BlenderBuildScraperService : IBlenderBuildScraperService
             }
         }
 
-        return builds;
+        return builds.OrderByDescending(b => b.Name);
     }
 
     /// <inheritdoc />
@@ -90,7 +90,7 @@ public class BlenderBuildScraperService : IBlenderBuildScraperService
             }
         }
 
-        return builds;
+        return builds.OrderByDescending(b => b.Name);
     }
 
     /// <summary>

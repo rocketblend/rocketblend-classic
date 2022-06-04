@@ -45,8 +45,8 @@
 
     <Style.Resources>
         <!-- System Control Colors -->
-        <Color x:Key="SystemAltHighColor">#1E1E1E</Color>
-        <Color x:Key="SystemAltLowColor">#22000000</Color>
+        <Color x:Key="SystemAltHighColor">#FF1E1E1E</Color>
+        <Color x:Key="SystemAltLowColor">#FF1A1A1A</Color>
         <Color x:Key="SystemAltMediumColor">#99000000</Color>
         <Color x:Key="SystemAltMediumHighColor">#CC000000</Color>
         

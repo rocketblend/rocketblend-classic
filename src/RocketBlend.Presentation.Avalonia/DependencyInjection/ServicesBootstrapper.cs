@@ -6,6 +6,10 @@ using RocketBlend.Presentation.Services.Interfaces;
 using RocketBlend.Services.Environment.Enums;
 using RocketBlend.Services.Environment.Interfaces;
 using Splat;
+using RocketBlend.Services.Abstractions;
+using RocketBlend.Services;
+using RocketBlend.WebScraper.Blender.Core.Interfaces;
+using RocketBlend.WebScraper.Blender;
 
 namespace RocketBlend.Presentation.Avalonia.DependencyInjection;
 
@@ -37,6 +41,12 @@ public static class ServicesBootstrapper
         ));
         services.RegisterLazySingleton<ISystemDialogService>(() => new SystemDialogService(
             resolver.GetRequiredService<IMainWindowProvider>()
+        ));
+
+        services.RegisterLazySingleton<IBlenderBuildScraperService>(() => new BlenderBuildScraperService());
+
+        services.RegisterLazySingleton<IBlenderBuildService>(() => new BlenderBuildService(
+            resolver.GetRequiredService<IBlenderBuildScraperService>()
         ));
     }
 

@@ -29,7 +29,7 @@ public class AkavacheSuspensionDriver<TAppState> : ISuspensionDriver
     /// Initializes a new instance of the <see cref="AkavacheSuspensionDriver"/> class.
     /// </summary>
     /// <param name="appName">The app name.</param>
-    public AkavacheSuspensionDriver(string appName = "RocketBlendV1") => BlobCache.ApplicationName = appName;
+    public AkavacheSuspensionDriver(string appName = "RocketBlend") => BlobCache.ApplicationName = appName;
 
     /// <inheritdoc />
     public IObservable<Unit> InvalidateState() => BlobCache.UserAccount.InvalidateObject<TAppState>(Key);

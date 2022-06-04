@@ -1,0 +1,63 @@
+<Window
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:views="clr-namespace:RocketBlend.Presentation.Avalonia.Views"
+    xmlns:dialogs="clr-namespace:RocketBlend.Presentation.Views.Dialogs;assembly=RocketBlend.Presentation"
+    xmlns:interfaces="clr-namespace:RocketBlend.Presentation.Interfaces;assembly=RocketBlend.Presentation"
+    xmlns:designTime="clr-namespace:RocketBlend.Presentation.DesignTime.Dialogs;assembly=RocketBlend.Presentation"
+    mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="500"
+    x:Class="RocketBlend.Presentation.Avalonia.Views.Dialogs.SelectBuildsDialog"
+    ExtendClientAreaToDecorationsHint="True"
+    ExtendClientAreaTitleBarHeightHint="-1"
+    Title="AboutDialog"
+    Width="600" Height="500">
+
+    <Design.DataContext>
+        <designTime:DesignTimeSelectBuildsDialogViewModel />
+    </Design.DataContext>
+
+    <Grid RowDefinitions="35, Auto, Auto, *, Auto, Auto">
+        <Grid Grid.Row="1" Margin="25">
+            <TextBlock
+                Text="Select builds to install"
+                Grid.Row="1"
+                FontSize="30"
+                TextAlignment="Center"
+                TextWrapping="Wrap"/>
+        </Grid>
+        <Grid Grid.Row="2" Margin="25, 10">
+            <Button Command="{Binding RefreshCommand}"
+                    FontSize="12"
+                    HorizontalAlignment="Right">Refresh</Button>
+        </Grid>
+        <Grid Grid.Row="3" RowDefinitions="*, Auto" Margin="25, 0">
+            <Border Grid.Row="0">
+                <ScrollViewer>
+                    <ListBox Items="{Binding Builds}"
+                             SelectionMode="Multiple,Toggle"
+                             SelectedItems="{Binding SelectedBuilds}"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto">
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Spacing="2" >
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+
+                    </ListBox>
+                </ScrollViewer>
+            </Border>
+            <ProgressBar Grid.Row="1"
+                         IsIndeterminate="True"
+                         IsVisible="{Binding IsBusy}"/>
+        </Grid>
+        
+        <Grid Grid.Row="4" Margin="25">
+            <Button Command="{Binding InstallBuildsCommand}" HorizontalAlignment="Right">Install</Button>
+        </Grid>
+    </Grid>
+</Window>

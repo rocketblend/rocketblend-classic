@@ -1,4 +1,6 @@
 ﻿using ReactiveUI;
+using RocketBlend.Presentation.Interfaces.Main.Installs;
+using RocketBlend.Presentation.Interfaces.Menu;
 
 namespace RocketBlend.Presentation.Interfaces;
 
@@ -11,4 +13,9 @@ public interface IMainWindowViewModel : IScreen
     /// Gets or sets the greeting.
     /// </summary>
     public string Greeting { get; }
+
+    /// <summary>
+    /// Gets the menu view model.
+    /// </summary>
+    public IMenuViewModel MenuViewModel { get; }
 }

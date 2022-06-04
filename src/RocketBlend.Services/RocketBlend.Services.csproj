@@ -19,7 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RocketBlend.Services.Abstractions\RocketBlend.Services.Abstractions.csproj" />
     <ProjectReference Include="..\RocketBlend.Services.Environment\RocketBlend.Services.Environment.csproj" />
+    <ProjectReference Include="..\RocketBlend.WebScraper.Blender.Core\RocketBlend.WebScraper.Blender.Core.csproj" />
   </ItemGroup>
 
 </Project>

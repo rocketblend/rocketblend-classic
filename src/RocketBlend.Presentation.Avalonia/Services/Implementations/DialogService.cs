@@ -68,12 +68,12 @@ public class DialogService : IDialogService
     }
 
     /// <inheritdoc />
-    public Task ShowDialogAsync(string viewModelName) => ShowDialogAsync<DialogResultBase>(viewModelName);
+    public Task ShowDialogAsync(string viewModelName) => this.ShowDialogAsync<DialogResultBase>(viewModelName);
 
     /// <inheritdoc />
     public Task ShowDialogAsync<TParameter>(string viewModelName, TParameter parameter)
         where TParameter : NavigationParameterBase =>
-        ShowDialogAsync<DialogResultBase, TParameter>(viewModelName, parameter);
+        this.ShowDialogAsync<DialogResultBase, TParameter>(viewModelName, parameter);
 
 
     /// <summary>

@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Reactive;
+using System.Windows.Input;
 using ReactiveUI;
 using RocketBlend.Extensions;
 using RocketBlend.Presentation.Services;
@@ -11,12 +12,12 @@ namespace RocketBlend.Presentation.ViewModels.Dialogs;
 public class DialogViewModelBase<TResult> : ViewModelBase
     where TResult : DialogResultBase
 {
-    public event EventHandler<DialogResultEventArgs<TResult>> CloseRequested;
+    public event EventHandler<DialogResultEventArgs<TResult>>? CloseRequested;
 
     /// <summary>
     /// Gets the close command.
     /// </summary>
-    public ICommand CloseCommand { get; }
+    public ReactiveCommand<Unit, Unit> CloseCommand { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DialogViewModelBase"/> class.

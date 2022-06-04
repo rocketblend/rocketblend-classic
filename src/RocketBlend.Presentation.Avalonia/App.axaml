@@ -2,12 +2,17 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:RocketBlend.Presentation.Avalonia"
+    xmlns:views="clr-namespace:RocketBlend.Presentation.Avalonia.Views"
     xmlns:viewModels="using:RocketBlend.Presentation.ViewModels"
     xmlns:interfaces="clr-namespace:RocketBlend.Presentation.Interfaces;assembly=RocketBlend.Presentation"
     xmlns:designTime="clr-namespace:RocketBlend.Presentation.DesignTime;assembly=RocketBlend.Presentation"
     x:DataType="viewModels:ApplicationViewModel"
     x:CompileBindings="True"
     x:Class="RocketBlend.Presentation.Avalonia.App">
+
+    <Application.DataTemplates>
+        <views:ViewLocator />
+    </Application.DataTemplates>
 
     <Application.Styles>
         <StyleInclude Source="avares://Horizon.Avalonia/Dark.axaml"/>

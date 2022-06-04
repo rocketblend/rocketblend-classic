@@ -1,0 +1,42 @@
+<Window
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:views="clr-namespace:RocketBlend.Presentation.Avalonia.Views"
+    xmlns:dialogs="clr-namespace:RocketBlend.Presentation.Views.Dialogs;assembly=RocketBlend.Presentation"
+    xmlns:interfaces="clr-namespace:RocketBlend.Presentation.Interfaces;assembly=RocketBlend.Presentation"
+    xmlns:designTime="clr-namespace:RocketBlend.Presentation.DesignTime.Dialogs;assembly=RocketBlend.Presentation"
+    mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="200"
+    x:Class="RocketBlend.Presentation.Avalonia.Views.Dialogs.AboutDialog"
+    ExtendClientAreaToDecorationsHint="True"
+    ExtendClientAreaTitleBarHeightHint="-1"
+    Title="AboutDialog"
+    Width="450" Height="200">
+
+    <Design.DataContext>
+        <designTime:DesignTimeAboutDialogViewModel />
+    </Design.DataContext>
+    
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock Classes="dialogTextBlock">
+            <TextBlock.Text>
+                <MultiBinding StringFormat="{}RocketBlend v{0}">
+                    <Binding Path="ApplicationVersion" />
+                </MultiBinding>
+            </TextBlock.Text>
+        </TextBlock>
+
+        <TextBlock Classes="dialogTextBlock" Text="About" />
+
+        <TextBlock Classes="dialogTextBlock">
+            <TextBlock.Text>
+                <MultiBinding StringFormat="{}{0}: {1}">
+                    <Binding Source="Credits"/>
+                    <Binding Path="Credits" />
+                </MultiBinding>
+            </TextBlock.Text>
+        </TextBlock>
+    </StackPanel>
+    
+</Window>

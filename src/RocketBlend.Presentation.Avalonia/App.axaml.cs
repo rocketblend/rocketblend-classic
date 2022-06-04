@@ -1,6 +1,7 @@
 using System;
 using System.Reactive;
 using System.Reactive.Concurrency;
+using System.Reflection;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -9,9 +10,11 @@ using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
 using RocketBlend.Presentation.Avalonia.Views;
+using RocketBlend.Presentation.Avalonia.Views.Main.Installs;
 using RocketBlend.Presentation.Extensions;
 using RocketBlend.Presentation.Infrastructure;
 using RocketBlend.Presentation.ViewModels;
+using RocketBlend.Presentation.ViewModels.Main.Installs;
 using Splat;
 
 namespace RocketBlend.Presentation.Avalonia;
@@ -45,27 +48,28 @@ public partial class App : Application
     /// <inheritdoc />
     public override void OnFrameworkInitializationCompleted()
     {
-        //Akavache.Registrations.Start("RocketBlendV1");
-        //Akavache.BlobCache.ApplicationName = "RocketBlendV1";
+        // Needs to be run after Splat and ReactiveUI are already configured.
+        Locator.CurrentMutable.RegisterLazySingleton(() => new ConventionalViewLocator(), typeof(IViewLocator));
 
-        //Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
-
-        if (this.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            // Initialize suspension hooks.
-            var suspension = new AutoSuspendHelper(this.ApplicationLifetime);
-            RxApp.SuspensionHost.CreateNewAppState = () => new MainWindowViewModel();
-            RxApp.SuspensionHost.SetupDefaultSuspendResume(new AkavacheSuspensionDriver<MainWindowViewModel>("RocketBlendV1"));
-            suspension.OnFrameworkInitializationCompleted();
-
-            // Read main view model state from disk.
-            var state = RxApp.SuspensionHost.GetAppState<MainWindowViewModel>();
-            Locator.CurrentMutable.RegisterConstant<IScreen>(state);
-
-            desktop.MainWindow = new MainWindow
+        if (!Design.IsDesignMode)
+        { 
+            if (this.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                DataContext = GetRequiredService<IScreen>()
-            };
+                // Initialize suspension hooks.
+                var suspension = new AutoSuspendHelper(this.ApplicationLifetime);
+                RxApp.SuspensionHost.CreateNewAppState = () => new MainWindowViewModel();
+                RxApp.SuspensionHost.SetupDefaultSuspendResume(new AkavacheSuspensionDriver<MainWindowViewModel>("RocketBlendV1"));
+                suspension.OnFrameworkInitializationCompleted();
+
+                // Read main view model state from disk.
+                var state = RxApp.SuspensionHost.GetAppState<MainWindowViewModel>();
+                Locator.CurrentMutable.RegisterConstant<IScreen>(state);
+
+                desktop.MainWindow = new MainWindow
+                {
+                    DataContext = GetRequiredService<IScreen>()
+                };
+            }
         }
 
         //if (!Design.IsDesignMode)

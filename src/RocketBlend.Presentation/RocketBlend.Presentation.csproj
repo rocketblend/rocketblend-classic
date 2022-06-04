@@ -8,10 +8,9 @@
 
   <ItemGroup>
     <Folder Include="Interfaces\Menu\" />
-    <Folder Include="Interfaces\MainWindow\" />
     <Folder Include="Interfaces\Settings\" />
     <Folder Include="ViewModels\Behaviors\" />
-    <Folder Include="ViewModels\Menu\" />
+    <Folder Include="ViewModels\Dialogs\NavigationParameters\" />
     <Folder Include="ViewModels\Settings\" />
   </ItemGroup>
 

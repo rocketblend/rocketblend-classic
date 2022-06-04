@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using RocketBlend.Presentation.Avalonia.Configuration;
+using RocketBlend.Presentation.Configuration;
 using Splat;
 
 namespace RocketBlend.Presentation.Avalonia.DependencyInjection;
@@ -18,6 +19,7 @@ public static class ConfigurationBootstrapper
     {
         var configuration = BuildConfiguration();
 
+        RegisterAboutDialogConfiguration(services, configuration);
         RegisterLoggingConfiguration(services, configuration);
         RegisterLanguagesConfiguration(services, configuration);
     }
@@ -52,6 +54,14 @@ public static class ConfigurationBootstrapper
     {
         var config = new LanguagesConfiguration();
         configuration.GetSection("Languages").Bind(config);
+        services.RegisterConstant(config);
+    }
+
+    private static void RegisterAboutDialogConfiguration(IMutableDependencyResolver services,
+        IConfiguration configuration)
+    {
+        var config = new AboutDialogConfiguration();
+        configuration.GetSection("About").Bind(config);
         services.RegisterConstant(config);
     }
 }
