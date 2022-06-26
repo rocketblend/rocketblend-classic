@@ -5,9 +5,9 @@ using ReactiveUI.Fody.Helpers;
 using RocketBlend.Presentation.Extensions;
 using RocketBlend.Presentation.Interfaces;
 using RocketBlend.Presentation.Interfaces.Main.Installs;
+using RocketBlend.Presentation.Interfaces.Main.Operations;
+using RocketBlend.Presentation.Interfaces.Main.OperationsStates;
 using RocketBlend.Presentation.Interfaces.Menu;
-using RocketBlend.Presentation.ViewModels.Main.Installs;
-using RocketBlend.Presentation.ViewModels.Menu;
 using Splat;
 
 namespace RocketBlend.Presentation.ViewModels;
@@ -31,23 +31,24 @@ public class MainWindowViewModel : ViewModelBase, IMainWindowViewModel
     /// <inheritdoc />
     public IMenuViewModel MenuViewModel { get; }
 
+    /// <inheritdoc />
+    public IOperationsViewModel OperationsViewModel { get; }
+
+    /// <inheritdoc />
+    public IOperationsStateViewModel OperationsStateViewModel { get; }
+
     /// <summary>
     /// Initializes a new instance of the <see cref="MainWindowViewModel"/> class.
     /// </summary>
     public MainWindowViewModel()
     {
         this.MenuViewModel = Locator.Current.GetRequiredService<IMenuViewModel>();
-
-        //this.MenuViewModel = new MenuViewModel();
-
+        this.OperationsViewModel = Locator.Current.GetRequiredService<IOperationsViewModel>();
+        this.OperationsStateViewModel = Locator.Current.GetRequiredService<IOperationsStateViewModel>();
 
         this.WhenActivated((CompositeDisposable disposables) =>
         {
             this.Router.Navigate.Execute(Locator.Current.GetRequiredService<IInstallListViewModel>());
         });
-    }
-
-    public void Initialize()
-    {
     }
 }

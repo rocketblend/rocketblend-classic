@@ -36,6 +36,7 @@
 
             <Panel Background="{DynamicResource SystemListMediumColor}"></Panel>
             <Panel Background="{DynamicResource SystemErrorTextColor}"></Panel>
+            <Panel Background="{DynamicResource SystemWarningTextColor}"></Panel>
             <Panel Background="{DynamicResource SystemRevealListLowColor}"></Panel>
             <Panel Background="{DynamicResource SystemRevealListMediumColor}"></Panel>
 
@@ -76,9 +77,16 @@
         <Color x:Key="SystemListLowColor">#19FFFFFF</Color>
         
         <Color x:Key="SystemListMediumColor">#33FFFFFF</Color>
-        <Color x:Key="SystemErrorTextColor">#FFF000</Color>
+        <Color x:Key="SystemErrorTextColor">#FFC71B3C</Color>
+        <Color x:Key="SystemWarningTextColor">#FFEBCE0D</Color>
         <Color x:Key="SystemRevealListLowColor">#18FFFFFF</Color>
         <Color x:Key="SystemRevealListMediumColor">#30FFFFFF</Color>
+
+        <Color x:Key="PopupBackgroundColor">#1f1e1a</Color>
+
+        <SolidColorBrush x:Key="ProgressBarForegroundBrush" Color="{DynamicResource PrimaryColor}" />
+        <SolidColorBrush x:Key="SuccessBrush" Color="{DynamicResource SuccessColor}" />
+        <SolidColorBrush x:Key="PopupBackgroundBrush" Color="{DynamicResource PopupBackgroundColor}" />
 
         <SolidColorBrush x:Key="SystemControlBackgroundAccentBrush" Color="{DynamicResource SystemAccentColor}" />
         <SolidColorBrush x:Key="SystemControlBackgroundAltLowBrush" Color="{DynamicResource SystemAltLowColor}" />
@@ -177,6 +185,7 @@
         <SolidColorBrush x:Key="SystemControlPageTextBaseMediumBrush" Color="{StaticResource SystemBaseMediumColor}" />
         <SolidColorBrush x:Key="SystemControlPageTextChromeBlackMediumLowBrush" Color="{StaticResource SystemChromeBlackMediumLowColor}" />
         <SolidColorBrush x:Key="SystemControlErrorTextForegroundBrush" Color="{StaticResource SystemErrorTextColor}" />
+        <SolidColorBrush x:Key="SystemControlWarningTextForegroundBrush" Color="{StaticResource SystemWarningTextColor}" />
         <SolidColorBrush x:Key="SystemControlTransientBorderBrush" Color="#000000" Opacity="0.36" />
         <SolidColorBrush x:Key="SystemControlHighlightListLowRevealBackgroundBrush" Color="{StaticResource SystemListMediumColor}" />
         <SolidColorBrush x:Key="SystemControlHighlightListMediumRevealBackgroundBrush" Color="{StaticResource SystemListMediumColor}" />

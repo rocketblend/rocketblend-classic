@@ -1,5 +1,5 @@
-﻿using RocketBlend.Services.Abstractions.Models;
-using RocketBlend.Services.Abstractions.Models.EventArgs;
+﻿using DynamicData;
+using RocketBlend.Services.Abstractions.Models;
 
 namespace RocketBlend.Services.Abstractions;
 
@@ -9,23 +9,21 @@ namespace RocketBlend.Services.Abstractions;
 public interface IBlenderInstallService
 {
     /// <summary>
-    /// Gets the blender installs.
+    /// Connects the.
     /// </summary>
-    IReadOnlyCollection<BlenderInstallModel> Installs { get; }
-
-    event EventHandler<BlenderInstallsListChangedEventArgs>? InstallAdded;
-
-    event EventHandler<BlenderInstallsListChangedEventArgs>? InstallRemoved;
+    /// <returns>An IObservable.</returns>
+    public IObservable<IChangeSet<BlenderInstallModel, Guid>> Connect();
 
     /// <summary>
-    /// Adds a new install.
+    /// Adds the or update install.
     /// </summary>
     /// <param name="install">The install.</param>
-    void AddInstall(BlenderInstallModel install);
+    Task AddOrUpdateInstall(BlenderInstallModel install);
 
     /// <summary>
-    /// Removes a install.
+    /// Removes the install.
     /// </summary>
-    /// <param name="install">The install.</param>
-    void RemoveInstall(BlenderInstallModel install);
+    /// <param name="installId">The installId.</param>
+    /// <returns>A Task.</returns>
+    Task RemoveInstall(Guid installId);
 }

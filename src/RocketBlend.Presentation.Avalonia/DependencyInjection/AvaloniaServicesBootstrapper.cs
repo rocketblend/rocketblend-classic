@@ -18,6 +18,7 @@ public static class AvaloniaServicesBootstrapper
     /// <param name="services">The services.</param>
     public static void RegisterAvaloniaServices(IMutableDependencyResolver services)
     {
+        services.RegisterLazySingleton<IApplicationDispatcher>(() => new AvaloniaDispatcher());
         services.RegisterLazySingleton<IClipboardService>(() => new ClipboardService());
         services.RegisterLazySingleton<IMainWindowProvider>(() => new MainWindowProvider());
         services.RegisterLazySingleton<IApplicationCloser>(() => new ApplicationCloser());

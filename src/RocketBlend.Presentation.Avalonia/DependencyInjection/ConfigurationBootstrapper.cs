@@ -22,6 +22,7 @@ public static class ConfigurationBootstrapper
         RegisterAboutDialogConfiguration(services, configuration);
         RegisterLoggingConfiguration(services, configuration);
         RegisterLanguagesConfiguration(services, configuration);
+        RegisterOperationsStatesConfiguration(services, configuration);
     }
 
     /// <summary>
@@ -57,11 +58,29 @@ public static class ConfigurationBootstrapper
         services.RegisterConstant(config);
     }
 
+    /// <summary>
+    /// Registers the about dialog configuration.
+    /// </summary>
+    /// <param name="services">The services.</param>
+    /// <param name="configuration">The configuration.</param>
     private static void RegisterAboutDialogConfiguration(IMutableDependencyResolver services,
         IConfiguration configuration)
     {
         var config = new AboutDialogConfiguration();
         configuration.GetSection("About").Bind(config);
+        services.RegisterConstant(config);
+    }
+
+    /// <summary>
+    /// Registers the operations states configuration.
+    /// </summary>
+    /// <param name="services">The services.</param>
+    /// <param name="configuration">The configuration.</param>
+    private static void RegisterOperationsStatesConfiguration(IMutableDependencyResolver services,
+            IConfiguration configuration)
+    {
+        var config = new OperationsStatesConfiguration();
+        configuration.GetSection("OperationsStates").Bind(config);
         services.RegisterConstant(config);
     }
 }

@@ -73,6 +73,7 @@ public class BlenderBuildService : IBlenderBuildService
         return scrapedBuild.Select(x => new BlenderBuildModel()
         {
             Name = x.Name,
+            DownloadUrl = x.DownloadUrl,
             Hash = x.Hash,
             Tag = x.Tag,
         }).ToList();

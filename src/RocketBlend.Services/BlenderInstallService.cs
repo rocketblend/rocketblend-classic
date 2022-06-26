@@ -1,9 +1,8 @@
 ﻿using System.Reactive.Linq;
 using Akavache;
-using RocketBlend.Extensions;
+using DynamicData;
 using RocketBlend.Services.Abstractions;
 using RocketBlend.Services.Abstractions.Models;
-using RocketBlend.Services.Abstractions.Models.EventArgs;
 
 namespace RocketBlend.Services;
 
@@ -17,69 +16,67 @@ public class BlenderInstallService : IBlenderInstallService
     /// </summary>
     private const string BlenderInstallsKey = "BlenderInstalls";
 
-    private readonly List<BlenderInstallModel> _installs;
+    private readonly IBlobCache _blobCache;
 
-    /// <inheritdoc />
-    public IReadOnlyCollection<BlenderInstallModel> Installs => this._installs;
-
-    /// <inheritdoc />
-    public event EventHandler<BlenderInstallsListChangedEventArgs>? InstallAdded;
-
-    /// <inheritdoc />
-    public event EventHandler<BlenderInstallsListChangedEventArgs>? InstallRemoved;
+    private readonly SourceCache<BlenderInstallModel, Guid> _items = new(x => x.Id);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BlenderInstallService"/> class.
     /// </summary>
     public BlenderInstallService()
     {
-        this._installs = this.GetInstalls();
+        this._blobCache = BlobCache.LocalMachine;
+
+        var installs = this.GetInstalls();
+        if (installs != null)
+        {
+            this._items.Edit(cache =>
+            {
+                cache.Clear();
+                cache.AddOrUpdate(installs);
+            });
+        }
     }
 
     /// <inheritdoc />
-    public void AddInstall(BlenderInstallModel install)
-    {
-        if (this._installs.Contains(install))
-        {
-            return;
-        }
+    public IObservable<IChangeSet<BlenderInstallModel, Guid>> Connect() => this._items.Connect();
 
-        this._installs.Add(install);
-        this.SaveInstalls();
-        this.InstallAdded.Raise(this, CreateArgs(install));
+    /// <inheritdoc />
+    public async Task AddOrUpdateInstall(BlenderInstallModel install)
+    {
+        this._items.AddOrUpdate(install);
+        await this.Save();
     }
 
     /// <inheritdoc />
-    public void RemoveInstall(BlenderInstallModel install)
+    public async Task RemoveInstall(Guid id)
     {
-        if (this._installs.Remove(install))
-        {
-            this.SaveInstalls();
-            InstallRemoved.Raise(this, CreateArgs(install));
-        }
+        this._items.RemoveKey(id);
+        await this.Save();
+    }
+
+    /// <summary>
+    /// Saves the.
+    /// </summary>
+    /// <returns>A Task.</returns>
+    private async Task Save()
+    {
+        await this._blobCache.InsertObject(BlenderInstallsKey, this._items.Items);
     }
 
     /// <summary>
     /// Gets the installs.
     /// </summary>
-    /// <returns>A Task.</returns>
-    private List<BlenderInstallModel> GetInstalls()
+    /// <returns>An IEnumerable&lt;BlenderInstallModel&gt;? .</returns>
+    private IEnumerable<BlenderInstallModel>? GetInstalls()
     {
-        return BlobCache.LocalMachine.GetObject<List<BlenderInstallModel>>(BlenderInstallsKey).GetAwaiter().GetResult();
+        try
+        {
+            return this._blobCache.GetObject<IEnumerable<BlenderInstallModel>>(BlenderInstallsKey).GetAwaiter().Wait();
+        }
+        catch(KeyNotFoundException)
+        {
+            return null;
+        }
     }
-
-    /// <summary>
-    /// Saves the installs.
-    /// </summary>
-    private void SaveInstalls()
-    {
-        BlobCache.LocalMachine.InsertObject(BlenderInstallsKey, this.Installs.ToList());
-    }
-
-    /// <summary>
-    /// Creates the args.
-    /// </summary>
-    /// <param name="install">The install.</param>
-    /// <returns>A BlenderInstallsListChangedEventArgs.</returns>
-    private static BlenderInstallsListChangedEventArgs CreateArgs(BlenderInstallModel install) => new(install);
 }

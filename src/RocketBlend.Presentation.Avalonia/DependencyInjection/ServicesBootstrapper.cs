@@ -10,6 +10,13 @@ using RocketBlend.Services.Abstractions;
 using RocketBlend.Services;
 using RocketBlend.WebScraper.Blender.Core.Interfaces;
 using RocketBlend.WebScraper.Blender;
+using RocketBlend.Services.Windows;
+using RocketBlend.Services.Abstractions.Operations;
+using RocketBlend.Services.Operations;
+using RocketBlend.Services.Abstractions.Archive;
+using RocketBlend.Services.Archive;
+using RocketBlend.Services.Configuration;
+using RocketBlend.Services.Archives;
 
 namespace RocketBlend.Presentation.Avalonia.DependencyInjection;
 
@@ -43,11 +50,79 @@ public static class ServicesBootstrapper
             resolver.GetRequiredService<IMainWindowProvider>()
         ));
 
+        services.RegisterLazySingleton<IArchiveProcessorFactory>(() => new ArchiveProcessorFactory(
+            resolver.GetRequiredService<IFileService>(),
+            resolver.GetRequiredService<IDirectoryService>(),
+            resolver.GetRequiredService<IFileNameGenerationService>(),
+            resolver.GetRequiredService<IPathService>()
+        ));
+
+        services.RegisterLazySingleton<IArchiveTypeMapper>(() => new ArchiveTypeMapper(
+            resolver.GetRequiredService<IPathService>(),
+            resolver.GetRequiredService<ArchiveTypeMapperConfiguration>()
+        ));
+        services.RegisterLazySingleton<INodeService>(() => new NodeService(
+            resolver.GetRequiredService<IFileService>(),
+            resolver.GetRequiredService<IDirectoryService>()
+        ));
+
+        services.RegisterLazySingleton<IArchiveService>(() => new ArchiveService(
+            resolver.GetRequiredService<IArchiveTypeMapper>(),
+            resolver.GetRequiredService<IPathService>(),
+            resolver.GetRequiredService<IOperationsService>(),
+            resolver.GetRequiredService<IFileNameGenerationService>()
+        ));
+
+        services.RegisterLazySingleton<IFileService>(() => new FileService(
+            resolver.GetRequiredService<IPathService>(),
+            resolver.GetRequiredService<IEnvironmentFileService>(),
+            resolver.GetRequiredService<Microsoft.Extensions.Logging.ILogger>()
+        ));
+
+        services.RegisterLazySingleton<IOperationsFactory>(() => new OperationsFactory(
+            resolver.GetRequiredService<IDirectoryService>(),
+            resolver.GetRequiredService<IFileService>(),
+            resolver.GetRequiredService<IPathService>(),
+            resolver.GetRequiredService<IFileNameGenerationService>(),
+            resolver.GetRequiredService<Microsoft.Extensions.Logging.ILogger>(),
+            resolver.GetRequiredService<IArchiveProcessorFactory>()
+        ));
+
+        // services.RegisterLazySingleton<INodesSelectionService>(() => new NodesSelectionService());
+        services.RegisterLazySingleton<IOperationsService>(() => new OperationsService(
+            resolver.GetRequiredService<IOperationsFactory>(),
+            resolver.GetRequiredService<IDirectoryService>(),
+            resolver.GetRequiredService<IResourceOpeningService>(),
+            resolver.GetRequiredService<IFileService>(),
+            resolver.GetRequiredService<IPathService>(),
+            resolver.GetRequiredService<IOperationsStateService>()
+        ));
+
+        services.RegisterLazySingleton<IDirectoryService>(() => new DirectoryService(
+            resolver.GetRequiredService<IPathService>(),
+            resolver.GetRequiredService<IEnvironmentDirectoryService>(),
+            resolver.GetRequiredService<IEnvironmentFileService>(),
+            resolver.GetRequiredService<Microsoft.Extensions.Logging.ILogger>()
+        ));
+
+        services.RegisterLazySingleton<IPathService>(() => new PathService(
+            resolver.GetRequiredService<IEnvironmentPathService>()
+        ));
+
+        services.RegisterLazySingleton<IOperationsStateService>(() => new OperationsStateService());
+        services.RegisterLazySingleton<IFileNameGenerationService>(() => new FileNameGenerationService(
+            resolver.GetRequiredService<INodeService>(),
+            resolver.GetRequiredService<IPathService>()
+        ));
+
         services.RegisterLazySingleton<IBlenderBuildScraperService>(() => new BlenderBuildScraperService());
 
         services.RegisterLazySingleton<IBlenderBuildService>(() => new BlenderBuildService(
             resolver.GetRequiredService<IBlenderBuildScraperService>()
         ));
+
+        services.RegisterLazySingleton<IDownloadService>(() => new DownloadService());
+        services.RegisterLazySingleton<IBlenderInstallService>(() => new BlenderInstallService());
     }
 
     /// <summary>
@@ -103,5 +178,8 @@ public static class ServicesBootstrapper
     /// <param name="resolver">The resolver.</param>
     private static void RegisterWindowsServices(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
     {
+        services.RegisterLazySingleton<IResourceOpeningService>(() => new WindowsResourceOpeningService(
+            resolver.GetRequiredService<IProcessService>()
+        ));
     }
 }

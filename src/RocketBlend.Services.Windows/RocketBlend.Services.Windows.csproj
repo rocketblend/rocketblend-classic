@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RocketBlend.Services.Abstractions\RocketBlend.Services.Abstractions.csproj" />
+    <ProjectReference Include="..\RocketBlend.Services.Environment\RocketBlend.Services.Environment.csproj" />
+  </ItemGroup>
+
+</Project>

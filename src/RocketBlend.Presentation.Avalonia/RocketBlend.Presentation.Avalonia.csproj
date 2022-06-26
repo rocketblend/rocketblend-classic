@@ -46,6 +46,7 @@
     <ProjectReference Include="..\Horizon.Avalonia\Horizon.Avalonia.csproj" />
     <ProjectReference Include="..\RocketBlend.Avalonia.Core\RocketBlend.Avalonia.Core.csproj" />
     <ProjectReference Include="..\RocketBlend.Presentation\RocketBlend.Presentation.csproj" />
+    <ProjectReference Include="..\RocketBlend.Services.Archive\RocketBlend.Services.Archive.csproj" />
     <ProjectReference Include="..\RocketBlend.WebScraper.Blender\RocketBlend.WebScraper.Blender.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -56,6 +57,9 @@
   <ItemGroup>
     <Compile Update="Views\Dialogs\SelectBuildsDialog.axaml.cs">
       <DependentUpon>SelectBuildsDialog.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Main\Installs\InstallView.axaml.cs">
+      <DependentUpon>InstallView.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
     

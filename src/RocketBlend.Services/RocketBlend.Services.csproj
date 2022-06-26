@@ -15,12 +15,16 @@
 
   <ItemGroup>
     <PackageReference Include="akavache" Version="8.1.1" />
+    <PackageReference Include="DynamicData" Version="7.6.7" />
     <PackageReference Include="stateless" Version="5.11.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\RocketBlend.Services.Abstractions\RocketBlend.Services.Abstractions.csproj" />
+    <ProjectReference Include="..\RocketBlend.Services.AllPlatforms\RocketBlend.Services.AllPlatforms.csproj" />
     <ProjectReference Include="..\RocketBlend.Services.Environment\RocketBlend.Services.Environment.csproj" />
+    <ProjectReference Include="..\RocketBlend.Services.Operations\RocketBlend.Services.Operations.csproj" />
+    <ProjectReference Include="..\RocketBlend.Services.Windows\RocketBlend.Services.Windows.csproj" />
     <ProjectReference Include="..\RocketBlend.WebScraper.Blender.Core\RocketBlend.WebScraper.Blender.Core.csproj" />
   </ItemGroup>
 

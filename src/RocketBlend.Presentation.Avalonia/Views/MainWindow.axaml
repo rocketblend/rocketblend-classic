@@ -6,6 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:RocketBlend.Presentation.Avalonia"
     xmlns:main="clr-namespace:RocketBlend.Presentation.Avalonia.Views.Main"
+    xmlns:operations="clr-namespace:RocketBlend.Presentation.Avalonia.Views.Main.Operations"
+    xmlns:operationsStates="clr-namespace:RocketBlend.Presentation.Avalonia.Views.Main.OperationsStates"
     xmlns:Install="clr-namespace:RocketBlend.Presentation.Avalonia.Views.Main.Installs"
     xmlns:interfaces="clr-namespace:RocketBlend.Presentation.Interfaces;assembly=RocketBlend.Presentation"
     xmlns:designTime="clr-namespace:RocketBlend.Presentation.DesignTime;assembly=RocketBlend.Presentation"
@@ -22,16 +24,17 @@
         <designTime:DesignTimeMainWindowViewModel />
     </Design.DataContext>
 
-    <Grid RowDefinitions="35,Auto,*">
+    <Grid RowDefinitions="35, Auto, Auto,*, Auto">
         <Grid Classes="topPanelGrid" ColumnDefinitions="Auto,Auto,*,Auto">
-            <main:MenuView DataContext="{Binding MenuViewModel}" Margin="15, 0"/>
+            <main:MenuView DataContext="{Binding MenuViewModel}" Margin="15, 0" Grid.Column="0"/>
         </Grid>
         
-        <Grid Grid.Row="1" ColumnDefinitions="Auto,*" Margin="35, 10, 0, 35">
+        <Grid Grid.Row="1" ColumnDefinitions="Auto,*, Auto" Margin="35, 10, 35, 35">
             <Image Height="60" Source="/Assets/Images/blender_logo_no_socket_white.png" HorizontalAlignment="Left" Grid.Column="0" Margin="0, 0, 15, 0"/>
             <TabControl VerticalAlignment="Center" Grid.Column="1">
                 <TabItem Header="Installs"></TabItem>
             </TabControl>
+            <operationsStates:OperationsStatesListView Grid.Column="2" DataContext="{Binding OperationsStateViewModel}" VerticalAlignment="Center" />
         </Grid>
 
         <Line Grid.Row="2" Stroke="#262626" StrokeThickness="2" StartPoint="0,0" EndPoint="900, 0" Stretch="UniformToFill"/>
@@ -45,6 +48,8 @@
                 </rxui:RoutedViewHost.DefaultContent>
             </rxui:RoutedViewHost>
         </Panel>
+
+        <!--<operations:OperationsView Grid.Row="4" DataContext="{Binding OperationsViewModel}" />-->
         
     </Grid>
 

@@ -1,5 +1,7 @@
-﻿using System.Reactive;
+﻿using System.Collections.ObjectModel;
+using System.Reactive;
 using ReactiveUI;
+using RocketBlend.Services.Abstractions.Models;
 
 namespace RocketBlend.Presentation.Interfaces.Main.Installs;
 
@@ -8,6 +10,16 @@ namespace RocketBlend.Presentation.Interfaces.Main.Installs;
 /// </summary>
 public interface IInstallListViewModel : IRoutableViewModel
 {
+    /// <summary>
+    /// Gets the selected install.
+    /// </summary>
+    public BlenderBuildModel? SelectedInstall { get; }
+
+    /// <summary>
+    /// Gets the installs.
+    /// </summary>
+    public ReadOnlyObservableCollection<IInstallViewModel> Installs { get; }
+
     /// <summary>
     /// Gets the select builds command.
     /// </summary>

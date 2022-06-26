@@ -4,6 +4,12 @@
 
     <Design.PreviewWith>
         <WrapPanel ItemWidth="50" ItemHeight="50" MaxWidth="200">
+            <Panel Background="{DynamicResource PrimaryColor}"></Panel>
+            <Panel Background="{DynamicResource SecondaryColor}"></Panel>
+            
+            <Panel Background="{DynamicResource SuccessColor}"></Panel>
+            <Panel Background="{DynamicResource SuccessBackgroundColor}"></Panel>
+            
             <Panel Background="{DynamicResource SystemColorButtonFaceColor}"></Panel>
             <Panel Background="{DynamicResource SystemColorButtonTextColor}"></Panel>
             <Panel Background="{DynamicResource SystemColorGrayTextColor}"></Panel>
@@ -17,6 +23,13 @@
     </Design.PreviewWith>
     
     <Style.Resources>
+        <!-- Colors -->
+        <Color x:Key="PrimaryColor">#FF0066CC</Color>
+        <Color x:Key="SecondaryColor">#FFF4AE35</Color>
+        
+        <Color x:Key="SuccessColor">#BCFFBC</Color>
+        <Color x:Key="SuccessBackgroundColor">#35A335</Color>
+        
         <!-- https://docs.microsoft.com/en-us/previous-versions/windows/apps/dn518235(v=win.10)?redirectedfrom=MSDN -->
         <!-- SystemColor Color Resources (Reflect OS High Contrast Settings) -->
         <Color x:Key="SystemColorButtonFaceColor">#FFF0F0F0</Color>
@@ -31,6 +44,7 @@
         <sys:Double x:Key="ControlContentThemeFontSize">14</sys:Double>
 
         <SolidColorBrush x:Key="SystemControlTransparentBrush" Color="Transparent" />
+
         <x:Boolean x:Key="UseSystemFocusVisuals">True</x:Boolean>
         <Thickness x:Key="TextControlBorderThemeThickness">1</Thickness>
         <Thickness x:Key="TextControlBorderThemeThicknessFocused">2</Thickness>

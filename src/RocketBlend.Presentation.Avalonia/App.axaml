@@ -10,12 +10,13 @@
     x:CompileBindings="True"
     x:Class="RocketBlend.Presentation.Avalonia.App">
 
-    <Application.DataTemplates>
+    <!--<Application.DataTemplates>
         <views:ViewLocator />
-    </Application.DataTemplates>
+    </Application.DataTemplates>-->
 
     <Application.Styles>
         <StyleInclude Source="avares://Horizon.Avalonia/Dark.axaml"/>
+        <StyleInclude Source="avares://RocketBlend.Presentation.Avalonia/Icons.axaml" />
         <Style>
             <Style.Resources>
                 <GeometryDrawing x:Key="ChevronRight" Brush="{DynamicResource ThemeAccentBrush}" Geometry="F1M6.3901,12.2803L5.3291,11.2193 8.5491,8.0003 5.3291,4.7803 6.3901,3.7193 10.6701,8.0003z" />

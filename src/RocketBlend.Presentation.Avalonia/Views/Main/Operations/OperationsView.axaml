@@ -1,0 +1,32 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    
+    xmlns:interfaces="clr-namespace:RocketBlend.Presentation.Interfaces;assembly=RocketBlend.Presentation"
+    xmlns:designTime="clr-namespace:RocketBlend.Presentation.DesignTime.Main.Operations;assembly=RocketBlend.Presentation"
+    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+    x:Class="RocketBlend.Presentation.Avalonia.Views.Main.Operations.OperationsView">
+
+    <Design.DataContext>
+        <designTime:DesignTimeOperationsViewModel />
+    </Design.DataContext>
+
+    <Grid Classes="defaultBackgroundColorGrid" ColumnDefinitions="*,*,*,*,*">
+        <Button Classes="operationButton" Command="{Binding OpenInDefaultCommand}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Classes="operationTextBlock" Text="Open" />
+                <TextBlock Classes="operationHotkeyTextBlock" Text="[F4]" />
+            </StackPanel>
+        </Button>
+
+        <Button Classes="operationButton" Command="{Binding TestCommand}" Grid.Column="1">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Classes="operationTextBlock" Text="Test" />
+                <TextBlock Classes="operationHotkeyTextBlock" Text="[F6]" />
+            </StackPanel>
+        </Button>
+    </Grid>
+
+</UserControl>

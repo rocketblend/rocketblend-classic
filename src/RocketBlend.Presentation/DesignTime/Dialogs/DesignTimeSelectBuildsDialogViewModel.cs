@@ -43,6 +43,8 @@ public class DesignTimeSelectBuildsDialogViewModel : DialogViewModelBase, ISelec
         {
             this.Builds.Add(GenerateBuild());
         }
+
+        this.Builds.Add(GenerateBuild());
     }
 
     /// <summary>

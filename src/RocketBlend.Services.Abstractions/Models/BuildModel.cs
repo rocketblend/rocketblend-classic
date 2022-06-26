@@ -11,6 +11,11 @@ public class BlenderBuildModel
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
+    /// Gets or sets the download url.
+    /// </summary>
+    public string DownloadUrl { get; set; } = string.Empty;
+
+    /// <summary>
     /// Gets or sets the tag.
     /// </summary>
     public string Tag { get; set; } = string.Empty;
