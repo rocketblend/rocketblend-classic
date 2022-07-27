@@ -11,9 +11,9 @@ namespace RocketBlend.Presentation.Interfaces;
 public interface IMainWindowViewModel : IScreen
 {
     /// <summary>
-    /// Gets or sets the greeting.
+    /// Gets the tab index.
     /// </summary>
-    public string Greeting { get; }
+    public int SelectedTabIndex { get; }
 
     /// <summary>
     /// Gets the menu view model.

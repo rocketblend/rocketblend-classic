@@ -1,11 +1,11 @@
 ﻿using System;
+using Splat;
 using RocketBlend.Avalonia.Interfaces;
 using RocketBlend.Presentation.Extensions;
 using RocketBlend.Presentation.Avalonia.Services.Implementations;
 using RocketBlend.Presentation.Services.Interfaces;
 using RocketBlend.Services.Environment.Enums;
 using RocketBlend.Services.Environment.Interfaces;
-using Splat;
 using RocketBlend.Services.Abstractions;
 using RocketBlend.Services;
 using RocketBlend.WebScraper.Blender.Core.Interfaces;
@@ -17,6 +17,12 @@ using RocketBlend.Services.Abstractions.Archive;
 using RocketBlend.Services.Archive;
 using RocketBlend.Services.Configuration;
 using RocketBlend.Services.Archives;
+using RocketBlend.Services.Projects;
+using RocketBlend.Services.Abstractions.Projects;
+using RocketBlend.Services.Abstractions.Installs;
+using RocketBlend.Services.Abstractions.Builds;
+using RocketBlend.Services.Builds;
+using RocketBlend.Services.Installs;
 
 namespace RocketBlend.Presentation.Avalonia.DependencyInjection;
 
@@ -43,6 +49,7 @@ public static class ServicesBootstrapper
     /// <param name="resolver">The resolver.</param>
     private static void RegisterCommonServices(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
     {
+        services.RegisterLazySingleton<IColorService>(() => new ColorService());
         services.RegisterLazySingleton<IDialogService>(() => new DialogService(
             resolver.GetRequiredService<IMainWindowProvider>()
         ));
@@ -115,14 +122,33 @@ public static class ServicesBootstrapper
             resolver.GetRequiredService<IPathService>()
         ));
 
+        services.RegisterLazySingleton<IBlenderService>(() => new BlenderService(
+            resolver.GetRequiredService<IResourceOpeningService>(),
+            resolver.GetRequiredService<IFileService>()
+        ));
+
         services.RegisterLazySingleton<IBlenderBuildScraperService>(() => new BlenderBuildScraperService());
 
         services.RegisterLazySingleton<IBlenderBuildService>(() => new BlenderBuildService(
             resolver.GetRequiredService<IBlenderBuildScraperService>()
         ));
 
-        services.RegisterLazySingleton<IDownloadService>(() => new DownloadService());
-        services.RegisterLazySingleton<IBlenderInstallService>(() => new BlenderInstallService());
+        services.RegisterLazySingleton<IBlenderInstallStateService>(() => new BlenderInstallStateService());
+        services.RegisterLazySingleton<IBlenderInstallFactory>(() => new BlenderInstallFactory(
+            resolver.GetRequiredService<IColorService>()
+        ));
+        services.RegisterLazySingleton<IBlenderInstallService>(() => new BlenderInstallService(
+            resolver.GetRequiredService<IBlenderInstallStateService>()
+        ));
+
+        services.RegisterLazySingleton<IProjectStateService>(() => new ProjectStateService());
+        services.RegisterLazySingleton<IProjectFactory>(() => new ProjectFactory(
+            resolver.GetRequiredService<IColorService>()
+        ));
+
+        services.RegisterLazySingleton<IProjectService>(() => new ProjectService(
+            resolver.GetRequiredService<IProjectStateService>()
+        ));
     }
 
     /// <summary>

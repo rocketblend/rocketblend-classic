@@ -14,7 +14,7 @@ namespace RocketBlend.Presentation.DesignTime;
 public class DesignTimeMainWindowViewModel : IMainWindowViewModel
 {
     /// <inheritdoc />
-    public string Greeting => "Greeting Text!";
+    public int SelectedTabIndex => 0;
 
     /// <inheritdoc />
     public RoutingState Router => new();

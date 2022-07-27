@@ -1,11 +1,11 @@
 ﻿using System.Reactive.Linq;
 using Akavache;
-using RocketBlend.Services.Abstractions;
+using RocketBlend.Services.Abstractions.Builds;
 using RocketBlend.Services.Abstractions.Models;
 using RocketBlend.WebScraper.Blender.Core.Enums;
 using RocketBlend.WebScraper.Blender.Core.Interfaces;
 
-namespace RocketBlend.Services;
+namespace RocketBlend.Services.Builds;
 
 /// <summary>
 /// The blender build service.

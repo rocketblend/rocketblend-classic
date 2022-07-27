@@ -2,6 +2,9 @@ using DynamicData;
 
 namespace RocketBlend.Services.Abstractions.Operations;
 
+/// <summary>
+/// The operations state service.
+/// </summary>
 public interface IOperationsStateService
 {
     /// <summary>

@@ -1,6 +1,6 @@
 ﻿using RocketBlend.Services.Abstractions.Models;
 
-namespace RocketBlend.Services.Abstractions;
+namespace RocketBlend.Services.Abstractions.Builds;
 
 /// <summary>
 /// The blender build service.

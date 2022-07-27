@@ -65,15 +65,6 @@ public class DirectoryService : IDirectoryService
         return parentDirectory is null ? null : this.CreateFrom(parentDirectory);
     }
 
-    ///// <inheritdoc />
-    //public IReadOnlyList<DirectoryModel> GetChildDirectories(string directory, ISpecification<DirectoryModel> specification = null) =>
-    //    this._environmentDirectoryService
-    //        .GetDirectories(directory)
-    //        .Select(this.CreateFrom)
-    //        .WhereNotNull()
-    //        .Where(d => specification?.IsSatisfiedBy(d) ?? true)
-    //        .ToArray();
-
     /// <inheritdoc />
     public IReadOnlyList<string> GetEmptyDirectoriesRecursively(string directory)
     {

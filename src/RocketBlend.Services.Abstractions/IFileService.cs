@@ -7,8 +7,6 @@ namespace RocketBlend.Services.Abstractions;
 /// </summary>
 public interface IFileService
 {
-    // IReadOnlyList<FileModel> GetFiles(string directory, ISpecification<FileModel> specification = null);
-
     /// <summary>
     /// Gets the files.
     /// </summary>
@@ -29,6 +27,14 @@ public interface IFileService
     /// <param name="file">The file.</param>
     /// <returns>A bool.</returns>
     bool CheckIfExists(string file);
+
+    /// <summary>
+    /// Checks the if extension.
+    /// </summary>
+    /// <param name="file">The file.</param>
+    /// <param name="extension">The extension.</param>
+    /// <returns>A bool.</returns>
+    bool CheckIfExtension(string file, string extension);
 
     /// <summary>
     /// Copies the async.

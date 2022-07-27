@@ -1,15 +1,15 @@
 ﻿using System.Reactive.Linq;
 using Akavache;
 using DynamicData;
-using RocketBlend.Services.Abstractions;
-using RocketBlend.Services.Abstractions.Models;
+using RocketBlend.Services.Abstractions.Installs;
+using RocketBlend.Services.Abstractions.Models.Installs;
 
-namespace RocketBlend.Services;
+namespace RocketBlend.Services.Installs;
 
 /// <summary>
-/// The blender install service.
+/// The blender install state service.
 /// </summary>
-public class BlenderInstallService : IBlenderInstallService
+public class BlenderInstallStateService : IBlenderInstallStateService
 {
     /// <summary>
     /// The blender installs key.
@@ -21,9 +21,9 @@ public class BlenderInstallService : IBlenderInstallService
     private readonly SourceCache<BlenderInstallModel, Guid> _items = new(x => x.Id);
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="BlenderInstallService"/> class.
+    /// Initializes a new instance of the <see cref="BlenderInstallStateService"/> class.
     /// </summary>
-    public BlenderInstallService()
+    public BlenderInstallStateService()
     {
         this._blobCache = BlobCache.LocalMachine;
 
@@ -55,6 +55,13 @@ public class BlenderInstallService : IBlenderInstallService
         await this.Save();
     }
 
+    /// <inheritdoc />
+    public BlenderInstallModel? GetInstall(Guid installId)
+    {
+        var item = this._items.Lookup(installId);
+        return item.HasValue ? item.Value : null;
+    }
+
     /// <summary>
     /// Saves the.
     /// </summary>
@@ -74,7 +81,7 @@ public class BlenderInstallService : IBlenderInstallService
         {
             return this._blobCache.GetObject<IEnumerable<BlenderInstallModel>>(BlenderInstallsKey).GetAwaiter().Wait();
         }
-        catch(KeyNotFoundException)
+        catch (KeyNotFoundException)
         {
             return null;
         }

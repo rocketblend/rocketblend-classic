@@ -32,14 +32,6 @@ public class FileService : IFileService
         this._logger = logger;
     }
 
-    //public IReadOnlyList<FileModel> GetFiles(string directory, ISpecification<FileModel> specification = null) =>
-    //    _environmentFileService
-    //        .GetFiles(directory)
-    //        .Select(CreateFrom)
-    //        .WhereNotNull()
-    //        .Where(f => specification?.IsSatisfiedBy(f) ?? true)
-    //        .ToArray();
-
     /// <inheritdoc />
     public IReadOnlyList<FileModel> GetFiles(IEnumerable<string> files) =>
         files.Select(this.CreateFrom).WhereNotNull().ToArray();
@@ -49,6 +41,9 @@ public class FileService : IFileService
 
     /// <inheritdoc />
     public bool CheckIfExists(string file) => this._environmentFileService.CheckIfExists(file);
+
+    /// <inheritdoc />
+    public bool CheckIfExtension(string file, string extension) => this._pathService.GetExtension(file) == extension;
 
     /// <inheritdoc />
     public async Task<bool> CopyAsync(string source, string destination, CancellationToken cancellationToken,

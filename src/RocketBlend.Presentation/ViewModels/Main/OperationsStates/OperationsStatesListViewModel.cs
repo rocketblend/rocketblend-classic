@@ -1,8 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 using DynamicData;
-using DynamicData.Aggregation;
-using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using RocketBlend.Presentation.Configuration;

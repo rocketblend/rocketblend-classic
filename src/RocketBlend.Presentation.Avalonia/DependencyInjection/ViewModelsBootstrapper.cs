@@ -6,16 +6,21 @@ using RocketBlend.Presentation.Factories.Interfaces;
 using RocketBlend.Presentation.Interfaces.Main.Installs;
 using RocketBlend.Presentation.Interfaces.Main.Operations;
 using RocketBlend.Presentation.Interfaces.Main.OperationsStates;
+using RocketBlend.Presentation.Interfaces.Main.Projects;
 using RocketBlend.Presentation.Interfaces.Menu;
 using RocketBlend.Presentation.Services.Interfaces;
 using RocketBlend.Presentation.ViewModels.Dialogs;
 using RocketBlend.Presentation.ViewModels.Main.Installs;
 using RocketBlend.Presentation.ViewModels.Main.Operations;
 using RocketBlend.Presentation.ViewModels.Main.OperationsStates;
+using RocketBlend.Presentation.ViewModels.Main.Projects;
 using RocketBlend.Presentation.ViewModels.Menu;
 using RocketBlend.Presentation.Views.Dialogs;
 using RocketBlend.Services.Abstractions;
+using RocketBlend.Services.Abstractions.Builds;
+using RocketBlend.Services.Abstractions.Installs;
 using RocketBlend.Services.Abstractions.Operations;
+using RocketBlend.Services.Abstractions.Projects;
 using Splat;
 
 namespace RocketBlend.Presentation.Avalonia.DependencyInjection;
@@ -44,7 +49,7 @@ public class ViewModelsBootstrapper
     private static void RegisterCommonViewModels(IMutableDependencyResolver services, IReadonlyDependencyResolver resolver)
     {
         services.RegisterLazySingleton<IInstallViewModelFactory>(() => new InstallViewModelFactory(
-            resolver.GetRequiredService<IBlenderInstallService>(),
+            resolver.GetRequiredService<IBlenderInstallStateService>(),
             resolver.GetRequiredService<IOperationsService>()
         ));
 
@@ -65,11 +70,29 @@ public class ViewModelsBootstrapper
         ));
 
         services.RegisterLazySingleton<IMenuViewModel>(() => new MenuViewModel());
+
+        services.RegisterLazySingleton<IProjectViewModelFactory>(() => new ProjectViewModelFactory(
+            resolver.GetRequiredService<ISystemDialogService>(),
+            resolver.GetRequiredService<IBlenderInstallStateService>(),
+            resolver.GetRequiredService<IBlenderService>(),
+            resolver.GetRequiredService<IProjectService>()
+        ));
+
+        services.RegisterLazySingleton<IProjectListViewModel>(() => new ProjectListViewModel(
+            resolver.GetRequiredService<IProjectService>(),
+            resolver.GetRequiredService<IProjectStateService>(),
+            resolver.GetRequiredService<IProjectFactory>(),
+            resolver.GetRequiredService<IProjectViewModelFactory>(),
+            resolver.GetRequiredService<IDialogService>(),
+            resolver.GetRequiredService<IScreen>()
+        ));
+
         services.RegisterLazySingleton<IInstallListViewModel>(() => new InstallListViewModel(
             resolver.GetRequiredService<IDialogService>(),
             resolver.GetRequiredService<IBlenderInstallService>(),
-            resolver.GetRequiredService<IDownloadService>(),
+            resolver.GetRequiredService<IBlenderInstallStateService>(),
             resolver.GetRequiredService<IInstallViewModelFactory>(),
+            resolver.GetRequiredService<IBlenderInstallFactory>(),
             resolver.GetRequiredService<IScreen>()
         ));
 

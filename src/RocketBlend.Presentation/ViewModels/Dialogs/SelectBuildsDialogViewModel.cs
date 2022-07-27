@@ -4,7 +4,7 @@ using DynamicData.Binding;
 using ReactiveUI;
 using RocketBlend.Presentation.Interfaces.Dialogs;
 using RocketBlend.Presentation.ViewModels.Dialogs.Results;
-using RocketBlend.Services.Abstractions;
+using RocketBlend.Services.Abstractions.Builds;
 using RocketBlend.Services.Abstractions.Models;
 
 namespace RocketBlend.Presentation.ViewModels.Dialogs;

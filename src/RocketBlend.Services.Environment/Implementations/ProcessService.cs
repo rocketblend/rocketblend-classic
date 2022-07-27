@@ -12,7 +12,6 @@ public class ProcessService : IProcessService
     public void Run(string command, string arguments)
     {
         var process = GetProcess(command, arguments);
-
         process.Start();
     }
 
@@ -32,7 +31,7 @@ public class ProcessService : IProcessService
         {
             RedirectStandardOutput = redirectOutput,
             UseShellExecute = false,
-            CreateNoWindow = false,
+            CreateNoWindow = true,
             Arguments = arguments
         };
 

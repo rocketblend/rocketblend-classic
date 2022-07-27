@@ -1,8 +1,8 @@
 ﻿using System.Reactive;
 using ReactiveUI;
 using RocketBlend.Presentation.Interfaces.Main.Installs;
-using RocketBlend.Services.Abstractions;
-using RocketBlend.Services.Abstractions.Models;
+using RocketBlend.Services.Abstractions.Installs;
+using RocketBlend.Services.Abstractions.Models.Installs;
 using RocketBlend.Services.Abstractions.Operations;
 
 namespace RocketBlend.Presentation.ViewModels.Main.Installs;
@@ -12,7 +12,7 @@ namespace RocketBlend.Presentation.ViewModels.Main.Installs;
 /// </summary>
 public class InstallViewModel : ViewModelBase, IInstallViewModel
 {
-    private readonly IBlenderInstallService _blenderInstallService;
+    private readonly IBlenderInstallStateService _blenderInstallStateService;
     private readonly IOperationsService _operationsService;
 
     private readonly ObservableAsPropertyHelper<bool> _isBusy;
@@ -29,10 +29,10 @@ public class InstallViewModel : ViewModelBase, IInstallViewModel
     public string Name => this._model.Name;
 
     /// <inheritdoc />
-    public string Tag => this._model.Tag;
+    public string Tag => this._model.BlenderExecutable.BuildTag;
 
     /// <inheritdoc />
-    public string DownloadUrl => this._model.SourceUri is not null ? this._model.SourceUri.ToString() : "No Download Url!";
+    public string DownloadUrl => this._model.BlenderExecutable.SourceUri is not null ? this._model.BlenderExecutable.SourceUri.ToString() : "No Download URL!";
 
     /// <inheritdoc />
     public string BackgroundColor => this._model.BackgroundColor;
@@ -49,15 +49,15 @@ public class InstallViewModel : ViewModelBase, IInstallViewModel
     /// <summary>
     /// Initializes a new instance of the <see cref="InstallViewModel"/> class.
     /// </summary>
-    /// <param name="blenderInstallService">The blender install service.</param>
+    /// <param name="blenderInstallStateService">The blender install service.</param>
     /// <param name="model">The model.</param>
     public InstallViewModel(
-        IBlenderInstallService blenderInstallService,
+        IBlenderInstallStateService blenderInstallStateService,
         IOperationsService operationsService,
         BlenderInstallModel model)
     {
         this._model = model;
-        this._blenderInstallService = blenderInstallService;
+        this._blenderInstallStateService = blenderInstallStateService;
         this._operationsService = operationsService;
 
         this.OpenCommand = ReactiveCommand.Create(this.Open);
@@ -72,13 +72,13 @@ public class InstallViewModel : ViewModelBase, IInstallViewModel
     /// <summary>
     /// Opens the install.
     /// </summary>
-    private void Open() => this._operationsService.OpenFiles(new List<string>() { this._model.FullPath });
+    private void Open() => this._operationsService.OpenFiles(new List<string>() { this._model.BlenderExecutable.FullPath });
 
     /// <summary>
     /// Removes the.
     /// </summary>
     /// <returns>A Task.</returns>
-    private async Task Remove() => await this._blenderInstallService.RemoveInstall(this.Id);
+    private async Task Remove() => await this._blenderInstallStateService.RemoveInstall(this.Id);
 
     /// <summary>
     /// Downloads the.
@@ -86,12 +86,15 @@ public class InstallViewModel : ViewModelBase, IInstallViewModel
     /// <returns>A Task.</returns>
     private async Task Download()
     {
-        if (this._model.SourceUri is not null)
+        var path = Path.GetDirectoryName(this._model.BlenderExecutable.FullPath);
+        var parentDirInfo = Directory.GetParent(path ?? string.Empty);
+        if (this._model.BlenderExecutable.SourceUri is not null && parentDirInfo is not null)
         {
+            var parentDir = parentDirInfo.ToString();
             await this._operationsService.InstallBlenderAsync(
-                this._model.SourceUri,
-                Path.Combine(this._model.ParentDirectory, ".temp"),
-                this._model.ParentDirectory);
+                this._model.BlenderExecutable.SourceUri,
+                Path.Combine(parentDir, ".temp"),
+                parentDir);
         }
     }
 }

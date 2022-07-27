@@ -1,0 +1,27 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:views="clr-namespace:RocketBlend.Presentation.Avalonia.Views"
+    xmlns:interfaces="clr-namespace:RocketBlend.Presentation.Interfaces;assembly=RocketBlend.Presentation"
+    xmlns:designTime="clr-namespace:RocketBlend.Presentation.DesignTime.Main.Projects;assembly=RocketBlend.Presentation"
+    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+    x:Class="RocketBlend.Presentation.Avalonia.Views.Main.Projects.ProjectView">
+    
+    <Design.DataContext>
+        <designTime:DesignTimeProjectViewModel />
+    </Design.DataContext>
+
+    <StackPanel Spacing="5" Width="150">
+        <Border CornerRadius="5" ClipToBounds="True">
+            <Panel Background="{Binding Model.BackgroundColor}">
+                <Image Width="200" Stretch="Uniform" Source="{Binding Cover}" />
+                <Panel Height="150" IsVisible="{Binding Cover, Converter={x:Static ObjectConverters.IsNull}}">
+                    <PathIcon Height="75" Width="75" Data="{StaticResource folder_regular}" />
+                </Panel>
+            </Panel>
+        </Border>
+        <TextBlock Text="{Binding Model.Name}"></TextBlock>
+    </StackPanel>
+</UserControl>

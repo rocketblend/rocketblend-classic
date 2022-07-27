@@ -1,5 +1,5 @@
 ﻿using RocketBlend.Presentation.Interfaces.Main.Installs;
-using RocketBlend.Services.Abstractions.Models;
+using RocketBlend.Services.Abstractions.Models.Installs;
 
 namespace RocketBlend.Presentation.Factories.Interfaces;
 

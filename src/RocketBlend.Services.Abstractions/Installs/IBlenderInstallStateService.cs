@@ -1,18 +1,18 @@
 ﻿using DynamicData;
-using RocketBlend.Services.Abstractions.Models;
+using RocketBlend.Services.Abstractions.Models.Installs;
 
-namespace RocketBlend.Services.Abstractions;
+namespace RocketBlend.Services.Abstractions.Installs;
 
 /// <summary>
 /// The blender install service interface.
 /// </summary>
-public interface IBlenderInstallService
+public interface IBlenderInstallStateService
 {
     /// <summary>
     /// Connects the.
     /// </summary>
     /// <returns>An IObservable.</returns>
-    public IObservable<IChangeSet<BlenderInstallModel, Guid>> Connect();
+    IObservable<IChangeSet<BlenderInstallModel, Guid>> Connect();
 
     /// <summary>
     /// Adds the or update install.
@@ -26,4 +26,11 @@ public interface IBlenderInstallService
     /// <param name="installId">The installId.</param>
     /// <returns>A Task.</returns>
     Task RemoveInstall(Guid installId);
+
+    /// <summary>
+    /// Gets the install.
+    /// </summary>
+    /// <param name="installId">The install id.</param>
+    /// <returns>A BlenderInstallModel?.</returns>
+    BlenderInstallModel? GetInstall(Guid installId);
 }

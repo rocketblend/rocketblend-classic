@@ -10,8 +10,9 @@ using RocketBlend.Presentation.Interfaces.Main.Installs;
 using RocketBlend.Presentation.Services.Interfaces;
 using RocketBlend.Presentation.ViewModels.Dialogs;
 using RocketBlend.Presentation.ViewModels.Dialogs.Results;
-using RocketBlend.Services.Abstractions;
+using RocketBlend.Services.Abstractions.Installs;
 using RocketBlend.Services.Abstractions.Models;
+using RocketBlend.Services.Abstractions.Models.Installs;
 
 namespace RocketBlend.Presentation.ViewModels.Main.Installs;
 
@@ -23,9 +24,9 @@ public class InstallListViewModel : ViewModelBase, IInstallListViewModel, IDispo
     private readonly IDisposable _cleanUp;
     private readonly IDialogService _dialogService;
     private readonly IBlenderInstallService _blenderInstallService;
-    private readonly IDownloadService _downloadService;
+    private readonly IBlenderInstallStateService _blenderInstallStateService;
     private readonly IInstallViewModelFactory _installViewModelFactory;
-    private readonly Random _rnd = new();
+    private readonly IBlenderInstallFactory _blenderInstallFactory;
 
     private readonly ReadOnlyObservableCollection<IInstallViewModel> _installs;
 
@@ -36,20 +37,22 @@ public class InstallListViewModel : ViewModelBase, IInstallListViewModel, IDispo
     public InstallListViewModel(
         IDialogService dialogService,
         IBlenderInstallService blenderInstallService,
-        IDownloadService downloadService,
+        IBlenderInstallStateService blenderInstallStateService,
         IInstallViewModelFactory installViewModelFactory,
+        IBlenderInstallFactory blenderInstallFactory,
         IScreen screen)
     {
         this._dialogService = dialogService;
         this._blenderInstallService = blenderInstallService;
-        this._downloadService = downloadService;
+        this._blenderInstallStateService = blenderInstallStateService;
         this._installViewModelFactory = installViewModelFactory;
+        this._blenderInstallFactory = blenderInstallFactory;
 
         this.HostScreen = screen;
 
         this.SelectBuildsCommand = ReactiveCommand.CreateFromTask(this.ShowSelectBuildsDialogAsync);
 
-        var installs = this._blenderInstallService.Connect()
+        var installs = this._blenderInstallStateService.Connect()
             .Transform(this.CreateFrom)
             .ObserveOn(RxApp.MainThreadScheduler)
             .Bind(out this._installs)
@@ -89,17 +92,8 @@ public class InstallListViewModel : ViewModelBase, IInstallListViewModel, IDispo
             string path = GetRelativePath("installs/");
             foreach (var build in result.Builds)
             {
-                var install = new BlenderInstallModel()
-                {
-                    Name = build.Name,
-                    Tag = build.Tag,
-                    Hash = build.Hash,
-                    FullPath = Path.Combine(path, Path.GetFileNameWithoutExtension(build.DownloadUrl), "blender.exe"),
-                    SourceUri = new Uri(build.DownloadUrl),
-                    BackgroundColor = this.GenerateColour()
-                };
-
-                await this._blenderInstallService.AddOrUpdateInstall(install);
+                var install = this._blenderInstallFactory.Create(build.Name, build.Tag, build.Hash, path, build.DownloadUrl);
+                await this._blenderInstallService.CreateInstall(install);
             }
         }
     }
@@ -122,14 +116,5 @@ public class InstallListViewModel : ViewModelBase, IInstallListViewModel, IDispo
         string workingPath = Directory.GetCurrentDirectory();
         string downloadPath = Path.Combine(workingPath, folder);
         return Directory.CreateDirectory(downloadPath).FullName; // Ensure path is created.
-    }
-
-    /// <summary>
-    /// Generates the colour.
-    /// </summary>
-    /// <returns>A string.</returns>
-    private string GenerateColour()
-    {
-        return ColorTranslator.ToHtml(Color.FromArgb(this._rnd.Next(256), this._rnd.Next(256), this._rnd.Next(256))).ToString();
     }
 }

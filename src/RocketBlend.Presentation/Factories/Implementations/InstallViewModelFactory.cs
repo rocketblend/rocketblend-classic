@@ -1,8 +1,8 @@
 ﻿using RocketBlend.Presentation.Factories.Interfaces;
 using RocketBlend.Presentation.Interfaces.Main.Installs;
 using RocketBlend.Presentation.ViewModels.Main.Installs;
-using RocketBlend.Services.Abstractions;
-using RocketBlend.Services.Abstractions.Models;
+using RocketBlend.Services.Abstractions.Installs;
+using RocketBlend.Services.Abstractions.Models.Installs;
 using RocketBlend.Services.Abstractions.Operations;
 
 namespace RocketBlend.Presentation.Factories.Implementations;
@@ -12,19 +12,19 @@ namespace RocketBlend.Presentation.Factories.Implementations;
 /// </summary>
 public class InstallViewModelFactory : IInstallViewModelFactory
 {
-    readonly IBlenderInstallService _blenderInstallService;
+    readonly IBlenderInstallStateService _blenderInstallStateService;
     readonly IOperationsService _operationsService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="InstallViewModelFactory"/> class.
     /// </summary>
-    /// <param name="blenderInstallService">The blender install service.</param>
+    /// <param name="blenderInstallStateService">The blender install service.</param>
     /// <param name="operationsService">The operations service.</param>
     public InstallViewModelFactory(
-        IBlenderInstallService blenderInstallService,
+        IBlenderInstallStateService blenderInstallStateService,
         IOperationsService operationsService)
     {
-        this._blenderInstallService = blenderInstallService;
+        this._blenderInstallStateService = blenderInstallStateService;
         this._operationsService = operationsService;
     }
 
@@ -32,7 +32,7 @@ public class InstallViewModelFactory : IInstallViewModelFactory
     public IInstallViewModel Create(BlenderInstallModel model)
     {
         return new InstallViewModel(
-            this._blenderInstallService,
+            this._blenderInstallStateService,
             this._operationsService,
             model);
     }

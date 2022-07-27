@@ -2,6 +2,8 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Dialogs;
 using Avalonia.ReactiveUI;
+using Projektanker.Icons.Avalonia;
+using Projektanker.Icons.Avalonia.FontAwesome;
 using Serilog;
 using Splat;
 using System;
@@ -58,7 +60,9 @@ internal class Program
 
         var result = AppBuilder.Configure(() => new App(() => System.Threading.Tasks.Task.CompletedTask, startInBg))
             .UseReactiveUI()
-            .LogToTrace();
+            .LogToTrace()
+            .WithIcons(container => container
+                .Register<FontAwesomeIconProvider>());
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {

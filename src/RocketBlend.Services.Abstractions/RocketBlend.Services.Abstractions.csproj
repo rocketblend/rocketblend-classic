@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="DynamicData" Version="7.6.7" />
+    <PackageReference Include="ReactiveUI" Version="18.0.10" />
+    <PackageReference Include="ReactiveUI.Fody" Version="18.0.10" />
   </ItemGroup>
 
   <ItemGroup>

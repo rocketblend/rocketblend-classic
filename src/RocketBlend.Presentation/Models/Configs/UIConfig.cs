@@ -1,6 +1,6 @@
 ﻿using ReactiveUI.Fody.Helpers;
 
-namespace RocketBlend.Presentation.Models;
+namespace RocketBlend.Presentation.Models.Configs;
 
 /// <summary>
 /// The UI config.

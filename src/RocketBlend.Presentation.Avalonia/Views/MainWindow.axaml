@@ -24,14 +24,15 @@
         <designTime:DesignTimeMainWindowViewModel />
     </Design.DataContext>
 
-    <Grid RowDefinitions="35, Auto, Auto,*, Auto">
+    <Grid RowDefinitions="35, Auto, Auto,*, Auto" Focusable="True">
         <Grid Classes="topPanelGrid" ColumnDefinitions="Auto,Auto,*,Auto">
             <main:MenuView DataContext="{Binding MenuViewModel}" Margin="15, 0" Grid.Column="0"/>
         </Grid>
         
         <Grid Grid.Row="1" ColumnDefinitions="Auto,*, Auto" Margin="35, 10, 35, 35">
             <Image Height="60" Source="/Assets/Images/blender_logo_no_socket_white.png" HorizontalAlignment="Left" Grid.Column="0" Margin="0, 0, 15, 0"/>
-            <TabControl VerticalAlignment="Center" Grid.Column="1">
+            <TabControl VerticalAlignment="Center" Grid.Column="1" SelectedIndex="{Binding SelectedTabIndex}">
+                <TabItem Header="Projects"></TabItem>
                 <TabItem Header="Installs"></TabItem>
             </TabControl>
             <operationsStates:OperationsStatesListView Grid.Column="2" DataContext="{Binding OperationsStateViewModel}" VerticalAlignment="Center" />

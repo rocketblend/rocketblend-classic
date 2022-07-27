@@ -58,7 +58,7 @@ public partial class App : Application
                 // Initialize suspension hooks.
                 var suspension = new AutoSuspendHelper(this.ApplicationLifetime);
                 RxApp.SuspensionHost.CreateNewAppState = () => new MainWindowViewModel();
-                RxApp.SuspensionHost.SetupDefaultSuspendResume(new AkavacheSuspensionDriver<MainWindowViewModel>("RocketBlendV1"));
+                RxApp.SuspensionHost.SetupDefaultSuspendResume(new AkavacheSuspensionDriver<MainWindowViewModel>("RocketBlendV2"));
                 suspension.OnFrameworkInitializationCompleted();
 
                 // Read main view model state from disk.

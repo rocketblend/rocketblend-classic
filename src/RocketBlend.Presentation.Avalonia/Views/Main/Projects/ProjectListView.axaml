@@ -1,0 +1,92 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+    xmlns:views="clr-namespace:RocketBlend.Presentation.Avalonia.Views.Main.Projects"
+    xmlns:interfaces="clr-namespace:RocketBlend.Presentation.Interfaces;assembly=RocketBlend.Presentation"
+    xmlns:designTime="clr-namespace:RocketBlend.Presentation.DesignTime.Main.Projects;assembly=RocketBlend.Presentation"
+    mc:Ignorable="d" d:DesignWidth="1250" d:DesignHeight="650"
+    x:Class="RocketBlend.Presentation.Avalonia.Views.Main.Projects.ProjectListView">
+
+    <Design.DataContext>
+        <designTime:DesignTimeProjectListViewModel />
+    </Design.DataContext>
+
+    <SplitView
+        IsPaneOpen="{Binding ShowProjectPane}"
+        DisplayMode="Inline"
+        OpenPaneLength="400"
+        PanePlacement="Right"
+        PaneBackground="Transparent">
+
+        <SplitView.Pane>
+            <views:ProjectPaneView DataContext="{Binding SelectedProject}" IsEnabled="{Binding ShowProjectPane}"/>
+        </SplitView.Pane>
+
+        <Grid RowDefinitions="*, Auto, Auto" Margin="25">
+            <Grid Grid.Row="0" RowDefinitions="Auto, Auto, *">
+                <Grid Grid.Row="0" RowDefinitions="Auto, Auto" ColumnDefinitions="*, Auto">
+                    <TextBox Grid.Row="0" Grid.Column="0" Text="{Binding SearchText}" Watermark="Search Projects..." Background="#1a1a1a" />
+                    <ComboBox
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Width="150"
+                        Height="35"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        Items="{Binding SortParameters.SortItems}"
+                        SelectedItem="{Binding SortParameters.SelectedItem}" >
+                        
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Description}"></TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                        
+                    </ComboBox>
+                    <ProgressBar Grid.Row="1" IsIndeterminate="True" IsVisible="False" />
+                </Grid>
+                <ScrollViewer Grid.Row="2">
+                    <ListBox
+                        Items="{Binding Projects}"
+                        SelectedItems="{Binding SelectedProjects}"
+                        SelectionMode="Multiple"
+                        Background="Transparent"
+                        Margin="0, 15"
+                        ScrollViewer.VerticalScrollBarVisibility="Auto">
+
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel>
+                                    <Button
+                                        Command="{Binding CreateProjectCommand}"
+                                        Width="150"
+                                        Height="150"
+                                        Margin="10"
+                                        VerticalAlignment="Top"
+                                        FontSize="42"
+                                        Foreground="#2c2b2b"
+                                        Background="#414141"
+                                        i:Attached.Icon="fa-solid fa-plus">
+                                    </Button>
+                                </WrapPanel>
+
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <views:ProjectView DataContext="{Binding}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </ScrollViewer>
+
+            </Grid>
+        </Grid>
+
+    </SplitView>
+  
+</UserControl>
