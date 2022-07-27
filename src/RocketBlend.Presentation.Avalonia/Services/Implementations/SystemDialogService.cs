@@ -1,11 +1,12 @@
 ﻿using System.Threading.Tasks;
 using Avalonia.Controls;
-using RocketBlend.Avalonia.Interfaces;
 using RocketBlend.Presentation.Services.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
+using RocketBlend.Services.Avalonia.Interfaces;
+using AvaloniaFileDialogFilter = Avalonia.Controls.FileDialogFilter;
 
-namespace RocketBlend.Presentation.Avalonia.Services.Implementations;
+namespace RocketBlend.Services.Avalonia.Implementations.Dialogs;
 
 /// <summary>
 /// The system dialog service.
@@ -33,7 +34,7 @@ public class SystemDialogService : ISystemDialogService
     }
 
     /// <inheritdoc />
-    public async Task<string?> GetFileAsync(IEnumerable<Presentation.Services.Models.FileDialogFilter> filter, string? initialFile = null)
+    public async Task<string?> GetFileAsync(IEnumerable<Abstractions.Models.Dialogs.FileDialogFilter> filter, string? initialFile = null)
     {
         var files = await this.GetFilesAsync(filter, initialFile, false);
         return files.FirstOrDefault();
@@ -41,21 +42,22 @@ public class SystemDialogService : ISystemDialogService
 
     /// <inheritdoc />
     public async Task<IEnumerable<string?>> GetFilesAsync(
-        IEnumerable<Presentation.Services.Models.FileDialogFilter> filter,
+        IEnumerable<Abstractions.Models.Dialogs.FileDialogFilter> filter,
         string? initialFile = null,
         bool allowMultiple = true)
     {
-        var dialog = new OpenFileDialog {
+        var dialog = new OpenFileDialog
+        {
             InitialFileName = initialFile,
             AllowMultiple = allowMultiple,
-            Filters = filter.Select(f => new FileDialogFilter() { Name = f.Name, Extensions = f.Extensions }).ToList(),
+            Filters = filter.Select(f => new AvaloniaFileDialogFilter() { Name = f.Name, Extensions = f.Extensions }).ToList(),
         };
         return await dialog.ShowAsync(this.GetWindow()) ?? Enumerable.Empty<string?>();
     }
 
     /// <inheritdoc />
     public async Task<string?> SaveFileAsync(
-        IEnumerable<Presentation.Services.Models.FileDialogFilter> filter,
+        IEnumerable<Abstractions.Models.Dialogs.FileDialogFilter> filter,
             string? initialFile = null,
             string? defaultExtension = null)
     {
@@ -80,6 +82,6 @@ public class SystemDialogService : ISystemDialogService
     /// </summary>
     /// <param name="filter">The filter.</param>
     /// <returns>A list of FileDialogFilters.</returns>
-    private static List<FileDialogFilter> ConvertFileDialogFilters(IEnumerable<Presentation.Services.Models.FileDialogFilter> filter) =>
-        filter.Select(f => new FileDialogFilter() { Name = f.Name, Extensions = f.Extensions }).ToList();
+    private static List<AvaloniaFileDialogFilter> ConvertFileDialogFilters(IEnumerable<Abstractions.Models.Dialogs.FileDialogFilter> filter) =>
+        filter.Select(f => new AvaloniaFileDialogFilter() { Name = f.Name, Extensions = f.Extensions }).ToList();
 }

@@ -1,5 +1,5 @@
-using Avalonia;
 using Avalonia.Markup.Xaml;
+using RocketBlend.Presentation.Avalonia.Dialogs;
 using RocketBlend.Presentation.ViewModels.Dialogs.Results;
 
 namespace RocketBlend.Presentation.Avalonia.Views.Dialogs;

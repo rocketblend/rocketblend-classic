@@ -1,8 +1,8 @@
 ﻿using RocketBlend.Presentation.Configuration;
 using RocketBlend.Presentation.Extensions;
 using RocketBlend.Presentation.Interfaces.Dialogs;
-using RocketBlend.Presentation.Services.Interfaces;
 using RocketBlend.Presentation.ViewModels.Dialogs;
+using RocketBlend.Services.Abstractions.Applications;
 using Splat;
 
 namespace RocketBlend.Presentation.Views.Dialogs;

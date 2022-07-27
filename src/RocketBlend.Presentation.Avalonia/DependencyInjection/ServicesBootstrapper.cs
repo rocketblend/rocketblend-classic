@@ -1,8 +1,6 @@
 ﻿using System;
 using Splat;
-using RocketBlend.Avalonia.Interfaces;
 using RocketBlend.Presentation.Extensions;
-using RocketBlend.Presentation.Avalonia.Services.Implementations;
 using RocketBlend.Presentation.Services.Interfaces;
 using RocketBlend.Services.Environment.Enums;
 using RocketBlend.Services.Environment.Interfaces;
@@ -23,6 +21,8 @@ using RocketBlend.Services.Abstractions.Installs;
 using RocketBlend.Services.Abstractions.Builds;
 using RocketBlend.Services.Builds;
 using RocketBlend.Services.Installs;
+using RocketBlend.Services.Avalonia.Interfaces;
+using RocketBlend.Services.Avalonia.Implementations.Dialogs;
 
 namespace RocketBlend.Presentation.Avalonia.DependencyInjection;
 

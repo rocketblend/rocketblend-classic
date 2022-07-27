@@ -1,5 +1,5 @@
-﻿using RocketBlend.Presentation.Services;
-using RocketBlend.Services.Abstractions.Models;
+﻿using RocketBlend.Services.Abstractions.Models;
+using RocketBlend.Services.Abstractions.Models.Dialogs;
 
 namespace RocketBlend.Presentation.ViewModels.Dialogs.Results;
 

@@ -13,6 +13,7 @@ using ReactiveUI;
 using Splat;
 using RocketBlend.Presentation.Extensions;
 using Microsoft.Extensions.Logging;
+using RocketBlend.Services.Abstractions.Applications;
 
 namespace RocketBlend.Presentation.Avalonia;
 

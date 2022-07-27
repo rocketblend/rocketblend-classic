@@ -4,6 +4,7 @@ using RocketBlend.Presentation.Extensions;
 using RocketBlend.Presentation.Interfaces.Menu;
 using RocketBlend.Presentation.Services.Interfaces;
 using RocketBlend.Presentation.Views.Dialogs;
+using RocketBlend.Services.Abstractions.Applications;
 using Splat;
 
 namespace RocketBlend.Presentation.ViewModels.Menu;

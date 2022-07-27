@@ -1,19 +1,19 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using Avalonia;
-using RocketBlend.Avalonia.Interfaces;
+using RocketBlend.Presentation.Services.Interfaces;
+using Splat;
+using RocketBlend.Services.Avalonia.Interfaces;
+using RocketBlend.Services.Abstractions.Models.Dialogs;
+using System.Threading.Tasks;
+using System;
+using RocketBlend.Presentation.ViewModels.Dialogs;
+using RocketBlend.Presentation.ViewModels;
+using System.Linq;
 using RocketBlend.Presentation.Extensions;
 using RocketBlend.Presentation.Avalonia.Views;
-using RocketBlend.Presentation.Avalonia.Views.Dialogs;
-using RocketBlend.Presentation.Services;
-using RocketBlend.Presentation.Services.Interfaces;
-using RocketBlend.Presentation.ViewModels;
-using RocketBlend.Presentation.ViewModels.Dialogs;
-using Splat;
+using RocketBlend.Presentation.Avalonia.Dialogs;
 
-namespace RocketBlend.Presentation.Avalonia.Services.Implementations;
+namespace RocketBlend.Services.Avalonia.Implementations.Dialogs;
 
 /// <summary>
 /// The dialog service.

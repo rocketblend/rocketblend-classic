@@ -2,7 +2,7 @@
 using System.Windows.Input;
 using ReactiveUI;
 using RocketBlend.Extensions;
-using RocketBlend.Presentation.Services;
+using RocketBlend.Services.Abstractions.Models.Dialogs;
 
 namespace RocketBlend.Presentation.ViewModels.Dialogs;
 
@@ -39,7 +39,6 @@ public class DialogViewModelBase<TResult> : ViewModelBase
     protected void Close(TResult result)
     {
         var args = new DialogResultEventArgs<TResult>(result);
-
         this.CloseRequested.Raise(this, args);
     }
 }

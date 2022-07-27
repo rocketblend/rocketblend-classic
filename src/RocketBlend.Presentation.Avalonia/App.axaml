@@ -15,7 +15,7 @@
     </Application.DataTemplates>-->
 
     <Application.Styles>
-        <StyleInclude Source="avares://Horizon.Avalonia/Dark.axaml"/>
+        <StyleInclude Source="avares://RocketBlend.Avalonia.Themes.Horizon/Dark.axaml"/>
         <StyleInclude Source="avares://RocketBlend.Presentation.Avalonia/Icons.axaml" />
         <Style>
             <Style.Resources>

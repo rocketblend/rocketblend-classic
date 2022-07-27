@@ -1,6 +1,7 @@
 using Avalonia;
 
 using Avalonia.Markup.Xaml;
+using RocketBlend.Presentation.Avalonia.Dialogs;
 
 namespace RocketBlend.Presentation.Avalonia.Views.Dialogs;
 

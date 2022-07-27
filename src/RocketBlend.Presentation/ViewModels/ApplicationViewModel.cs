@@ -2,6 +2,7 @@
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using RocketBlend.Presentation.Services.Interfaces;
+using RocketBlend.Services.Abstractions.Applications;
 
 namespace RocketBlend.Presentation.ViewModels;
 

@@ -13,10 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RocketBlend.Services.Downloader\RocketBlend.Services.Downloader.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Models\EventArgs\" />
   </ItemGroup>
 
