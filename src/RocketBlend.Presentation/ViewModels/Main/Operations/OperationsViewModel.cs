@@ -50,7 +50,7 @@ public class OperationsViewModel : ViewModelBase, IOperationsViewModel
     /// </summary>
     private void OpenInDefaultEditor() => this._operationsService.OpenFiles(this.GetSelectedNodes());
 
-    private void CreateDirectory() => this._operationsService.CreateDirectory("",".temp/");
+    private void CreateDirectory() => this._operationsService.CreateDirectory("", ".temp/");
 
     private void Download() => this._operationsService.DownloadAsync(new Uri("https://download.blender.org/release/Blender3.0/blender-3.0.0-windows-x64.zip"), "E:\\RocketBlendTesting\\Folder2");
 

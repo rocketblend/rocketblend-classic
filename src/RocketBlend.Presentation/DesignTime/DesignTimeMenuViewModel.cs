@@ -10,7 +10,7 @@ namespace RocketBlend.Presentation.DesignTime;
 public class DesignTimeMenuViewModel : IMenuViewModel
 {
     /// <inheritdoc />
-    public ReactiveCommand<Unit, Unit> ExitCommand => ReactiveCommand.Create(() => {});
+    public ReactiveCommand<Unit, Unit> ExitCommand => ReactiveCommand.Create(() => { });
 
     /// <inheritdoc />
     public ReactiveCommand<Unit, Unit> AboutCommand => ReactiveCommand.Create(() => { });

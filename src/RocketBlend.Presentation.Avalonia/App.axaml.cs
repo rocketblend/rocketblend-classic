@@ -1,7 +1,5 @@
 using System;
 using System.Reactive;
-using System.Reactive.Concurrency;
-using System.Reflection;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -10,11 +8,9 @@ using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
 using RocketBlend.Presentation.Avalonia.Views;
-using RocketBlend.Presentation.Avalonia.Views.Main.Installs;
 using RocketBlend.Presentation.Extensions;
 using RocketBlend.Presentation.Infrastructure;
 using RocketBlend.Presentation.ViewModels;
-using RocketBlend.Presentation.ViewModels.Main.Installs;
 using Splat;
 
 namespace RocketBlend.Presentation.Avalonia;
@@ -52,7 +48,7 @@ public partial class App : Application
         Locator.CurrentMutable.RegisterLazySingleton(() => new ConventionalViewLocator(), typeof(IViewLocator));
 
         if (!Design.IsDesignMode)
-        { 
+        {
             if (this.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 // Initialize suspension hooks.

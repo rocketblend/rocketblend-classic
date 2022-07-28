@@ -1,17 +1,17 @@
-﻿using System.Reflection;
-using Avalonia;
-using RocketBlend.Presentation.Services.Interfaces;
-using Splat;
-using RocketBlend.Services.Avalonia.Interfaces;
-using RocketBlend.Services.Abstractions.Models.Dialogs;
-using System.Threading.Tasks;
-using System;
-using RocketBlend.Presentation.ViewModels.Dialogs;
-using RocketBlend.Presentation.ViewModels;
+﻿using System;
 using System.Linq;
-using RocketBlend.Presentation.Extensions;
-using RocketBlend.Presentation.Avalonia.Views;
+using System.Reflection;
+using System.Threading.Tasks;
+using Avalonia;
 using RocketBlend.Presentation.Avalonia.Dialogs;
+using RocketBlend.Presentation.Avalonia.Views;
+using RocketBlend.Presentation.Extensions;
+using RocketBlend.Presentation.Services.Interfaces;
+using RocketBlend.Presentation.ViewModels;
+using RocketBlend.Presentation.ViewModels.Dialogs;
+using RocketBlend.Services.Abstractions.Models.Dialogs;
+using RocketBlend.Services.Avalonia.Interfaces;
+using Splat;
 
 namespace RocketBlend.Services.Avalonia.Implementations.Dialogs;
 
@@ -56,9 +56,11 @@ public class DialogService : IDialogService
             case ParameterizedDialogViewModelBase<TResult, TParameter> parameterizedDialogViewModelBase:
                 parameterizedDialogViewModelBase.Activate(parameter);
                 break;
+
             case ParameterizedDialogViewModelBaseAsync<TResult, TParameter> parameterizedDialogViewModelBaseAsync:
                 await parameterizedDialogViewModelBaseAsync.ActivateAsync(parameter);
                 break;
+
             default:
                 throw new InvalidOperationException(
                     $"{viewModel.GetType().FullName} doesn't support passing parameters!");
@@ -74,7 +76,6 @@ public class DialogService : IDialogService
     public Task ShowDialogAsync<TParameter>(string viewModelName, TParameter parameter)
         where TParameter : NavigationParameterBase =>
         this.ShowDialogAsync<DialogResultBase, TParameter>(viewModelName, parameter);
-
 
     /// <summary>
     /// Binds the.

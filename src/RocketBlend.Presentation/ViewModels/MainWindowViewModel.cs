@@ -33,7 +33,7 @@ public class MainWindowViewModel : ViewModelBase, IMainWindowViewModel
 
     /// <inheritdoc />
     [Reactive]
-    public int SelectedTabIndex { get; private set; }
+    public int SelectedTabIndex { get; init; }
 
     /// <inheritdoc />
     public IMenuViewModel MenuViewModel { get; }

@@ -1,28 +1,28 @@
 ﻿using System;
-using Splat;
 using RocketBlend.Presentation.Extensions;
 using RocketBlend.Presentation.Services.Interfaces;
+using RocketBlend.Services;
+using RocketBlend.Services.Abstractions;
+using RocketBlend.Services.Abstractions.Archive;
+using RocketBlend.Services.Abstractions.Builds;
+using RocketBlend.Services.Abstractions.Installs;
+using RocketBlend.Services.Abstractions.Operations;
+using RocketBlend.Services.Abstractions.Projects;
+using RocketBlend.Services.Archive;
+using RocketBlend.Services.Archives;
+using RocketBlend.Services.Avalonia.Implementations.Dialogs;
+using RocketBlend.Services.Avalonia.Interfaces;
+using RocketBlend.Services.Builds;
+using RocketBlend.Services.Configuration;
 using RocketBlend.Services.Environment.Enums;
 using RocketBlend.Services.Environment.Interfaces;
-using RocketBlend.Services.Abstractions;
-using RocketBlend.Services;
-using RocketBlend.WebScraper.Blender.Core.Interfaces;
-using RocketBlend.WebScraper.Blender;
-using RocketBlend.Services.Windows;
-using RocketBlend.Services.Abstractions.Operations;
-using RocketBlend.Services.Operations;
-using RocketBlend.Services.Abstractions.Archive;
-using RocketBlend.Services.Archive;
-using RocketBlend.Services.Configuration;
-using RocketBlend.Services.Archives;
-using RocketBlend.Services.Projects;
-using RocketBlend.Services.Abstractions.Projects;
-using RocketBlend.Services.Abstractions.Installs;
-using RocketBlend.Services.Abstractions.Builds;
-using RocketBlend.Services.Builds;
 using RocketBlend.Services.Installs;
-using RocketBlend.Services.Avalonia.Interfaces;
-using RocketBlend.Services.Avalonia.Implementations.Dialogs;
+using RocketBlend.Services.Operations;
+using RocketBlend.Services.Projects;
+using RocketBlend.Services.Windows;
+using RocketBlend.WebScraper.Blender;
+using RocketBlend.WebScraper.Blender.Core.Interfaces;
+using Splat;
 
 namespace RocketBlend.Presentation.Avalonia.DependencyInjection;
 
@@ -166,12 +166,15 @@ public static class ServicesBootstrapper
             case Platform.Linux:
                 RegisterLinuxServices(services, resolver);
                 break;
+
             case Platform.MacOs:
                 RegisterMacServices(services, resolver);
                 break;
+
             case Platform.Windows:
                 RegisterWindowsServices(services, resolver);
                 break;
+
             case Platform.Unknown:
                 throw new InvalidOperationException("Unsupported platform");
             default:

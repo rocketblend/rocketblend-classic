@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Reactive;
 using ReactiveUI;
-using RocketBlend.Services.Abstractions.Models.Blender;
 using RocketBlend.Services.Abstractions.Models.Installs;
 using RocketBlend.Services.Abstractions.Models.Projects;
 

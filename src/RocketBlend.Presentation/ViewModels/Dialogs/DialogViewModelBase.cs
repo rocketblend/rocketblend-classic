@@ -1,5 +1,4 @@
 ﻿using System.Reactive;
-using System.Windows.Input;
 using ReactiveUI;
 using RocketBlend.Extensions;
 using RocketBlend.Services.Abstractions.Models.Dialogs;
@@ -48,5 +47,4 @@ public class DialogViewModelBase<TResult> : ViewModelBase
 /// </summary>
 public class DialogViewModelBase : DialogViewModelBase<DialogResultBase>
 {
-
 }

@@ -41,4 +41,3 @@ public class BlenderInstallModel : IHasKey<Guid>
         this.BackgroundColor = backgroundColor;
     }
 }
-

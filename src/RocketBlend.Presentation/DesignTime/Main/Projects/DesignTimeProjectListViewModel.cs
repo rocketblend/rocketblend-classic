@@ -40,6 +40,7 @@ public class DesignTimeProjectListViewModel : IProjectListViewModel
     public ReactiveCommand<Unit, Unit> CreateProjectCommand => ReactiveCommand.Create(() => { });
 
     public event PropertyChangedEventHandler? PropertyChanged;
+
     public event PropertyChangingEventHandler? PropertyChanging;
 
     /// <inheritdoc />

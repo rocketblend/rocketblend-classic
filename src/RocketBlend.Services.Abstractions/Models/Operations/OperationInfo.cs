@@ -105,7 +105,6 @@ public class OperationInfo
         this.TotalFilesCount = 1;
     }
 
-
     /// <summary>
     /// Initializes a new instance of the <see cref="OperationInfo"/> class.
     /// </summary>

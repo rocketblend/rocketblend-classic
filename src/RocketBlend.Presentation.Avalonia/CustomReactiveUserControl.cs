@@ -10,7 +10,7 @@ namespace RocketBlend.Presentation.Avalonia;
 /// will activate your ViewModel automatically if the view model implements <see cref="IActivatableViewModel"/>.
 /// When the DataContext property changes, this class will update the ViewModel property with the new DataContext
 /// value, and vice versa.
-/// 
+///
 /// This class is acting a possible fix for Avalionia incorrectly binding the parent view model to a nulled DataContext.
 /// </summary>
 /// <typeparam name="TViewModel">ViewModel type.</typeparam>

@@ -1,7 +1,6 @@
 using System.Collections.Concurrent;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using RocketBlend.Extensions;
 using RocketBlend.Services.Abstractions;
 using RocketBlend.Services.Abstractions.Exceptions;
 using RocketBlend.Services.Abstractions.Extensions;
@@ -212,7 +211,6 @@ public class CompositeOperation : OperationWithProgressBase, ICompositeOperation
     /// <param name="operation">The operation.</param>
     private async void OperationOnStateChanged(IInternalOperation operation)
     {
-
         if (operation.State is OperationState.Blocked)
         {
             var blockingOperation = (ISelfBlockingOperation)operation;
@@ -280,7 +278,7 @@ public class CompositeOperation : OperationWithProgressBase, ICompositeOperation
     {
         if (this._cancellationTokenSource.IsCancellationRequested)
         {
-            this.FinishOperation((IInternalOperation) operation);
+            this.FinishOperation((IInternalOperation)operation);
 
             return;
         }

@@ -1,3 +1,5 @@
+using System;
+using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Dialogs;
@@ -6,15 +8,13 @@ using Projektanker.Icons.Avalonia;
 using Projektanker.Icons.Avalonia.FontAwesome;
 using Serilog;
 using Splat;
-using System;
-using System.Runtime.InteropServices;
 
 namespace RocketBlend.Presentation.Avalonia;
 
 /// <summary>
 /// The program.
 /// </summary>
-internal class Program
+internal static class Program
 {
     /// <summary>
     /// Initialization code. Don't use any Avalonia, third-party APIs or any

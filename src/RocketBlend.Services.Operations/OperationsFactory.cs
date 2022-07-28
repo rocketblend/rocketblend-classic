@@ -1,14 +1,14 @@
+using Microsoft.Extensions.Logging;
 using RocketBlend.Services.Abstractions;
 using RocketBlend.Services.Abstractions.Archive;
 using RocketBlend.Services.Abstractions.Models.Enums;
 using RocketBlend.Services.Abstractions.Models.Operations;
 using RocketBlend.Services.Abstractions.Operations;
 using RocketBlend.Services.Operations.Archive;
-using RocketBlend.Services.Operations.Models;
-using Microsoft.Extensions.Logging;
 using RocketBlend.Services.Operations.Directory;
-using RocketBlend.Services.Operations.File;
 using RocketBlend.Services.Operations.Download;
+using RocketBlend.Services.Operations.File;
+using RocketBlend.Services.Operations.Models;
 
 namespace RocketBlend.Services.Operations;
 
@@ -100,7 +100,7 @@ public class OperationsFactory : IOperationsFactory
     {
         var archiveWriter = this.CreateArchiveWriter(settings.ArchiveType);
         var packOperation = this.CreatePackOperation(archiveWriter, settings);
-        var operationGroup = CreateOperationGroup(new[] {packOperation});
+        var operationGroup = CreateOperationGroup(new[] { packOperation });
         var operations = CreateOperationsGroupsList(operationGroup);
         var operationInfo = CreateOperationInfo(settings);
 
@@ -114,7 +114,7 @@ public class OperationsFactory : IOperationsFactory
     {
         var archiveProcessor = this.CreateArchiveReader(settings.ArchiveType);
         var extractOperation = this.CreateExtractOperation(archiveProcessor, settings.InputTopLevelFile, settings.TargetDirectory);
-        var operationGroup = CreateOperationGroup(new[] {extractOperation});
+        var operationGroup = CreateOperationGroup(new[] { extractOperation });
         var operations = CreateOperationsGroupsList(operationGroup);
         var operationInfo = CreateOperationInfo(settings);
 
@@ -144,7 +144,7 @@ public class OperationsFactory : IOperationsFactory
         var downloadOperationGroup = CreateOperationGroup(new[] { downloadOperation });
 
         var archiveProcessor = this.CreateArchiveReader(settings.SourceArchiveType);
-        var extractOperation = this.CreateExtractOperation(archiveProcessor, settings.SourcePath , settings.TargetDirectory);
+        var extractOperation = this.CreateExtractOperation(archiveProcessor, settings.SourcePath, settings.TargetDirectory);
         var extractOperationGroup = CreateOperationGroup(new[] { extractOperation });
 
         var deleteOperations = this.CreateDeleteFileOperation(settings.SourcePath);

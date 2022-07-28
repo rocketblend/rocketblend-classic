@@ -30,6 +30,8 @@ public class ProjectListViewModel : ViewModelBase, IProjectListViewModel, IDispo
 
     private readonly ReadOnlyObservableCollection<IProjectViewModel> _projects;
 
+    private bool _disposedValue;
+
     /// <inheritdoc />
     public IScreen HostScreen { get; }
 
@@ -47,7 +49,7 @@ public class ProjectListViewModel : ViewModelBase, IProjectListViewModel, IDispo
 
     /// <inheritdoc />
     [Reactive]
-    public IProjectViewModel? SelectedProject { get; private set;}
+    public IProjectViewModel? SelectedProject { get; private set; }
 
     /// <inheritdoc />
     [Reactive]
@@ -103,7 +105,7 @@ public class ProjectListViewModel : ViewModelBase, IProjectListViewModel, IDispo
         this.SelectedProjects
             .WhenAnyPropertyChanged()
             .Sample(TimeSpan.FromMilliseconds(150))
-            .Subscribe(x => this.SelectedProject = this.SelectedProjects.LastOrDefault());
+            .Subscribe(_ => this.SelectedProject = this.SelectedProjects.LastOrDefault());
 
         var stream = this._projectStateService.Connect()
             .Filter(filter) // apply user filter
@@ -121,9 +123,6 @@ public class ProjectListViewModel : ViewModelBase, IProjectListViewModel, IDispo
         this._cleanUp = new CompositeDisposable(viewModels);
     }
 
-    /// <inheritdoc />
-    public void Dispose() => this._cleanUp.Dispose();
-
     /// <summary>
     /// Builds the filter.
     /// </summary>
@@ -131,7 +130,7 @@ public class ProjectListViewModel : ViewModelBase, IProjectListViewModel, IDispo
     /// <returns>A Func.</returns>
     private static Func<ProjectModel, bool> BuildFilter(string? searchText)
     {
-        return string.IsNullOrEmpty(searchText) ? (project => true)
+        return string.IsNullOrEmpty(searchText) ? (_ => true)
             : (p => p.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase));
     }
 
@@ -142,7 +141,7 @@ public class ProjectListViewModel : ViewModelBase, IProjectListViewModel, IDispo
     private async Task CreateProject()
     {
         var project = this._projectFactory.Create("New Project", new List<BlendFileModel>());
-        await this._projectService.CreateProject(project);
+        await this._projectService.CreateProject(project).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -152,4 +151,28 @@ public class ProjectListViewModel : ViewModelBase, IProjectListViewModel, IDispo
     /// <returns>An IProjectViewModel.</returns>
     private IProjectViewModel CreateFrom(ProjectModel project) =>
         this._projectViewModelFactory.Create(project);
+
+    #region IDisposable
+    /// <inheritdoc />
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!this._disposedValue)
+        {
+            if (disposing)
+            {
+                this._cleanUp.Dispose();
+            }
+
+            this._disposedValue = true;
+        }
+    }
+
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        this.Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
+    #endregion
 }

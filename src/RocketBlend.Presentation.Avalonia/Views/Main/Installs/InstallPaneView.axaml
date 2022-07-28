@@ -1,0 +1,80 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:views="clr-namespace:RocketBlend.Presentation.Avalonia.Views"
+    xmlns:interfaces="clr-namespace:RocketBlend.Presentation.Interfaces;assembly=RocketBlend.Presentation"
+    xmlns:designTime="clr-namespace:RocketBlend.Presentation.DesignTime.Main.Installs;assembly=RocketBlend.Presentation"
+    mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="600"
+    x:Class="RocketBlend.Presentation.Avalonia.Views.Main.Installs.InstallPaneView">
+
+    <Design.DataContext>
+        <designTime:DesignTimeInstallViewModel />
+    </Design.DataContext>
+
+    <Border Padding="10, 0, 0, 0">
+        <Border BoxShadow="-1 0 10 3 #1a1a1a">
+
+            <Grid RowDefinitions="200, Auto, *, Auto" Background="#1e1e1e">
+                <Panel Grid.Row="0" Background="{Binding BackgroundColor}" Height="200"></Panel>
+
+                <StackPanel Grid.Row="1" Spacing="2">
+                    <Border Background="#292929">
+                        <StackPanel Margin="10, 25">
+                            <TextBlock
+                                Margin="10,0"
+                                Grid.Row="0"
+                                Text="{Binding Name}"
+                                FontWeight="Bold"
+                                FontSize="16"
+                                TextWrapping="Wrap">
+                            </TextBlock>
+                            <StackPanel Orientation="Horizontal" Spacing="10" Margin="10">
+                                <TextBlock Text="{Binding Tag}" FontSize="12" Foreground="#717171" TextWrapping="Wrap"></TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="#292929">
+                        <StackPanel Margin="15, 25">
+                            <Button
+                                Width="200"
+                                Command="{Binding RemoveCommand}"
+                                HorizontalContentAlignment="Center"
+                                HorizontalAlignment="Center">
+                                Remove
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <Border Grid.Row="3" Background="#292929">
+                    <Grid ColumnDefinitions="Auto, *" Margin="15, 25">
+                        <Button
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Command="{Binding DownloadCommand}"
+                            Padding="40, 5"
+                            HorizontalContentAlignment="Center">
+                            Download
+                        </Button>
+                        <Button
+                            Command="{Binding OpenCommand}"
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Foreground="White"
+                            Background="#f4ae35"
+                            Padding="40, 5"
+                            HorizontalAlignment="Right">
+                            Open
+                        </Button>
+                    </Grid>
+
+                </Border>
+            </Grid>
+
+        </Border>
+    </Border>
+  
+</UserControl>

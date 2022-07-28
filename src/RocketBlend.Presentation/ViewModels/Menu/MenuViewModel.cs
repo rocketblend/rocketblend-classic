@@ -22,7 +22,6 @@ public class MenuViewModel : ViewModelBase, IMenuViewModel
     /// <inheritdoc />
     public ReactiveCommand<Unit, Unit> AboutCommand { get; }
 
-
     /// <summary>
     /// Initializes a new instance of the <see cref="MenuViewModel"/> class.
     /// </summary>

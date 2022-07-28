@@ -29,6 +29,6 @@ public class ArchiveTypeMapper : IArchiveTypeMapper
 
         return this._configuration.ExtensionToArchiveTypeDictionary.TryGetValue(extension, out var result)
             ? result
-            : (ArchiveType?) null;
+            : (ArchiveType?)null;
     }
 }

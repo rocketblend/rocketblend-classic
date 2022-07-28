@@ -78,7 +78,7 @@ public class InstallViewModel : ViewModelBase, IInstallViewModel
     /// Removes the.
     /// </summary>
     /// <returns>A Task.</returns>
-    private async Task Remove() => await this._blenderInstallStateService.RemoveInstall(this.Id);
+    private async Task Remove() => await this._blenderInstallStateService.RemoveInstall(this.Id).ConfigureAwait(false);
 
     /// <summary>
     /// Downloads the.
@@ -94,7 +94,7 @@ public class InstallViewModel : ViewModelBase, IInstallViewModel
             await this._operationsService.InstallBlenderAsync(
                 this._model.BlenderExecutable.SourceUri,
                 Path.Combine(parentDir, ".temp"),
-                parentDir);
+                parentDir).ConfigureAwait(false);
         }
     }
 }

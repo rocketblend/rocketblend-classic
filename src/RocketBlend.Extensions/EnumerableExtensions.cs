@@ -11,7 +11,7 @@ namespace RocketBlend.Extensions;
 public static class EnumerableExtensions
 {
     /// <summary>
-    /// Fors the each.
+    /// For each.
     /// </summary>
     /// <param name="collection">The collection.</param>
     /// <param name="action">The action.</param>
@@ -24,7 +24,7 @@ public static class EnumerableExtensions
     }
 
     /// <summary>
-    /// Fors the each async.
+    /// For the each async.
     /// </summary>
     /// <param name="collection">The collection.</param>
     /// <param name="action">The action.</param>

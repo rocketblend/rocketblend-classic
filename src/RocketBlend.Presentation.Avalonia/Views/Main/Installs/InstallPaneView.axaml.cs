@@ -1,18 +1,17 @@
 using Avalonia.Markup.Xaml;
-using Avalonia.ReactiveUI;
 using RocketBlend.Presentation.Interfaces.Main.Installs;
 
 namespace RocketBlend.Presentation.Avalonia.Views.Main.Installs;
 
 /// <summary>
-/// The install list view.
+/// The install pane view.
 /// </summary>
-public partial class InstallListView : ReactiveUserControl<IInstallListViewModel>
+public partial class InstallPaneView : CustomReactiveUserControl<IInstallViewModel>
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="InstallListView"/> class.
+    /// Initializes a new instance of the <see cref="InstallPaneView"/> class.
     /// </summary>
-    public InstallListView()
+    public InstallPaneView()
     {
         this.InitializeComponent();
     }

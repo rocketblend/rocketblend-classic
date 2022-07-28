@@ -1,11 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reactive;
-using DynamicData;
 using ReactiveUI;
 using RocketBlend.Presentation.Interfaces.Main.Installs;
-using RocketBlend.Presentation.ViewModels.Main.Installs;
-using RocketBlend.Services.Abstractions.Models;
 
 namespace RocketBlend.Presentation.DesignTime.Main.Installs;
 
@@ -27,7 +24,10 @@ public class DesignTimeInstallListViewModel : IInstallListViewModel
     public ReadOnlyObservableCollection<IInstallViewModel> Installs { get; }
 
     /// <inheritdoc />
-    public BlenderBuildModel? SelectedInstall { get; }
+    public IInstallViewModel? SelectedInstall { get; }
+
+    /// <inheritdoc />
+    public bool ShowInstallPane => true;
 
     /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -57,6 +57,7 @@ public class DesignTimeInstallListViewModel : IInstallListViewModel
             GenerateBuild()
         };
         this.Installs = new(list);
+        this.SelectedInstall = this.Installs.FirstOrDefault();
     }
 
     /// <summary>

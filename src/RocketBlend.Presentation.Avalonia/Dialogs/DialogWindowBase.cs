@@ -35,7 +35,6 @@ public class DialogWindowBase<TResult> : Window
     /// </summary>
     protected virtual void OnOpened()
     {
-
     }
 
     /// <summary>
@@ -125,5 +124,4 @@ public class DialogWindowBase<TResult> : Window
 /// </summary>
 public class DialogWindowBase : DialogWindowBase<DialogResultBase>
 {
-
 }

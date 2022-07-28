@@ -1,4 +1,5 @@
-﻿using RocketBlend.Services.Abstractions.Models;
+﻿using DynamicData;
+using RocketBlend.Services.Abstractions.Models;
 
 namespace RocketBlend.Services.Abstractions.Builds;
 
@@ -8,17 +9,13 @@ namespace RocketBlend.Services.Abstractions.Builds;
 public interface IBlenderBuildService
 {
     /// <summary>
-    /// Gets the blender build models.
+    /// Connects the.
     /// </summary>
-    IReadOnlyCollection<BlenderBuildModel> BlenderBuilds { get; }
-
-    /// <summary>
-    /// Initializes the.
-    /// </summary>
-    public Task Initialize();
+    /// <returns>An IObservable.</returns>
+    IObservable<IChangeSet<BlenderBuildModel, Guid>> Connect();
 
     /// <summary>
     /// Refreshes the.
     /// </summary>
-    public Task Refresh();
+    Task Refresh();
 }

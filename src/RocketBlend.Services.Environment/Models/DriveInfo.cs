@@ -1,4 +1,4 @@
-using DriveType =  System.IO.DriveType;
+using DriveType = System.IO.DriveType;
 
 namespace RocketBlend.Services.Environment.Models;
 

@@ -1,6 +1,8 @@
-﻿using System.Reactive;
-using System.Reactive.Concurrency;
-using DynamicData.Binding;
+﻿using System.Collections.ObjectModel;
+using System.Reactive;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using DynamicData;
 using ReactiveUI;
 using RocketBlend.Presentation.Interfaces.Dialogs;
 using RocketBlend.Presentation.ViewModels.Dialogs.Results;
@@ -12,17 +14,20 @@ namespace RocketBlend.Presentation.ViewModels.Dialogs;
 /// <summary>
 /// The select builds dialog view model.
 /// </summary>
-public class SelectBuildsDialogViewModel : DialogViewModelBase<SelectBuildsDialogResult>, ISelectBuildsDialogViewModel
+public class SelectBuildsDialogViewModel : DialogViewModelBase<SelectBuildsDialogResult>, ISelectBuildsDialogViewModel, IDisposable
 {
+    private readonly IDisposable _cleanUp;
     private readonly IBlenderBuildService _blenderBuildService;
-
+    private readonly ReadOnlyObservableCollection<BlenderBuildModel> _builds;
     private readonly ObservableAsPropertyHelper<bool> _isBusy;
 
-    /// <inheritdoc />
-    public ObservableCollectionExtended<BlenderBuildModel> Builds { get; }
+    private bool _disposedValue;
 
     /// <inheritdoc />
-    public IEnumerable<BlenderBuildModel> SelectedBuilds { get; }
+    public ReadOnlyObservableCollection<BlenderBuildModel> Builds => this._builds;
+    
+    /// <inheritdoc />
+    public ObservableCollection<BlenderBuildModel> SelectedBuilds { get; set; } = new();
 
     /// <inheritdoc />
     public ReactiveCommand<Unit, Unit> RefreshCommand { get; }
@@ -41,26 +46,20 @@ public class SelectBuildsDialogViewModel : DialogViewModelBase<SelectBuildsDialo
     {
         this._blenderBuildService = blenderBuildService;
 
-        this.Builds = new();
-        this.SelectedBuilds = new List<BlenderBuildModel>();
-
         this.RefreshCommand = ReactiveCommand.CreateFromTask(this.RefreshBuilds);
         this.InstallBuildsCommand = ReactiveCommand.Create(this.InstallBuilds);
 
-        RxApp.MainThreadScheduler.Schedule(this.LoadBuilds);
+        var builds = this._blenderBuildService.Connect()
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Bind(out this._builds)
+            .DisposeMany()
+            .Subscribe();
 
         this._isBusy = this.RefreshCommand
             .IsExecuting
             .ToProperty(this, x => x.IsBusy);
-    }
 
-    /// <summary>
-    /// Loads the builds.
-    /// </summary>
-    private async void LoadBuilds()
-    {
-        await this._blenderBuildService.Initialize();
-        this.SetBuilds();
+        this._cleanUp = new CompositeDisposable(builds);
     }
 
     /// <summary>
@@ -69,21 +68,35 @@ public class SelectBuildsDialogViewModel : DialogViewModelBase<SelectBuildsDialo
     /// <returns>A Task.</returns>
     private async Task RefreshBuilds()
     {
-        await this._blenderBuildService.Refresh();
-        this.SetBuilds();
-    }
-
-    /// <summary>
-    /// Sets the builds.
-    /// </summary>
-    private void SetBuilds()
-    {
-        this.Builds.Clear();
-        this.Builds.AddRange(this._blenderBuildService.BlenderBuilds);
+        await this._blenderBuildService.Refresh().ConfigureAwait(false);
     }
 
     /// <summary>
     /// Installs the builds.
     /// </summary>
     private void InstallBuilds() => this.Close(new SelectBuildsDialogResult(this.SelectedBuilds.ToList()));
+
+    #region IDisposable
+    /// <inheritdoc />
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!this._disposedValue)
+        {
+            if (disposing)
+            {
+                this._cleanUp.Dispose();
+            }
+
+            this._disposedValue = true;
+        }
+    }
+
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        this.Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
+    #endregion
 }

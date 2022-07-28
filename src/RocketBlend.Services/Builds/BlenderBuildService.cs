@@ -1,5 +1,6 @@
 ﻿using System.Reactive.Linq;
 using Akavache;
+using DynamicData;
 using RocketBlend.Services.Abstractions.Builds;
 using RocketBlend.Services.Abstractions.Models;
 using RocketBlend.WebScraper.Blender.Core.Enums;
@@ -16,15 +17,12 @@ public class BlenderBuildService : IBlenderBuildService
     /// The blender builds key.
     /// </summary>
     private const string BlenderBuildsKey = "BlenderBuilds";
-
+    
     private readonly IBlenderBuildScraperService _blenderBuildScraperService;
 
     private readonly IBlobCache _blobCache;
 
-    private readonly List<BlenderBuildModel> _builds = new();
-
-    /// <inheritdoc />
-    public IReadOnlyCollection<BlenderBuildModel> BlenderBuilds => this._builds;
+    private readonly SourceCache<BlenderBuildModel, Guid> _items = new(x => x.Id);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BlenderBuildService"/> class.
@@ -34,49 +32,35 @@ public class BlenderBuildService : IBlenderBuildService
     {
         this._blenderBuildScraperService = blenderBuildScraperService;
         this._blobCache = BlobCache.LocalMachine;
+
+        this.RefreshSourceCache().ConfigureAwait(false);
     }
 
-    /// <summary>
-    /// Initializes the.
-    /// </summary>
-    /// <returns>A Task.</returns>
-    public async Task Initialize()
-    {
-        await this.UpdateBuilds();
-    }
+    /// <inheritdoc />
+    public IObservable<IChangeSet<BlenderBuildModel, Guid>> Connect() => this._items.Connect();
 
     /// <inheritdoc />
     public async Task Refresh()
     {
-        await this._blobCache.InvalidateObject<List<BlenderBuildModel>>(BlenderBuildsKey);
-        await this.UpdateBuilds();
+        await this._blobCache.Invalidate(BlenderBuildsKey);
+        await this.RefreshSourceCache().ConfigureAwait(false);
     }
 
     /// <summary>
-    /// Updates the builds.
+    /// Refreshes the source cache.
     /// </summary>
     /// <returns>A Task.</returns>
-    private async Task UpdateBuilds()
+    private async Task RefreshSourceCache()
     {
-        this._builds.Clear();
-        this._builds.AddRange(await this.GetBuilds());
-    }
-
-    /// <summary>
-    /// Scrapes the builds.
-    /// </summary>
-    /// <returns>A Task.</returns>
-    private async Task<List<BlenderBuildModel>> ScrapeBuilds()
-    {
-        // TODO: Change build platform based on OS.
-        var scrapedBuild = await this._blenderBuildScraperService.ScrapeStableReleaseBuilds(BuildPlatform.Windows);
-        return scrapedBuild.Select(x => new BlenderBuildModel()
+        var builds = await this.GetBuilds();
+        if (builds != null)
         {
-            Name = x.Name,
-            DownloadUrl = x.DownloadUrl,
-            Hash = x.Hash,
-            Tag = x.Tag,
-        }).ToList();
+            this._items.Edit(cache =>
+            {
+                cache.Clear();
+                cache.AddOrUpdate(builds);
+            });
+        }
     }
 
     /// <summary>
@@ -87,7 +71,24 @@ public class BlenderBuildService : IBlenderBuildService
     {
         return await this._blobCache.GetOrFetchObject(
             BlenderBuildsKey,
-            async () => await this.ScrapeBuilds(),
-            DateTimeOffset.Now.AddHours(1));
+            async () => await this.ScrapeBuilds().ConfigureAwait(false),
+            DateTimeOffset.Now.AddDays(1));
+    }
+
+    /// <summary>
+    /// Scrapes the builds.
+    /// </summary>
+    /// <returns>A Task.</returns>
+    private async Task<List<BlenderBuildModel>> ScrapeBuilds()
+    {
+        // TODO: Change build platform based on OS.
+        var scrapedBuild = await this._blenderBuildScraperService.ScrapeStableReleaseBuilds(BuildPlatform.Windows).ConfigureAwait(false);
+        return scrapedBuild.Select(x => new BlenderBuildModel()
+        {
+            Name = x.Name,
+            DownloadUrl = x.DownloadUrl,
+            Hash = x.Hash, // Not fetch atm.
+            Tag = x.Tag,
+        }).ToList();
     }
 }

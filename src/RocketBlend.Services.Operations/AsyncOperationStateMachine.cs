@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using Microsoft.Extensions.Logging;
@@ -49,7 +48,7 @@ public class AsyncOperationStateMachine : IOperation
     }
 
     /// <inheritdoc />
-    public OperationInfo Info  => this._compositeOperation.Info;
+    public OperationInfo Info => this._compositeOperation.Info;
 
     /// <inheritdoc />
     public (string SourceFilePath, string DestinationFilePath) CurrentBlockedFile =>
@@ -197,7 +196,7 @@ public class AsyncOperationStateMachine : IOperation
     /// </summary>
     private async void CompositeOperationOnBlocked(bool blocked)
     {
-        if(blocked)
+        if (blocked)
         {
             await this.ChangeStateAsync(OperationState.InProgress, OperationState.Blocked);
         }

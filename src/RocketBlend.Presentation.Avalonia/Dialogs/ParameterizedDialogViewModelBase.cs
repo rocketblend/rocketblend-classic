@@ -41,5 +41,4 @@ public abstract class ParameterizedDialogViewModelBaseAsync<TResult, TParameter>
 public abstract class ParameterizedDialogViewModelBase<TParameter> : ParameterizedDialogViewModelBase<DialogResultBase, TParameter>
     where TParameter : NavigationParameterBase
 {
-
 }

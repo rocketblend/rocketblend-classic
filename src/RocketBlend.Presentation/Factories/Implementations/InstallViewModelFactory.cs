@@ -12,8 +12,8 @@ namespace RocketBlend.Presentation.Factories.Implementations;
 /// </summary>
 public class InstallViewModelFactory : IInstallViewModelFactory
 {
-    readonly IBlenderInstallStateService _blenderInstallStateService;
-    readonly IOperationsService _operationsService;
+    private readonly IBlenderInstallStateService _blenderInstallStateService;
+    private readonly IOperationsService _operationsService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="InstallViewModelFactory"/> class.

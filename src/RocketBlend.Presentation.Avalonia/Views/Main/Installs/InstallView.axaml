@@ -13,39 +13,16 @@
         <designTime:DesignTimeInstallViewModel />
     </Design.DataContext>
     
-    <StackPanel Spacing="5" Width="200">
+    <StackPanel Spacing="5" Width="150">
         <Border CornerRadius="5" ClipToBounds="True">
             <Panel Background="{Binding BackgroundColor}">
-                <Image Width="200" Stretch="Uniform" Source="{Binding Cover}" />
-                <Panel Height="200" IsVisible="{Binding Cover, Converter={x:Static ObjectConverters.IsNull}}">
+                <Image Width="150" Stretch="Uniform" Source="{Binding Cover}" />
+                <Panel Height="150" IsVisible="{Binding Cover, Converter={x:Static ObjectConverters.IsNull}}">
                     <PathIcon Height="75" Width="75" Data="{StaticResource cube_regular}" />
                 </Panel>
             </Panel>
         </Border>
         <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" />
-        <TextBox Text="{Binding Id}" HorizontalAlignment="Center" />
-        <!--<TextBlock Text="{Binding Tag}" HorizontalAlignment="Center" />
-        <TextBlock Text="{Binding BackgroundColor}" HorizontalAlignment="Center" />
-        <TextBox
-            Text="{Binding DownloadUrl}"
-            HorizontalAlignment="Center"
-            IsReadOnly="True"
-            Background="Transparent"
-            BorderThickness="0"/>-->
-        <Button Command="{Binding OpenCommand}"
-                Width="200"
-                HorizontalContentAlignment="Center"
-                >Open
-        </Button>
-        <Button Command="{Binding DownloadCommand}"
-                Width="200"
-                HorizontalContentAlignment="Center"
-                >Download
-        </Button>
-        <Button Command="{Binding RemoveCommand}"
-                Width="200"
-                HorizontalContentAlignment="Center"
-                >Remove</Button>
     </StackPanel>
     
 </UserControl>

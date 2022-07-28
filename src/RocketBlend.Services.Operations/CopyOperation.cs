@@ -79,9 +79,11 @@ public class CopyOperation : StatefulOperationWithProgressBase, IInternalOperati
             case OperationContinuationMode.Skip:
                 this.State = OperationState.Skipped;
                 break;
+
             case OperationContinuationMode.Overwrite:
                 await this.CopyFileAsync(this._destinationFile, true);
                 break;
+
             case OperationContinuationMode.OverwriteIfOlder:
                 var sourceFileDateTime = this.GetLastModifiedDateTime(this._sourceFile);
                 var destinationFileDateTime = this.GetLastModifiedDateTime(this._destinationFile);
@@ -94,9 +96,11 @@ public class CopyOperation : StatefulOperationWithProgressBase, IInternalOperati
                     this.State = OperationState.Skipped;
                 }
                 break;
+
             case OperationContinuationMode.Rename:
                 await this.CopyFileAsync(options.NewFilePath);
                 break;
+
             default:
                 throw new ArgumentOutOfRangeException(nameof(options.Mode), options.Mode, null);
         }

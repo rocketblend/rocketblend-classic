@@ -32,7 +32,7 @@ public class PathService : IPathService
                 .TakeWhile((c, i) => paths.All(s => s[i] == c)).ToArray()
         );
 
-        return new[] {'/', '\\'}.Contains(commonPrefix[^1])
+        return new[] { '/', '\\' }.Contains(commonPrefix[^1])
             ? this.RightTrimPathSeparators(commonPrefix)
             : this.GetParentDirectory(commonPrefix);
     }

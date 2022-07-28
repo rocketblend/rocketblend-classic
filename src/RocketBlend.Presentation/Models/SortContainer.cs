@@ -20,6 +20,7 @@ public sealed class SortContainer<T> : IEquatable<SortContainer<T>>
     /// Gets the comparer.
     /// </summary>
     public IComparer<T> Comparer { get; }
+
     /// <summary>
     /// Gets the description.
     /// </summary>
@@ -42,7 +43,7 @@ public sealed class SortContainer<T> : IEquatable<SortContainer<T>>
     /// <inheritdoc />
     public override int GetHashCode()
     {
-        return (this.Description != null ? this.Description.GetHashCode() : 0);
+        return (this.Description?.GetHashCode()) ?? 0;
     }
 
     public static bool operator ==(SortContainer<T> left, SortContainer<T> right)
@@ -55,5 +56,5 @@ public sealed class SortContainer<T> : IEquatable<SortContainer<T>>
         return !Equals(left, right);
     }
 
-    #endregion
+    #endregion Equality members
 }

@@ -45,14 +45,12 @@ public class EnvironmentDirectoryServiceWindowsDecorator : IEnvironmentDirectory
     public bool CheckIfExists(string directory) =>
         this._environmentDirectoryService.CheckIfExists(PreprocessPath(directory));
 
-
     /// <inheritdoc />
     public string GetCurrentDirectory() => this._environmentDirectoryService.GetCurrentDirectory();
 
     /// <inheritdoc />
     public void Move(string sourceDirectory, string destinationDirectory) =>
         this._environmentDirectoryService.Move(sourceDirectory, destinationDirectory);
-
 
     /// <inheritdoc />
     public void Delete(string path, bool recursive) => this._environmentDirectoryService.Delete(path, recursive);

@@ -32,9 +32,11 @@ public class ProjectViewModel : ViewModelBase, IProjectViewModel, IDisposable
 
     private readonly ReadOnlyObservableCollection<BlenderInstallModel> _installs;
 
+    private bool _disposedValue;
+
     /// <inheritdoc />
     [Reactive]
-    public ProjectModel Model { get; private set; }
+    public ProjectModel Model { get; init; }
 
     /// <inheritdoc />
     public ReadOnlyObservableCollection<BlenderInstallModel> Installs => this._installs;
@@ -91,8 +93,7 @@ public class ProjectViewModel : ViewModelBase, IProjectViewModel, IDisposable
         {
             // Set initial value
             this.SelectedInstall = this._installs
-                .Where(x => x.Id == this.Model.InstallId)
-                .FirstOrDefault();
+                .FirstOrDefault(x => x.Id == this.Model.InstallId);
 
             // Binding
             this.WhenAnyValue(x => x.SelectedInstall)
@@ -107,15 +108,12 @@ public class ProjectViewModel : ViewModelBase, IProjectViewModel, IDisposable
         this._cleanUp = new CompositeDisposable(installs);
     }
 
-    /// <inheritdoc />
-    public void Dispose() => this._cleanUp.Dispose();
-
     /// <summary>
     /// Opens the.
     /// </summary>
     private void Open()
     {
-        if(this.SelectedInstall is null)
+        if (this.SelectedInstall is null)
         {
             return;
         }
@@ -142,9 +140,9 @@ public class ProjectViewModel : ViewModelBase, IProjectViewModel, IDisposable
             return;
         }
 
-        var path = await this._systemDialogService.SaveFileAsync(GetBlendFilter(), "project", ".blend");
+        var path = await this._systemDialogService.SaveFileAsync(GetBlendFilter(), "project", ".blend").ConfigureAwait(false);
 
-        if(string.IsNullOrWhiteSpace(path))
+        if (string.IsNullOrWhiteSpace(path))
         {
             return;
         }
@@ -153,8 +151,8 @@ public class ProjectViewModel : ViewModelBase, IProjectViewModel, IDisposable
         var executable = this.SelectedInstall.BlenderExecutable.FullPath;
         this._blenderService.CreateBlendFileWith(executable, path);
 
-        this.Model.BlendFiles.Add(CreateBlendFileModel(path)); 
-        await this.Save();
+        this.Model.BlendFiles.Add(CreateBlendFileModel(path));
+        await this.Save().ConfigureAwait(false);
     }
 
     /// <summary>
@@ -162,7 +160,7 @@ public class ProjectViewModel : ViewModelBase, IProjectViewModel, IDisposable
     /// </summary>
     private async void AddExistingBlendFile()
     {
-        var path = await this._systemDialogService.GetFileAsync(GetBlendFilter());
+        var path = await this._systemDialogService.GetFileAsync(GetBlendFilter()).ConfigureAwait(false);
 
         if (string.IsNullOrWhiteSpace(path))
         {
@@ -170,17 +168,17 @@ public class ProjectViewModel : ViewModelBase, IProjectViewModel, IDisposable
         }
 
         this.Model.BlendFiles.Add(CreateBlendFileModel(path));
-        await this.Save();
+        await this.Save().ConfigureAwait(false);
     }
 
     /// <summary>
     /// Updates the selected install id.
     /// </summary>
-    /// <param name="selectedInstall">The selected install.</param>
+    /// <param name="id">The selected install id.</param>
     private async void UpdateSelectedInstallId(Guid id)
     {
         this.Model.InstallId = id;
-        await this.Save();
+        await this.Save().ConfigureAwait(false);
     }
 
     /// <summary>
@@ -189,7 +187,7 @@ public class ProjectViewModel : ViewModelBase, IProjectViewModel, IDisposable
     /// <returns>A Task.</returns>
     private async Task Save()
     {
-        await this._projectService.UpdateProject(this.Model);
+        await this._projectService.UpdateProject(this.Model).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -211,4 +209,28 @@ public class ProjectViewModel : ViewModelBase, IProjectViewModel, IDisposable
             Name = Path.GetFileNameWithoutExtension(path),
             FullPath = Path.GetFullPath(path),
         };
+
+    #region IDisposable
+    /// <inheritdoc />
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!this._disposedValue)
+        {
+            if (disposing)
+            {
+                this._cleanUp.Dispose();
+            }
+
+            this._disposedValue = true;
+        }
+    }
+
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        this.Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
+    #endregion
 }

@@ -12,6 +12,7 @@ namespace RocketBlend.Presentation.Infrastructure;
 public sealed class NewtonsoftJsonSuspensionDriver : ISuspensionDriver
 {
     private readonly string _stateFilePath;
+
     private readonly JsonSerializerSettings _settings = new()
     {
         TypeNameHandling = TypeNameHandling.All,

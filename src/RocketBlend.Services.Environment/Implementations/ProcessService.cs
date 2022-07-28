@@ -35,6 +35,6 @@ public class ProcessService : IProcessService
             Arguments = arguments
         };
 
-        return new Process {StartInfo = processStartInfo};
+        return new Process { StartInfo = processStartInfo };
     }
 }

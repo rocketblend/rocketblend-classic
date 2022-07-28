@@ -52,12 +52,16 @@ public class ArchiveProcessorFactory : IArchiveProcessorFactory
             case ArchiveType.Gz:
             case ArchiveType.SevenZip:
                 return this.CreateDefaultArchiveReader();
+
             case ArchiveType.Xz:
                 return this.SingleFileZipArchiveReader(new XzStreamFactory());
+
             case ArchiveType.Lz:
                 return this.SingleFileZipArchiveReader(new LzipStreamFactory());
+
             case ArchiveType.Bz2:
                 return this.SingleFileZipArchiveReader(new Bz2StreamFactory());
+
             default:
                 throw new ArgumentOutOfRangeException(nameof(archiveType), archiveType, null);
         }

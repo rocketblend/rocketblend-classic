@@ -24,7 +24,7 @@ public class EnvironmentDirectoryService : IEnvironmentDirectoryService
         Directory.EnumerateFileSystemEntries(directory, "*.*", SearchOption.AllDirectories);
 
     /// <inheritdoc />
-    public DirectoryInfo GetDirectory(string directory) => 
+    public DirectoryInfo GetDirectory(string directory) =>
         new(directory);
 
     /// <inheritdoc />

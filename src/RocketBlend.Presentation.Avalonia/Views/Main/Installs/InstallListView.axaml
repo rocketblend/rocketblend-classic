@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
     xmlns:views="clr-namespace:RocketBlend.Presentation.Avalonia.Views.Main.Installs"
     xmlns:interfaces="clr-namespace:RocketBlend.Presentation.Interfaces;assembly=RocketBlend.Presentation"
     xmlns:designTime="clr-namespace:RocketBlend.Presentation.DesignTime.Main.Installs;assembly=RocketBlend.Presentation"
@@ -13,34 +14,55 @@
         <designTime:DesignTimeInstallListViewModel />
     </Design.DataContext>
 
-    <Grid RowDefinitions="*, Auto" Margin="25">
-        <Grid Grid.Row="0">
-            <ScrollViewer>
-                <ListBox Items="{Binding Installs}"
-                         SelectedItem="{Binding SelectedItems}"
-                         Background="Transparent"
-                         ScrollViewer.VerticalScrollBarVisibility="Auto">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel />
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
+    <SplitView
+        IsPaneOpen="{Binding ShowInstallPane}"
+        DisplayMode="Inline"
+        OpenPaneLength="400"
+        PanePlacement="Right"
+        PaneBackground="Transparent">
 
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <views:InstallView DataContext="{Binding}"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </ScrollViewer>
+        <SplitView.Pane>
+            <views:InstallPaneView DataContext="{Binding SelectedInstall}" IsEnabled="{Binding ShowInstallPane}"/>
+        </SplitView.Pane>
+
+        <Grid RowDefinitions="*, Auto" Margin="25">
+            <Grid Grid.Row="0">
+                <ScrollViewer>
+                    <ListBox
+                        Items="{Binding Installs}"
+                        SelectedItem="{Binding SelectedInstall}"
+                        Background="Transparent"
+                        ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel>
+                                    <Button
+                                        Command="{Binding SelectBuildsCommand}"
+                                        Width="150"
+                                        Height="150"
+                                        Margin="10"
+                                        VerticalAlignment="Top"
+                                        FontSize="42"
+                                        Foreground="#2c2b2b"
+                                        Background="#414141"
+                                        i:Attached.Icon="fa-solid fa-plus">
+                                    </Button>
+                                </WrapPanel>
+
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <views:InstallView DataContext="{Binding}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </ScrollViewer>
+            </Grid>
         </Grid>
-        <Button
-            Command="{Binding SelectBuildsCommand}"
-            HorizontalAlignment="Center"
-            Grid.Row="1"
-            Margin="35">
-            Download New Version
-        </Button>
-    </Grid>
-    
+
+    </SplitView>
+
 </UserControl>

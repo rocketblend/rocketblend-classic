@@ -8,7 +8,7 @@ namespace RocketBlend.Services.Environment.Implementations;
 public class EnvironmentFileService : IEnvironmentFileService
 {
     /// <inheritdoc />
-    public FileInfo GetFile(string file) => 
+    public FileInfo GetFile(string file) =>
         new(file);
 
     /// <inheritdoc />

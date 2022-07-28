@@ -26,7 +26,7 @@ public class BlenderService : IBlenderService
     /// <inheritdoc />
     public void Open(string executable, string args = "")
     {
-        if(!this.IsValidBlenderExecutable(executable))
+        if (!this.IsValidBlenderExecutable(executable))
         {
             return;
         }

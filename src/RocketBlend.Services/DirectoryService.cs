@@ -1,7 +1,7 @@
+using Microsoft.Extensions.Logging;
 using RocketBlend.Services.Abstractions;
 using RocketBlend.Services.Abstractions.Models;
 using RocketBlend.Services.Environment.Interfaces;
-using Microsoft.Extensions.Logging;
 
 namespace RocketBlend.Services;
 
@@ -70,7 +70,7 @@ public class DirectoryService : IDirectoryService
     {
         if (this.CheckIfEmpty(directory))
         {
-            return new[] {directory};
+            return new[] { directory };
         }
 
         var directories = this.GetDirectoriesRecursively(directory);

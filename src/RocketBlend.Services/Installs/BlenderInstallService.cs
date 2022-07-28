@@ -1,5 +1,4 @@
-﻿using RocketBlend.Services.Abstractions;
-using RocketBlend.Services.Abstractions.Installs;
+﻿using RocketBlend.Services.Abstractions.Installs;
 using RocketBlend.Services.Abstractions.Models.Installs;
 
 namespace RocketBlend.Services.Installs;

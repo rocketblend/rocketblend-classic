@@ -1,5 +1,5 @@
-﻿using System.Reactive;
-using DynamicData.Binding;
+﻿using System.Collections.ObjectModel;
+using System.Reactive;
 using ReactiveUI;
 using RocketBlend.Presentation.Interfaces.Dialogs;
 using RocketBlend.Presentation.ViewModels.Dialogs;
@@ -21,10 +21,10 @@ public class DesignTimeSelectBuildsDialogViewModel : DialogViewModelBase, ISelec
     public bool IsBusy => true;
 
     /// <inheritdoc />
-    public ObservableCollectionExtended<BlenderBuildModel> Builds { get; }
+    public ReadOnlyObservableCollection<BlenderBuildModel> Builds { get; }
 
     /// <inheritdoc />
-    public IEnumerable<BlenderBuildModel> SelectedBuilds => new List<BlenderBuildModel>();
+    public ObservableCollection<BlenderBuildModel> SelectedBuilds { get; set; }
 
     /// <inheritdoc />
     public ReactiveCommand<Unit, Unit> RefreshCommand => ReactiveCommand.Create(() => { });
@@ -37,14 +37,15 @@ public class DesignTimeSelectBuildsDialogViewModel : DialogViewModelBase, ISelec
     /// </summary>
     public DesignTimeSelectBuildsDialogViewModel()
     {
-        this.Builds = new();
+        var builds = new ObservableCollection<BlenderBuildModel>();
 
-        for(int i = 0; i < NumberOfBuilds; i++)
+        for (int i = 0; i < NumberOfBuilds; i++)
         {
-            this.Builds.Add(GenerateBuild());
+            builds.Add(GenerateBuild());
         }
 
-        this.Builds.Add(GenerateBuild());
+        this.Builds = new(builds);
+        this.SelectedBuilds = new();
     }
 
     /// <summary>
@@ -57,7 +58,7 @@ public class DesignTimeSelectBuildsDialogViewModel : DialogViewModelBase, ISelec
         {
             Name = "Build Name",
             Hash = "aaabbbcccdddeee",
-            Tag = "Release"
+            Tag = "Release",
         };
     }
 }

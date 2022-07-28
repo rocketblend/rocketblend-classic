@@ -7,7 +7,6 @@ namespace RocketBlend.Services.Abstractions.Installs;
 /// </summary>
 public interface IBlenderInstallService
 {
-
     /// <summary>
     /// Creates the install.
     /// </summary>

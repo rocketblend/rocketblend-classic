@@ -1,17 +1,16 @@
 ﻿using System.Collections.ObjectModel;
-using System.Drawing;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using DynamicData;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using RocketBlend.Presentation.Factories.Interfaces;
 using RocketBlend.Presentation.Interfaces.Main.Installs;
 using RocketBlend.Presentation.Services.Interfaces;
 using RocketBlend.Presentation.ViewModels.Dialogs;
 using RocketBlend.Presentation.ViewModels.Dialogs.Results;
 using RocketBlend.Services.Abstractions.Installs;
-using RocketBlend.Services.Abstractions.Models;
 using RocketBlend.Services.Abstractions.Models.Installs;
 
 namespace RocketBlend.Presentation.ViewModels.Main.Installs;
@@ -29,6 +28,28 @@ public class InstallListViewModel : ViewModelBase, IInstallListViewModel, IDispo
     private readonly IBlenderInstallFactory _blenderInstallFactory;
 
     private readonly ReadOnlyObservableCollection<IInstallViewModel> _installs;
+
+    private bool _disposedValue;
+
+    /// <inheritdoc />
+    public IScreen HostScreen { get; }
+
+    /// <inheritdoc />
+    public string UrlPathSegment { get; } = Guid.NewGuid().ToString()[..5];
+
+    /// <inheritdoc />
+    public ReadOnlyObservableCollection<IInstallViewModel> Installs => this._installs;
+
+    /// <inheritdoc />
+    [Reactive]
+    public IInstallViewModel? SelectedInstall { get; set; }
+
+    /// <inheritdoc />
+    [Reactive]
+    public bool ShowInstallPane { get; private set; }
+
+    /// <inheritdoc />
+    public ReactiveCommand<Unit, Unit> SelectBuildsCommand { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="InstallListViewModel"/> class.
@@ -59,26 +80,11 @@ public class InstallListViewModel : ViewModelBase, IInstallListViewModel, IDispo
             .DisposeMany()
             .Subscribe();
 
+        this.WhenAnyValue(x => x.SelectedInstall)
+            .Subscribe(x => this.ShowInstallPane = x is not null);
+
         this._cleanUp = new CompositeDisposable(installs);
     }
-
-    /// <inheritdoc />
-    public ReadOnlyObservableCollection<IInstallViewModel> Installs => this._installs;
-
-    /// <inheritdoc />
-    public BlenderBuildModel? SelectedInstall { get; }
-
-    /// <inheritdoc />
-    public ReactiveCommand<Unit, Unit> SelectBuildsCommand { get; }
-
-    /// <inheritdoc />
-    public IScreen HostScreen { get; }
-
-    /// <inheritdoc />
-    public string UrlPathSegment { get; } = Guid.NewGuid().ToString()[..5];
-
-    /// <inheritdoc />
-    public void Dispose() => this._cleanUp.Dispose();
 
     /// <summary>
     /// Shows the select builds dialog async.
@@ -87,7 +93,7 @@ public class InstallListViewModel : ViewModelBase, IInstallListViewModel, IDispo
     private async Task ShowSelectBuildsDialogAsync()
     {
         var result = await this._dialogService.ShowDialogAsync<SelectBuildsDialogResult>(nameof(SelectBuildsDialogViewModel));
-        if(result is not null)
+        if (result is not null)
         {
             string path = GetRelativePath("installs/");
             foreach (var build in result.Builds)
@@ -117,4 +123,28 @@ public class InstallListViewModel : ViewModelBase, IInstallListViewModel, IDispo
         string downloadPath = Path.Combine(workingPath, folder);
         return Directory.CreateDirectory(downloadPath).FullName; // Ensure path is created.
     }
+
+    #region IDisposable
+    /// <inheritdoc />
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!this._disposedValue)
+        {
+            if (disposing)
+            {
+                this._cleanUp.Dispose();
+            }
+
+            this._disposedValue = true;
+        }
+    }
+
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        this.Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
+    #endregion
 }

@@ -1,19 +1,18 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using RocketBlend.Presentation.Avalonia.Views;
-using RocketBlend.Presentation.Services.Interfaces;
-using RocketBlend.Presentation.ViewModels;
-using Stateless;
-using System;
-using ReactiveUI.Fody.Helpers;
-using ReactiveUI;
-using Splat;
-using RocketBlend.Presentation.Extensions;
 using Microsoft.Extensions.Logging;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+using RocketBlend.Presentation.Avalonia.Views;
+using RocketBlend.Presentation.Extensions;
+using RocketBlend.Presentation.ViewModels;
 using RocketBlend.Services.Abstractions.Applications;
+using Splat;
+using Stateless;
 
 namespace RocketBlend.Presentation.Avalonia;
 
@@ -150,7 +149,7 @@ public class ApplicationStateManager : IMainWindowService
 
         if (!startInBg)
         {
-           this._stateMachine.Fire(Trigger.Loaded);
+            this._stateMachine.Fire(Trigger.Loaded);
         }
     }
 

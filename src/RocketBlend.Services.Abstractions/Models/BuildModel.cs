@@ -3,8 +3,11 @@
 /// <summary>
 /// The build model.
 /// </summary>
-public class BlenderBuildModel
+public class BlenderBuildModel : IHasKey<Guid>
 {
+    /// <inheritdoc/>
+    public Guid Id { get; init; } = Guid.NewGuid();
+
     /// <summary>
     /// Gets or sets the name.
     /// </summary>

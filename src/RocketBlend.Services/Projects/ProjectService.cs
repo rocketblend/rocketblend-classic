@@ -1,6 +1,4 @@
-﻿using RocketBlend.Extensions;
-using RocketBlend.Services.Abstractions;
-using RocketBlend.Services.Abstractions.Models.Projects;
+﻿using RocketBlend.Services.Abstractions.Models.Projects;
 using RocketBlend.Services.Abstractions.Projects;
 
 namespace RocketBlend.Services.Projects;

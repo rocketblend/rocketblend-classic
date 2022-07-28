@@ -25,7 +25,7 @@ public class BlenderBuildScraperService : IBlenderBuildScraperService
         foreach (var buildType in archivedBuildTypes)
         {
             string path = $"{ArchivedBuildsUrl}/{buildType.ToString().ToLower()}/archive";
-            HtmlDocument document = await FetchPageAsync(path);
+            HtmlDocument document = await FetchPageAsync(path).ConfigureAwait(false);
 
             Regex regex = GetRegexForPlatform(buildPlatform);
 
@@ -59,7 +59,7 @@ public class BlenderBuildScraperService : IBlenderBuildScraperService
     {
         List<BlenderBuildInfo> builds = new();
 
-        HtmlDocument document = await FetchPageAsync(ReleaseBuildsUrl);
+        HtmlDocument document = await FetchPageAsync(ReleaseBuildsUrl).ConfigureAwait(false);
 
         Regex matchNameRegex = new("Blender\\d+\\.\\d+", RegexOptions.IgnoreCase);
         Regex matchVersionRegex = new("\\d+\\.\\d+", RegexOptions.IgnoreCase);
@@ -72,11 +72,11 @@ public class BlenderBuildScraperService : IBlenderBuildScraperService
         {
             string releasePath = $"{ReleaseBuildsUrl}/{link.Attributes["href"].Value}";
 
-            HtmlDocument page = await FetchPageAsync(releasePath);
+            HtmlDocument page = await FetchPageAsync(releasePath).ConfigureAwait(false);
 
             Regex regexPlatform = GetRegexForPlatform(buildPlatform);
 
-            var buildFile = page.DocumentNode.SelectNodes(".//a[@href]").Where(a => regexPlatform.IsMatch(a.Attributes["href"].Value)).FirstOrDefault();
+            var buildFile = page.DocumentNode.SelectNodes(".//a[@href]").FirstOrDefault(a => regexPlatform.IsMatch(a.Attributes["href"].Value));
 
             if (buildFile != null)
             {
@@ -107,12 +107,15 @@ public class BlenderBuildScraperService : IBlenderBuildScraperService
             case BuildPlatform.Windows:
                 expression = "blender-.+win.+64.+zip$";
                 break;
+
             case BuildPlatform.Linux:
                 expression = "blender-.+lin.+64.+tar+(?!.*sha256).*";
                 break;
+
             case BuildPlatform.MacOs:
                 expression = "blender-.+(macOS|darwin).+dmg$";
                 break;
+
             default:
                 throw new ArgumentException("Invalid platform.");
         }
@@ -128,6 +131,6 @@ public class BlenderBuildScraperService : IBlenderBuildScraperService
     private static async Task<HtmlDocument> FetchPageAsync(string url)
     {
         var web = new HtmlWeb();
-        return await web.LoadFromWebAsync(url);
+        return await web.LoadFromWebAsync(url).ConfigureAwait(false);
     }
 }
