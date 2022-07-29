@@ -12,6 +12,10 @@
     <None Remove=".gitignore" />
     <None Remove="appsettings.json" />
     <None Remove="Assets\Images\blender_logo_no_socket_white.png" />
+    <None Remove="Assets\Images\lazercube_logo_white.png" />
+    <None Remove="Assets\Images\splash-1.png" />
+    <None Remove="Assets\Images\Splashes\lazercube_logo_white.png" />
+    <None Remove="Assets\Images\Splashes\splash-2.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="appsettings.json">

@@ -8,9 +8,12 @@ using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
 using RocketBlend.Presentation.Avalonia.Views;
+using RocketBlend.Presentation.Avalonia.Views.Splash;
 using RocketBlend.Presentation.Extensions;
 using RocketBlend.Presentation.Infrastructure;
 using RocketBlend.Presentation.ViewModels;
+using RocketBlend.Presentation.ViewModels.Splash;
+using RocketBlend.Services.Abstractions.Applications;
 using Splat;
 
 namespace RocketBlend.Presentation.Avalonia;
@@ -24,8 +27,12 @@ public partial class App : Application
     private ApplicationStateManager? _applicationStateManager;
     private readonly bool _startInBg;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="App"/> class.
+    /// </summary>
     public App()
     {
+        this.Name = "RocketBlend";
     }
 
     public App(Func<Task> backendInitialiseAsync, bool startInBg) : this()
@@ -51,11 +58,21 @@ public partial class App : Application
         {
             if (this.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
+                var splashViewModel = new SplashViewModel(GetRequiredService<IApplicationVersionProvider>());
+                var splash = new SplashWindow { DataContext = splashViewModel };
+
+                splash.Show();
+
                 // Initialize suspension hooks.
                 var suspension = new AutoSuspendHelper(this.ApplicationLifetime);
                 RxApp.SuspensionHost.CreateNewAppState = () => new MainWindowViewModel();
                 RxApp.SuspensionHost.SetupDefaultSuspendResume(new AkavacheSuspensionDriver<MainWindowViewModel>("RocketBlendV2"));
                 suspension.OnFrameworkInitializationCompleted();
+
+                Task.Run(async delegate
+                {
+                    await Task.Delay(2000);
+                }).Wait();
 
                 // Read main view model state from disk.
                 var state = RxApp.SuspensionHost.GetAppState<MainWindowViewModel>();
@@ -65,6 +82,8 @@ public partial class App : Application
                 {
                     DataContext = GetRequiredService<IScreen>()
                 };
+
+                splash.Close();
             }
         }
 

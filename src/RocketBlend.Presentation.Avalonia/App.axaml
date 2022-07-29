@@ -33,7 +33,7 @@
     
     <NativeMenu.Menu>
         <NativeMenu>
-            <NativeMenuItem Header="About RocketBlend"/>
+            <NativeMenuItem Header="About"/>
         </NativeMenu>
     </NativeMenu.Menu>
     

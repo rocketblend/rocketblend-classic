@@ -18,6 +18,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Fonts\NunitoSans\NunitoSans-Bold.ttf" />
+    <None Remove="Assets\Fonts\NunitoSans\NunitoSans-ExtraLight.ttf" />
+    <None Remove="Assets\Fonts\NunitoSans\NunitoSans-Light.ttf" />
+    <None Remove="Assets\Fonts\NunitoSans\NunitoSans-Regular.ttf" />
+    <None Remove="Assets\Fonts\NunitoSans\NunitoSans-SemiBold.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\Fonts\NunitoSans\NunitoSans-Bold.ttf" />
+    <AvaloniaResource Include="Assets\Fonts\NunitoSans\NunitoSans-ExtraLight.ttf" />
+    <AvaloniaResource Include="Assets\Fonts\NunitoSans\NunitoSans-Light.ttf" />
+    <AvaloniaResource Include="Assets\Fonts\NunitoSans\NunitoSans-Regular.ttf" />
+    <AvaloniaResource Include="Assets\Fonts\NunitoSans\NunitoSans-SemiBold.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.10.17" />
   </ItemGroup>
 
