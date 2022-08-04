@@ -45,6 +45,13 @@ public class ProjectModel : ReactiveObject, IHasKey<Guid>
     public string BackgroundColor { get; set; } = "#414141";
 
     /// <summary>
+    /// Gets or sets the image path.
+    /// </summary>
+    [Reactive]
+    [DataMember]
+    public string BackgroundImagePath { get; set; } = string.Empty;
+
+    /// <summary>
     /// Gets or sets the packages.
     /// </summary>
     [DataMember]

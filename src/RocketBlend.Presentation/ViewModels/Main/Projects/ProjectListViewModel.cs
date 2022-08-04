@@ -45,7 +45,7 @@ public class ProjectListViewModel : ViewModelBase, IProjectListViewModel, IDispo
     public ReadOnlyObservableCollection<IProjectViewModel> Projects => this._projects;
 
     /// <inheritdoc />
-    public ObservableCollection<IProjectViewModel> SelectedProjects { get; set; } = new();
+    public ObservableCollectionExtended<IProjectViewModel> SelectedProjects { get; set; }
 
     /// <inheritdoc />
     [Reactive]
@@ -85,6 +85,8 @@ public class ProjectListViewModel : ViewModelBase, IProjectListViewModel, IDispo
         this._projectViewModelFactory = projectViewModelFactory;
         this._dialogService = dialogService;
         this.HostScreen = screen;
+
+        this.SelectedProjects = new();
 
         this.CreateProjectCommand = ReactiveCommand.CreateFromTask(this.CreateProject);
 
@@ -141,7 +143,22 @@ public class ProjectListViewModel : ViewModelBase, IProjectListViewModel, IDispo
     private async Task CreateProject()
     {
         var project = this._projectFactory.Create("New Project", new List<BlendFileModel>());
-        await this._projectService.CreateProject(project).ConfigureAwait(false);
+        await this._projectService.CreateProject(project);
+        this.SelectProjectId(project.Id);
+    }
+
+    /// <summary>
+    /// Selects the project id.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    private void SelectProjectId(Guid id)
+    {
+        var project = this._projects.FirstOrDefault(x => x.Model.Id == id);
+        if(project is not null)
+        {
+            this.SelectedProjects.Clear();
+            this.SelectedProjects.Add(project);
+        }
     }
 
     /// <summary>

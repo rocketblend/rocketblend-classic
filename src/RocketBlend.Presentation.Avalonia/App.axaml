@@ -2,6 +2,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:RocketBlend.Presentation.Avalonia"
+    xmlns:converters="using:RocketBlend.Presentation.Avalonia.Converters"
     xmlns:views="clr-namespace:RocketBlend.Presentation.Avalonia.Views"
     xmlns:viewModels="using:RocketBlend.Presentation.ViewModels"
     xmlns:interfaces="clr-namespace:RocketBlend.Presentation.Interfaces;assembly=RocketBlend.Presentation"
@@ -14,7 +15,13 @@
         <views:ViewLocator />
     </Application.DataTemplates>-->
 
+    <Application.Resources>
+        <converters:PathToBitmapConverter x:Key="pathToBitmapConverter"/>
+        <converters:StreamToBitmapConverter x:Key="streamToBitmapConverter"/>
+    </Application.Resources>
+
     <Application.Styles>
+        <StyleInclude Source="avares://AsyncImageLoader.Avalonia/AdvancedImage.axaml" />
         <StyleInclude Source="avares://RocketBlend.Avalonia.Themes.Horizon/Dark.axaml"/>
         <StyleInclude Source="avares://RocketBlend.Presentation.Avalonia/Icons.axaml" />
         <Style>

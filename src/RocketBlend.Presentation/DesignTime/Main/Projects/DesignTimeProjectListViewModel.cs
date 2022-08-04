@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reactive;
+using DynamicData.Binding;
 using ReactiveUI;
 using RocketBlend.Presentation.Interfaces.Main.Projects;
 using RocketBlend.Presentation.Models.SortParameters;
@@ -25,7 +26,7 @@ public class DesignTimeProjectListViewModel : IProjectListViewModel
     public ReadOnlyObservableCollection<IProjectViewModel> Projects { get; }
 
     /// <inheritdoc />
-    public ObservableCollection<IProjectViewModel> SelectedProjects { get; set; } = new();
+    public ObservableCollectionExtended<IProjectViewModel> SelectedProjects { get; set; } = new();
 
     /// <inheritdoc />
     public IProjectViewModel? SelectedProject => this.SelectedProjects.LastOrDefault();

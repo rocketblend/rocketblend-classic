@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
     xmlns:views="clr-namespace:RocketBlend.Presentation.Avalonia.Views"
     xmlns:interfaces="clr-namespace:RocketBlend.Presentation.Interfaces;assembly=RocketBlend.Presentation"
     xmlns:designTime="clr-namespace:RocketBlend.Presentation.DesignTime.Main.Projects;assembly=RocketBlend.Presentation"
@@ -16,8 +17,12 @@
     <StackPanel Spacing="5" Width="150">
         <Border CornerRadius="5" ClipToBounds="True">
             <Panel Background="{Binding Model.BackgroundColor}">
-                <Image Width="200" Stretch="Uniform" Source="{Binding Cover}" />
-                <Panel Height="150" IsVisible="{Binding Cover, Converter={x:Static ObjectConverters.IsNull}}">
+                <asyncImageLoader:AdvancedImage
+                    Width="150"
+                    Height="150"
+                    Stretch="UniformToFill"
+                    Source="{Binding Model.BackgroundImagePath}"/>
+                <Panel Height="150">
                     <PathIcon Height="75" Width="75" Data="{StaticResource folder_regular}" />
                 </Panel>
             </Panel>

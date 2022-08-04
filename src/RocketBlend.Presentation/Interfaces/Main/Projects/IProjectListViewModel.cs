@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Reactive;
+using DynamicData.Binding;
 using ReactiveUI;
 using RocketBlend.Presentation.Models.SortParameters;
 
@@ -18,7 +19,7 @@ public interface IProjectListViewModel : IRoutableViewModel
     /// <summary>
     /// Gets or sets the selected projects.
     /// </summary>
-    public ObservableCollection<IProjectViewModel> SelectedProjects { get; set; }
+    public ObservableCollectionExtended<IProjectViewModel> SelectedProjects { get; set; }
 
     /// <summary>
     /// Gets the sort parameters.

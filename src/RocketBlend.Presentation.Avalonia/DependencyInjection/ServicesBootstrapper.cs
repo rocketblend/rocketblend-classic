@@ -5,6 +5,7 @@ using RocketBlend.Services;
 using RocketBlend.Services.Abstractions;
 using RocketBlend.Services.Abstractions.Archive;
 using RocketBlend.Services.Abstractions.Builds;
+using RocketBlend.Services.Abstractions.Images;
 using RocketBlend.Services.Abstractions.Installs;
 using RocketBlend.Services.Abstractions.Operations;
 using RocketBlend.Services.Abstractions.Projects;
@@ -16,6 +17,7 @@ using RocketBlend.Services.Builds;
 using RocketBlend.Services.Configuration;
 using RocketBlend.Services.Environment.Enums;
 using RocketBlend.Services.Environment.Interfaces;
+using RocketBlend.Services.Images;
 using RocketBlend.Services.Installs;
 using RocketBlend.Services.Operations;
 using RocketBlend.Services.Projects;
@@ -122,6 +124,18 @@ public static class ServicesBootstrapper
             resolver.GetRequiredService<IPathService>()
         ));
 
+        services.RegisterLazySingleton<IImageProcessingService>(() => new ImageProcessingService(
+            resolver.GetRequiredService<IFileService>()
+        ));
+
+        services.RegisterLazySingleton<IImageService>(() => new ImageService(
+            resolver.GetRequiredService<IImageProcessingService>(),
+            resolver.GetRequiredService<IDirectoryService>(),
+            resolver.GetRequiredService<IFileService>(),
+            resolver.GetRequiredService<IFileNameGenerationService>(),
+            resolver.GetRequiredService<IPathService>()
+        ));
+
         services.RegisterLazySingleton<IBlenderService>(() => new BlenderService(
             resolver.GetRequiredService<IResourceOpeningService>(),
             resolver.GetRequiredService<IFileService>()
@@ -143,7 +157,8 @@ public static class ServicesBootstrapper
 
         services.RegisterLazySingleton<IProjectStateService>(() => new ProjectStateService());
         services.RegisterLazySingleton<IProjectFactory>(() => new ProjectFactory(
-            resolver.GetRequiredService<IColorService>()
+            resolver.GetRequiredService<IColorService>(),
+            resolver.GetRequiredService<IImageService>()
         ));
 
         services.RegisterLazySingleton<IProjectService>(() => new ProjectService(

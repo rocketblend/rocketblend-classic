@@ -47,6 +47,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RocketBlend.Services.AllPla
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RocketBlend.Services.Archive", "src\RocketBlend.Services.Archive\RocketBlend.Services.Archive.csproj", "{98DBAFDB-857E-448D-BC44-81BB9CBAFB42}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsyncImageLoader.Avalonia", "src\AsyncImageLoader.Avalonia\AsyncImageLoader.Avalonia.csproj", "{A0B888F0-9DB0-44B0-A520-ECE75CD5EA6C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -117,6 +119,10 @@ Global
 		{98DBAFDB-857E-448D-BC44-81BB9CBAFB42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98DBAFDB-857E-448D-BC44-81BB9CBAFB42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98DBAFDB-857E-448D-BC44-81BB9CBAFB42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0B888F0-9DB0-44B0-A520-ECE75CD5EA6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0B888F0-9DB0-44B0-A520-ECE75CD5EA6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0B888F0-9DB0-44B0-A520-ECE75CD5EA6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0B888F0-9DB0-44B0-A520-ECE75CD5EA6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -138,6 +144,7 @@ Global
 		{12B005C5-C6FB-4501-AE8D-6F84BFB2D915} = {61506C71-05DF-4373-A0F6-AECC352CE17B}
 		{82BBCD49-54C4-4636-9C47-7D00DD26BEC9} = {61506C71-05DF-4373-A0F6-AECC352CE17B}
 		{98DBAFDB-857E-448D-BC44-81BB9CBAFB42} = {61506C71-05DF-4373-A0F6-AECC352CE17B}
+		{A0B888F0-9DB0-44B0-A520-ECE75CD5EA6C} = {3A2B5BA6-0842-477F-A84E-F480B24F4B28}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CD901E0C-C2D6-470D-94D2-E251AAC44A9B}

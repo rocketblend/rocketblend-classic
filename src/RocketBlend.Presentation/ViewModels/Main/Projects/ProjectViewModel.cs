@@ -44,7 +44,7 @@ public class ProjectViewModel : ViewModelBase, IProjectViewModel, IDisposable
     /// <inheritdoc />
     [Reactive]
     public BlenderInstallModel? SelectedInstall { get; set; }
-
+    
     /// <inheritdoc />
     public ReactiveCommand<Unit, Unit> OpenCommand { get; }
 
@@ -95,6 +95,11 @@ public class ProjectViewModel : ViewModelBase, IProjectViewModel, IDisposable
             this.SelectedInstall = this._installs
                 .FirstOrDefault(x => x.Id == this.Model.InstallId);
 
+            this.WhenAnyValue(x => x.Model.Name)
+                .Skip(1)
+                .Throttle(TimeSpan.FromSeconds(5))
+                .Subscribe(async _ => await this.Save());
+
             // Binding
             this.WhenAnyValue(x => x.SelectedInstall)
                 .WhereNotNull()
@@ -129,6 +134,14 @@ public class ProjectViewModel : ViewModelBase, IProjectViewModel, IDisposable
     {
         this._projectService.DeleteProject(this.Model.Id);
     }
+    
+    //private async void LoadImages()
+    //{
+    //    if (!string.IsNullOrWhiteSpace(this.Model.BackgroundImagePath))
+    //    {
+    //        this.BackgroundImageStream = File.OpenRead(this.Model.BackgroundImagePath);
+    //    }
+    //}
 
     /// <summary>
     /// Creates the blend file.
@@ -140,7 +153,7 @@ public class ProjectViewModel : ViewModelBase, IProjectViewModel, IDisposable
             return;
         }
 
-        var path = await this._systemDialogService.SaveFileAsync(GetBlendFilter(), "project", ".blend").ConfigureAwait(false);
+        var path = await this._systemDialogService.SaveFileAsync(GetBlendFilter(), "project", ".blend");
 
         if (string.IsNullOrWhiteSpace(path))
         {
@@ -152,7 +165,7 @@ public class ProjectViewModel : ViewModelBase, IProjectViewModel, IDisposable
         this._blenderService.CreateBlendFileWith(executable, path);
 
         this.Model.BlendFiles.Add(CreateBlendFileModel(path));
-        await this.Save().ConfigureAwait(false);
+        await this.Save();
     }
 
     /// <summary>
@@ -160,7 +173,7 @@ public class ProjectViewModel : ViewModelBase, IProjectViewModel, IDisposable
     /// </summary>
     private async void AddExistingBlendFile()
     {
-        var path = await this._systemDialogService.GetFileAsync(GetBlendFilter()).ConfigureAwait(false);
+        var path = await this._systemDialogService.GetFileAsync(GetBlendFilter());
 
         if (string.IsNullOrWhiteSpace(path))
         {
@@ -168,7 +181,7 @@ public class ProjectViewModel : ViewModelBase, IProjectViewModel, IDisposable
         }
 
         this.Model.BlendFiles.Add(CreateBlendFileModel(path));
-        await this.Save().ConfigureAwait(false);
+        await this.Save();
     }
 
     /// <summary>
@@ -178,7 +191,7 @@ public class ProjectViewModel : ViewModelBase, IProjectViewModel, IDisposable
     private async void UpdateSelectedInstallId(Guid id)
     {
         this.Model.InstallId = id;
-        await this.Save().ConfigureAwait(false);
+        await this.Save();
     }
 
     /// <summary>

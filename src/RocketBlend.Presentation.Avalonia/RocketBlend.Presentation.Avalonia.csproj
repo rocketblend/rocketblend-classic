@@ -48,6 +48,7 @@
     <PackageReference Include="XamlNameReferenceGenerator" Version="1.3.4" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AsyncImageLoader.Avalonia\AsyncImageLoader.Avalonia.csproj" />
     <ProjectReference Include="..\RocketBlend.Avalonia.Themes.Horizon\RocketBlend.Avalonia.Themes.Horizon.csproj" />
     <ProjectReference Include="..\RocketBlend.Presentation\RocketBlend.Presentation.csproj" />
     <ProjectReference Include="..\RocketBlend.Services.Archive\RocketBlend.Services.Archive.csproj" />

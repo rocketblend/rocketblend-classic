@@ -100,7 +100,21 @@ public class InstallListViewModel : ViewModelBase, IInstallListViewModel, IDispo
             {
                 var install = this._blenderInstallFactory.Create(build.Name, build.Tag, build.Hash, path, build.DownloadUrl);
                 await this._blenderInstallService.CreateInstall(install);
+                this.SelectInstallById(install.Id);
             }
+        }
+    }
+
+    /// <summary>
+    /// Selects the install by id.
+    /// </summary>
+    /// <param name="id">The id.</param>
+    private void SelectInstallById(Guid id)
+    {
+        var install = this._installs.FirstOrDefault(x => x.Id == id);
+        if (install is not null)
+        {
+            this.SelectedInstall = install;
         }
     }
 
