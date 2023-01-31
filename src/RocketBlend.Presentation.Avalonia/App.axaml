@@ -49,7 +49,7 @@
             <TrayIcon Icon="avares://RocketBlend.Presentation.Avalonia/Assets/avalonia-logo.ico" Command="{Binding ShowCommand}" ToolTipText="RocketBlend">
                 <NativeMenu.Menu>
                     <NativeMenu>
-                        <NativeMenuItem Header="{Binding IsMainWindowShown}" Command="{Binding ShowHideCommand} " />
+                        <NativeMenuItem Header="{Binding IsMainWindowShown}" Command="{Binding ShowHideCommand}" />
                         <NativeMenuItemSeparator />
                         <NativeMenuItem Header="Quit" Command="{Binding QuitCommand}" />
                     </NativeMenu>

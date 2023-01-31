@@ -1,4 +1,5 @@
-﻿using System.Reactive.Disposables;
+﻿using System.Reactive;
+using System.Reactive.Disposables;
 using System.Runtime.Serialization;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -19,9 +20,6 @@ namespace RocketBlend.Presentation.ViewModels;
 [DataContract]
 public class MainWindowViewModel : ViewModelBase, IMainWindowViewModel
 {
-    /// <summary>
-    /// Gets the tabs.
-    /// </summary>
     private readonly List<IRoutableViewModel> _tabViews = new();
 
     /// <summary>
@@ -44,6 +42,9 @@ public class MainWindowViewModel : ViewModelBase, IMainWindowViewModel
     /// <inheritdoc />
     public IOperationsStateViewModel OperationsStateViewModel { get; }
 
+    /// <inheritdoc />
+    public ReactiveCommand<string, Unit> PipeCommand { get; }
+
     /// <summary>
     /// Initializes a new instance of the <see cref="MainWindowViewModel"/> class.
     /// </summary>
@@ -53,6 +54,8 @@ public class MainWindowViewModel : ViewModelBase, IMainWindowViewModel
         this.OperationsViewModel = Locator.Current.GetRequiredService<IOperationsViewModel>();
         this.OperationsStateViewModel = Locator.Current.GetRequiredService<IOperationsStateViewModel>();
 
+        this.PipeCommand = ReactiveCommand.Create<string>(this.PipeCommandExecute);
+
         this.WhenActivated((CompositeDisposable disposables) =>
         {
             this._tabViews.Add(Locator.Current.GetRequiredService<IProjectListViewModel>());
@@ -60,6 +63,19 @@ public class MainWindowViewModel : ViewModelBase, IMainWindowViewModel
 
             this.WhenAnyValue(x => x.SelectedTabIndex).Subscribe(i => this.NavigateToTab(i)).DisposeWith(disposables);
         });
+    }
+
+    /// <summary>
+    /// Gets the instance.
+    /// </summary>
+    public static MainWindowViewModel Instance { get; } = new();
+
+    /// <summary>
+    /// Initializes the.
+    /// </summary>
+    public void Initialize()
+    {
+        // Loaded.
     }
 
     /// <summary>
@@ -72,5 +88,11 @@ public class MainWindowViewModel : ViewModelBase, IMainWindowViewModel
         {
             this.Router.Navigate.Execute(this._tabViews[tabIndex]);
         }
+    }
+
+    private void PipeCommandExecute(string args)
+    {
+        var t = args;
+        //this.PipeCommand.Execute(arg);
     }
 }

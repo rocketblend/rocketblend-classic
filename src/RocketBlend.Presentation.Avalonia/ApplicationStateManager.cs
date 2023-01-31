@@ -2,17 +2,13 @@
 using System.ComponentModel;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Microsoft.Extensions.Logging;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using RocketBlend.Presentation.Avalonia.State;
 using RocketBlend.Presentation.Avalonia.Views;
-using RocketBlend.Presentation.Extensions;
 using RocketBlend.Presentation.ViewModels;
 using RocketBlend.Services.Abstractions.Applications;
 using Splat;
-using Stateless;
 
 namespace RocketBlend.Presentation.Avalonia;
 
@@ -33,10 +29,6 @@ public class ApplicationStateManager : IMainWindowService
         ShutdownPrevented,
         ShutdownRequested,
         MainWindowClosed,
-        BackgroundModeOff,
-        BackgroundModeOn,
-        Minimised,
-        Restored
     }
 
     /// <summary>
@@ -45,20 +37,16 @@ public class ApplicationStateManager : IMainWindowService
     private enum State
     {
         Invalid = 0,
-        Startup,
-        BackgroundMode,
+        InitialState,
         Closed,
         Open,
-        StandardMode,
-        Hidden,
-        Shown
     }
 
     private readonly StateMachine<State, Trigger> _stateMachine;
     private readonly IClassicDesktopStyleApplicationLifetime _lifetime;
     private CompositeDisposable? _compositeDisposable;
-
-    private readonly Microsoft.Extensions.Logging.ILogger _logger;
+    private bool _hideRequest;
+    private bool _isShuttingDown;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ApplicationStateManager"/> class.
@@ -67,23 +55,20 @@ public class ApplicationStateManager : IMainWindowService
     /// <param name="startInBg">If true, start in bg.</param>
     internal ApplicationStateManager(IClassicDesktopStyleApplicationLifetime lifetime, bool startInBg)
     {
-        startInBg = true;
         this._lifetime = lifetime;
-        this._stateMachine = new StateMachine<State, Trigger>(State.Startup);
+        this._stateMachine = new StateMachine<State, Trigger>(State.InitialState);
         this.ApplicationViewModel = new ApplicationViewModel(this);
 
-        this._logger = Locator.Current.GetRequiredService<Microsoft.Extensions.Logging.ILogger>();
-
-        this._stateMachine.Configure(State.BackgroundMode)
+        this._stateMachine.Configure(State.InitialState)
             .InitialTransition(State.Open)
-            .OnEntryFrom(Trigger.ShutdownRequested, () => lifetime.Shutdown())
-            .OnEntryFrom(Trigger.ShutdownPrevented, () => this.ApplicationViewModel.OnShutdownPrevented())
-            .Permit(Trigger.BackgroundModeOff, State.StandardMode);
+            .OnTrigger(Trigger.ShutdownRequested, () => lifetime.Shutdown())
+            .OnTrigger(Trigger.ShutdownPrevented, () => this.ApplicationViewModel.OnShutdownPrevented());
 
         this._stateMachine.Configure(State.Closed)
-            .SubstateOf(State.BackgroundMode)
+            .SubstateOf(State.InitialState)
             .OnEntry(() =>
             {
+                this._lifetime.MainWindow.Close();
                 this._lifetime.MainWindow = null;
                 this.ApplicationViewModel.IsMainWindowShown = false;
             })
@@ -92,60 +77,13 @@ public class ApplicationStateManager : IMainWindowService
             .Permit(Trigger.Loaded, State.Open);
 
         this._stateMachine.Configure(State.Open)
-            .SubstateOf(State.BackgroundMode)
+            .SubstateOf(State.InitialState)
             .OnEntry(this.CreateAndShowMainWindow)
-            .OnEntryFrom(Trigger.Hide, () => this._lifetime.MainWindow.Close())
-            .Permit(Trigger.Hide, State.Closed)
-            .Permit(Trigger.MainWindowClosed, State.Closed);
-
-        this._stateMachine.Configure(State.StandardMode)
-            .InitialTransition(State.Shown)
-            .OnEntryFrom(Trigger.ShutdownPrevented, () => this.ApplicationViewModel.OnShutdownPrevented())
-            .OnEntryFrom(Trigger.ShutdownRequested, () => lifetime.Shutdown())
-            .Permit(Trigger.BackgroundModeOn, State.BackgroundMode);
-
-        this._stateMachine.Configure(State.Shown)
-            .SubstateOf(State.StandardMode)
-            .Permit(Trigger.Hide, State.Hidden)
-            .Permit(Trigger.Minimised, State.Hidden)
-            .OnEntry(() =>
-            {
-                if (this._lifetime.MainWindow is null)
-                {
-                    this.CreateAndShowMainWindow();
-                }
-                else if (this._lifetime.MainWindow.WindowState == WindowState.Minimized)
-                {
-                    this._lifetime.MainWindow.WindowState = WindowState.Normal;
-                }
-
-                this.ApplicationViewModel.IsMainWindowShown = true;
-            });
-
-        this._stateMachine.Configure(State.Hidden)
-            .SubstateOf(State.StandardMode)
-            .Permit(Trigger.Show, State.Shown)
-            .Permit(Trigger.Restored, State.Shown)
-            .Permit(Trigger.ShutdownPrevented, State.Shown)
-            .OnEntry(() =>
-            {
-                this._lifetime.MainWindow.WindowState = WindowState.Minimized;
-                this.ApplicationViewModel.IsMainWindowShown = false;
-            });
-
-        this._stateMachine.Configure(State.Startup)
-            .Permit(Trigger.BackgroundModeOn, State.BackgroundMode)
-            .Permit(Trigger.BackgroundModeOff, State.StandardMode);
-
-        this._stateMachine.OnTransitioned(t => this._logger.LogDebug($"OnTransitioned: {t.Source} -> {t.Destination} via {t.Trigger}({string.Join(", ", t.Parameters)})"));
+            .Permit(Trigger.Hide, State.Closed);
 
         this._lifetime.ShutdownRequested += this.LifetimeOnShutdownRequested;
 
-        this.WhenAnyValue(x => x.HideOnClose)
-            .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(backgroundMode => this._stateMachine.Fire(backgroundMode ? Trigger.BackgroundModeOn : Trigger.BackgroundModeOff));
-
-        var test = this._stateMachine.State;
+        this._stateMachine.Start();
 
         if (!startInBg)
         {
@@ -158,31 +96,6 @@ public class ApplicationStateManager : IMainWindowService
     /// </summary>
     internal ApplicationViewModel ApplicationViewModel { get; }
 
-    [Reactive] public bool HideOnClose { get; set; } = false;
-
-    /// <summary>
-    /// Mains the window on closing.
-    /// </summary>
-    /// <param name="sender">The sender.</param>
-    /// <param name="e">The e.</param>
-    private void MainWindowOnClosing(object? sender, CancelEventArgs e)
-    {
-        if (this._stateMachine.IsInState(State.StandardMode))
-        {
-            e.Cancel = !this.ApplicationViewModel.CanShutdown();
-
-            if (e.Cancel)
-            {
-                this._stateMachine.Fire(Trigger.ShutdownPrevented);
-            }
-            else if (sender is MainWindow w)
-            {
-                w.Closing -= this.MainWindowOnClosing;
-                this._stateMachine.Fire(Trigger.ShutdownRequested);
-            }
-        }
-    }
-
     /// <summary>
     /// Lifetimes the on shutdown requested.
     /// </summary>
@@ -192,8 +105,6 @@ public class ApplicationStateManager : IMainWindowService
     {
         // Shutdown prevention will only work if you directly run the executable.
         e.Cancel = !this.ApplicationViewModel.CanShutdown();
-
-        this._logger.LogDebug($"Cancellation of the shutdown set to: {e.Cancel}.");
 
         this._stateMachine.Fire(e.Cancel ? Trigger.ShutdownPrevented : Trigger.ShutdownRequested);
     }
@@ -208,28 +119,48 @@ public class ApplicationStateManager : IMainWindowService
             return;
         }
 
+        var viewModel = MainWindowViewModel.Instance;
+
+        Locator.CurrentMutable.RegisterConstant<IScreen>(viewModel);
+
         var result = new MainWindow
         {
-            DataContext = new MainWindowViewModel()
+            DataContext = MainWindowViewModel.Instance,
         };
-
-        result.Closing += this.MainWindowOnClosing;
 
         this._compositeDisposable?.Dispose();
         this._compositeDisposable = new();
 
-        result.WhenAnyValue(x => x.WindowState)
-            .Skip(1)
-            .Subscribe(windowState => this._stateMachine.Fire(windowState == WindowState.Minimized ? Trigger.Minimised : Trigger.Restored))
+        // Move to settings.
+        var hideOnClose = false;
+
+        Observable.FromEventPattern<CancelEventArgs>(result, nameof(result.Closing))
+            .Select(args => (args.EventArgs, !this.ApplicationViewModel.CanShutdown()))
+            .TakeWhile(_ => !this._isShuttingDown) // Prevents stack overflow.
+            .Subscribe(tup =>
+            {
+                // _hideRequest flag is used to distinguish what is the user's intent.
+                // It is only true when the request comes from the Tray.
+                if (hideOnClose || this._hideRequest)
+                {
+                    this._hideRequest = false; // request processed, set it back to the default.
+                    return;
+                }
+
+                var (e, preventShutdown) = tup;
+
+                this._isShuttingDown = !preventShutdown;
+                e.Cancel = preventShutdown;
+                this._stateMachine.Fire(preventShutdown ? Trigger.ShutdownPrevented : Trigger.ShutdownRequested);
+            })
             .DisposeWith(this._compositeDisposable);
 
         Observable.FromEventPattern(result, nameof(result.Closed))
             .Take(1)
-            .Subscribe(x =>
+            .Subscribe(_ =>
             {
                 this._compositeDisposable?.Dispose();
                 this._compositeDisposable = null;
-                result.Closing -= this.MainWindowOnClosing;
                 this._stateMachine.Fire(Trigger.MainWindowClosed);
             })
             .DisposeWith(this._compositeDisposable);
@@ -248,8 +179,9 @@ public class ApplicationStateManager : IMainWindowService
     }
 
     /// <inheritdoc />
-    void IMainWindowService.Close()
+    void IMainWindowService.Hide()
     {
+        this._hideRequest = true;
         this._stateMachine.Fire(Trigger.Hide);
     }
 

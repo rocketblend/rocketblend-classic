@@ -55,6 +55,13 @@ public class ProjectStateService : IProjectStateService
         await this.Save();
     }
 
+    /// <inheritdoc />
+    public ProjectModel? GetProject(Guid projectId)
+    {
+        var project = this._items.Lookup(projectId);
+        return project.HasValue ? project.Value : null;
+    }
+
     /// <summary>
     /// Saves the.
     /// </summary>

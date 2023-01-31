@@ -6,17 +6,17 @@
 public interface IMainWindowService
 {
     /// <summary>
-    /// Shows the.
+    /// Shows the window.
     /// </summary>
     void Show();
 
     /// <summary>
-    /// Closes the.
+    /// Hide the window.
     /// </summary>
-    void Close();
+    void Hide();
 
     /// <summary>
-    /// Shutdowns the.
+    /// Shutdowns the window.
     /// </summary>
     void Shutdown();
 }

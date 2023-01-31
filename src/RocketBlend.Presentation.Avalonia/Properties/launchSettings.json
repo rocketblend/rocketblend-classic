@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "RocketBlend.Presentation.Avalonia": {
+      "commandName": "Project",
+      //"commandLineArgs": "project --open 004d8523-9cc3-41b5-b830-2534334a1f74"
+    }
+  }
+}

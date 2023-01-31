@@ -162,7 +162,13 @@ public static class ServicesBootstrapper
         ));
 
         services.RegisterLazySingleton<IProjectService>(() => new ProjectService(
-            resolver.GetRequiredService<IProjectStateService>()
+            resolver.GetRequiredService<IBlenderService>(),
+            resolver.GetRequiredService<IProjectStateService>(),
+            resolver.GetRequiredService<IBlenderInstallStateService>()
+        ));
+
+        services.RegisterLazySingleton<ILaunchArgumentService>(() => new LaunchArgumentService(
+            resolver.GetRequiredService<IProjectService>()
         ));
     }
 

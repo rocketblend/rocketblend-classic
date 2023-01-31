@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using System.Reactive;
+using ReactiveUI;
 using RocketBlend.Presentation.Interfaces.Main.Operations;
 using RocketBlend.Presentation.Interfaces.Main.OperationsStates;
 using RocketBlend.Presentation.Interfaces.Menu;
@@ -13,20 +14,25 @@ public interface IMainWindowViewModel : IScreen
     /// <summary>
     /// Gets the tab index.
     /// </summary>
-    public int SelectedTabIndex { get; }
+    int SelectedTabIndex { get; }
 
     /// <summary>
     /// Gets the menu view model.
     /// </summary>
-    public IMenuViewModel MenuViewModel { get; }
+    IMenuViewModel MenuViewModel { get; }
 
     /// <summary>
     /// Gets the operations view model.
     /// </summary>
-    public IOperationsViewModel OperationsViewModel { get; }
+    IOperationsViewModel OperationsViewModel { get; }
 
     /// <summary>
     /// Gets the operations state view model.
     /// </summary>
-    public IOperationsStateViewModel OperationsStateViewModel { get; }
+    IOperationsStateViewModel OperationsStateViewModel { get; }
+
+    /// <summary>
+    /// Gets the pipe command.
+    /// </summary>
+    ReactiveCommand<string, Unit> PipeCommand { get; }
 }

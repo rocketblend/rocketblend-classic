@@ -1,11 +1,17 @@
 using System;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Dialogs;
 using Avalonia.ReactiveUI;
+using CommandLine;
 using Projektanker.Icons.Avalonia;
 using Projektanker.Icons.Avalonia.FontAwesome;
+using RocketBlend.Launcher.Core.Options;
+using RocketBlend.Launcher.Core.Options.Interfaces;
+using RocketBlend.Presentation.Avalonia.Services;
 using Serilog;
 using Splat;
 
@@ -16,6 +22,8 @@ namespace RocketBlend.Presentation.Avalonia;
 /// </summary>
 internal static class Program
 {
+    private static bool _startInBackground = false;
+
     /// <summary>
     /// Initialization code. Don't use any Avalonia, third-party APIs or any
     /// SynchronizationContext-reliant code before AppMain is called: things aren't initialized
@@ -25,10 +33,21 @@ internal static class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        var result = Parser.Default.ParseArguments<GeneralOptions>(args)
+          .MapResult(
+            options => RunAndReturnExitCode(options),
+            _ => 0);
+
+        if (result != 0)
+        {
+            Environment.Exit(result);
+        }
+
         try
         {
             RegisterDependencies();
-            BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+            SingleInstanceHelper.EnsureNotAlreadyRunning(() =>
+                BuildAvaloniaApp().StartWithClassicDesktopLifetime(args));
         }
         catch (Exception e)
         {
@@ -43,22 +62,13 @@ internal static class Program
     /// <summary>
     /// Builds the avalonia app.
     /// </summary>
+    /// <param name="startInBg">If true, start in bg.</param>
     /// <returns>An AppBuilder.</returns>
     private static AppBuilder BuildAvaloniaApp()
     {
-        return BuildAvaloniaApp(false);
-    }
-
-    /// <summary>
-    /// Builds the avalonia app.
-    /// </summary>
-    /// <param name="startInBg">If true, start in bg.</param>
-    /// <returns>An AppBuilder.</returns>
-    private static AppBuilder BuildAvaloniaApp(bool startInBg)
-    {
         bool useGpuLinux = true;
 
-        var result = AppBuilder.Configure(() => new App(() => System.Threading.Tasks.Task.CompletedTask, startInBg))
+        var result = AppBuilder.Configure(() => new App(() => System.Threading.Tasks.Task.CompletedTask, _startInBackground))
             .UseReactiveUI()
             .LogToTrace()
             .WithIcons(container => container
@@ -85,6 +95,17 @@ internal static class Program
             .With(new X11PlatformOptions { UseGpu = useGpuLinux, WmClass = "RocketBlend" })
             .With(new AvaloniaNativePlatformOptions { UseDeferredRendering = true, UseGpu = true })
             .With(new MacOSPlatformOptions { ShowInDock = true });
+    }
+
+    /// <summary>
+    /// Runs the and return exit code.
+    /// </summary>
+    /// <param name="opts">The opts.</param>
+    /// <returns>An int.</returns>
+    private static int RunAndReturnExitCode(IGeneralOptions opts)
+    {
+        _startInBackground = opts.StartInBackground;
+        return 0;
     }
 
     /// <summary>

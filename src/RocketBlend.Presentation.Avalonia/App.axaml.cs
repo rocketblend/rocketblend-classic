@@ -1,18 +1,20 @@
 using System;
+using System.Collections.Generic;
 using System.Reactive;
+using System.Reactive.Concurrency;
 using System.Threading.Tasks;
+using Akavache;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Avalonia.ReactiveUI;
+using H.Pipes;
 using ReactiveUI;
-using RocketBlend.Presentation.Avalonia.Views;
+using RocketBlend.Launcher.Core;
 using RocketBlend.Presentation.Avalonia.Views.Splash;
 using RocketBlend.Presentation.Extensions;
-using RocketBlend.Presentation.Infrastructure;
-using RocketBlend.Presentation.ViewModels;
 using RocketBlend.Presentation.ViewModels.Splash;
+using RocketBlend.Services.Abstractions;
 using RocketBlend.Services.Abstractions.Applications;
 using Splat;
 
@@ -21,11 +23,16 @@ namespace RocketBlend.Presentation.Avalonia;
 /// <summary>
 /// The app.
 /// </summary>
-public partial class App : Application
+public partial class App : Application, IAsyncDisposable
 {
+    private readonly PipeServer<string[]> _pipeServer = new(Pipes.Default);
+    private readonly ISet<string> _clients = new HashSet<string>();
+
+    private readonly bool _startInBackground;
     private readonly Func<Task>? _backendInitialiseAsync;
+
     private ApplicationStateManager? _applicationStateManager;
-    private readonly bool _startInBg;
+    private ILaunchArgumentService? _launchArgumentService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="App"/> class.
@@ -33,11 +40,16 @@ public partial class App : Application
     public App()
     {
         this.Name = "RocketBlend";
+        BlobCache.ApplicationName = this.Name;
     }
 
-    public App(Func<Task> backendInitialiseAsync, bool startInBg) : this()
+    /// <summary>
+    /// Initializes a new instance of the <see cref="App"/> class.
+    /// </summary>
+    /// <param name="backendInitialiseAsync">The backend initialise async.</param>
+    public App(Func<Task> backendInitialiseAsync, bool startInBackground) : this()
     {
-        this._startInBg = startInBg;
+        this._startInBackground = startInBackground;
         this._backendInitialiseAsync = backendInitialiseAsync;
     }
 
@@ -45,7 +57,6 @@ public partial class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
-        this.LoadSettings();
     }
 
     /// <inheritdoc />
@@ -56,6 +67,9 @@ public partial class App : Application
 
         if (!Design.IsDesignMode)
         {
+            this._launchArgumentService = GetRequiredService<ILaunchArgumentService>();
+            this.SetupPipeServer();
+
             if (this.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 var splashViewModel = new SplashViewModel(GetRequiredService<IApplicationVersionProvider>());
@@ -63,74 +77,91 @@ public partial class App : Application
 
                 splash.Show();
 
-                // Initialize suspension hooks.
-                var suspension = new AutoSuspendHelper(this.ApplicationLifetime);
-                RxApp.SuspensionHost.CreateNewAppState = () => new MainWindowViewModel();
-                RxApp.SuspensionHost.SetupDefaultSuspendResume(new AkavacheSuspensionDriver<MainWindowViewModel>("RocketBlendV2"));
-                suspension.OnFrameworkInitializationCompleted();
-
                 Task.Run(async delegate
                 {
-                    await Task.Delay(2000);
+                    await Task.Delay(1500);
                 }).Wait();
 
-                // Read main view model state from disk.
-                var state = RxApp.SuspensionHost.GetAppState<MainWindowViewModel>();
-                Locator.CurrentMutable.RegisterConstant<IScreen>(state);
+                this._applicationStateManager = new ApplicationStateManager(desktop, this._startInBackground);
+                this.DataContext = this._applicationStateManager.ApplicationViewModel;
+                desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
-                desktop.MainWindow = new MainWindow
-                {
-                    DataContext = GetRequiredService<IScreen>()
-                };
-
-                splash.Close();
+                RxApp.MainThreadScheduler.Schedule(
+                    async () =>
+                    {
+                        splash.Close();
+                        await this.PipeInitializeAsync();
+                        this._launchArgumentService?.HandleArguments(Environment.GetCommandLineArgs());
+                        await this._backendInitialiseAsync!();
+                    });
             }
         }
-
-        //if (!Design.IsDesignMode)
-        //{
-        //    if (this.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        //    {
-        //        this._applicationStateManager = new ApplicationStateManager(desktop, this._startInBg);
-
-        //        this.DataContext = this._applicationStateManager.ApplicationViewModel;
-
-        //        desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-
-        //        RxApp.MainThreadScheduler.Schedule(
-        //            async () =>
-        //            {
-        //                await this._backendInitialiseAsync!(); // Guaranteed not to be null when not in designer.
-        //                new MainWindowViewModel().Initialize();
-        //            });
-        //    }
-        //}
 
         RxApp.DefaultExceptionHandler = Observer.Create<Exception>(Console.WriteLine);
         base.OnFrameworkInitializationCompleted();
     }
 
     /// <summary>
-    /// Loads the settings.
+    /// Setups the pipe server.
     /// </summary>
-    private void LoadSettings()
+    private void SetupPipeServer()
     {
-        this.LoadTheme();
-        LoadLanguage();
+        this._pipeServer.ClientConnected += (o, args) =>
+        {
+            this._clients.Add(args.Connection.PipeName);
+            //this.logger.LogDebug($"{args.Connection.PipeName} connected!");
+
+            //try
+            //{
+            //    string[] response = { "Success", };
+            //    await args.Connection.WriteAsync(response).ConfigureAwait(false);
+            //}
+            //catch (Exception exception)
+            //{
+            //    this.OnExceptionOccurred(exception);
+            //}
+        };
+
+        this._pipeServer.MessageReceived += (o, args) =>
+        {
+            this._launchArgumentService?.HandleArguments(args.Message!);
+        };
+
+        this._pipeServer.ClientDisconnected += (o, args) =>
+        {
+            this._clients.Remove(args.Connection.PipeName);
+            //this.logger.LogDebug($"{args.Connection.PipeName} disconnected!");
+        };
+        
+        //this._pipeServer.MessageReceived += (o, args) => this.logger.LogDebug($"{args.Connection.PipeName}: {args.Message}");
+        //this._pipeServer.ExceptionOccurred += (o, args) => this.OnExceptionOccurred(args.Exception);
     }
 
     /// <summary>
-    /// Loads the theme.
+    /// Pipes the initialize async.
     /// </summary>
-    private void LoadTheme()
+    /// <returns>A Task.</returns>
+    private async Task PipeInitializeAsync()
     {
+        try
+        {
+            //this._logger.LogDebug("Server starting...");
+            await this._pipeServer.StartAsync().ConfigureAwait(false);
+            //this._logger.LogDebug("Server is started!");
+        }
+        catch (Exception exception)
+        {
+            this.OnExceptionOccurred(exception);
+        }
     }
 
     /// <summary>
-    /// Loads the language.
+    /// Ons the exception occurred.
     /// </summary>
-    private static void LoadLanguage()
+    /// <param name="exception">The exception.</param>
+    private void OnExceptionOccurred(Exception exception)
     {
+        //this._logger.LogDebug($"Exception: {exception}");
     }
 
     /// <summary>
@@ -138,4 +169,10 @@ public partial class App : Application
     /// </summary>
     /// <returns>A T.</returns>
     private static T GetRequiredService<T>() => Locator.Current.GetRequiredService<T>();
+
+    /// <inheritdoc />
+    public async ValueTask DisposeAsync()
+    {
+        await this._pipeServer.DisposeAsync().ConfigureAwait(false);
+    }
 }

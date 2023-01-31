@@ -15,12 +15,14 @@
 
   <ItemGroup>
     <PackageReference Include="akavache" Version="8.1.1" />
+    <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <PackageReference Include="DynamicData" Version="7.6.7" />
     <PackageReference Include="SixLabors.ImageSharp" Version="2.1.3" />
     <PackageReference Include="stateless" Version="5.11.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RocketBlend.Launcher.Core\RocketBlend.Launcher.Core.csproj" />
     <ProjectReference Include="..\RocketBlend.Services.Abstractions\RocketBlend.Services.Abstractions.csproj" />
     <ProjectReference Include="..\RocketBlend.Services.AllPlatforms\RocketBlend.Services.AllPlatforms.csproj" />
     <ProjectReference Include="..\RocketBlend.Services.Environment\RocketBlend.Services.Environment.csproj" />

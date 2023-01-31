@@ -50,6 +50,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AsyncImageLoader.Avalonia\AsyncImageLoader.Avalonia.csproj" />
     <ProjectReference Include="..\RocketBlend.Avalonia.Themes.Horizon\RocketBlend.Avalonia.Themes.Horizon.csproj" />
+    <ProjectReference Include="..\RocketBlend.Launcher.Core\RocketBlend.Launcher.Core.csproj" />
     <ProjectReference Include="..\RocketBlend.Presentation\RocketBlend.Presentation.csproj" />
     <ProjectReference Include="..\RocketBlend.Services.Archive\RocketBlend.Services.Archive.csproj" />
     <ProjectReference Include="..\RocketBlend.Services.Avalonia\RocketBlend.Services.Avalonia.csproj" />

@@ -1,19 +1,17 @@
-# RocketBlend 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+## Project Is Deprecated In Favour Of [RocketBlend Desktop](https://github.com/rocketblend/rocketblend-desktop)
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+# RocketBlend Classic
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+RocketBlend Classic is a standalone GUI software client that provides management for builds of [Blender](https://www.blender.org/) builds. Written in .Net 6 and [Avalonia UI](https://avaloniaui.net/).
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+I've since moved on to [RocketBlend](https://github.com/rocketblend/rocketblend) and taken a different approach to the problem. **RocketBlend Classic is not actively maintained**. There's a number of issues and is missing a lot of polish but It provides a good starting point for anyone wanting to build something similar.
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
+## Acknowledgments
+
+- Inspired by [Blender Launcher](https://github.com/DotBow/Blender-Launcher)
+
+## Screenshots
+![RocketBlend Classic](.docs/assets/rocketblend-classic-builds.png)
+
+![RocketBlend Projects](.docs/assets/rocketblend-classic-projects.png)
+

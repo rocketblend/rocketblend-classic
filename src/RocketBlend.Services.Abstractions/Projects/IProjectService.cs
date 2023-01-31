@@ -29,6 +29,6 @@ public interface IProjectService
     /// <summary>
     /// Opens the project.
     /// </summary>
-    /// <param name="project">The project.</param>
-    void OpenProject(ProjectModel project);
+    /// <param name="projectId">The projectId.</param>
+    void OpenProject(Guid projectId);
 }

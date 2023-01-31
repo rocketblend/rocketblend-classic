@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using System.Reactive;
+using ReactiveUI;
 using RocketBlend.Presentation.DesignTime.Main.Operations;
 using RocketBlend.Presentation.DesignTime.Main.OperationsStates;
 using RocketBlend.Presentation.Interfaces;
@@ -27,4 +28,7 @@ public class DesignTimeMainWindowViewModel : IMainWindowViewModel
 
     /// <inheritdoc />
     public IOperationsStateViewModel OperationsStateViewModel => new DesignTimeOperationsStatesListViewModel();
+
+    /// <inheritdoc />
+    public ReactiveCommand<string, Unit> PipeCommand => throw new NotImplementedException();
 }

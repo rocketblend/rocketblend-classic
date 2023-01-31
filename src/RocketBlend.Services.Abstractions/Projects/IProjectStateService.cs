@@ -25,4 +25,11 @@ public interface IProjectStateService
     /// </summary>
     /// <param name="projectId">The project id.</param>
     Task RemoveProject(Guid projectId);
+
+    /// <summary>
+    /// Gets the project.
+    /// </summary>
+    /// <param name="projectId">The project id.</param>
+    /// <returns>A ProjectModel?.</returns>
+    ProjectModel? GetProject(Guid projectId);
 }

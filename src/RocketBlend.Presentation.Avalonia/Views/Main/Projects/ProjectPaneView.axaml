@@ -38,7 +38,8 @@
                                 BorderThickness="0"
                                 Background="Transparent">
                             </TextBox>
-                            <TextBox Text="{Binding Model.BackgroundImagePath}" FontSize="12" Foreground="#717171" TextWrapping="Wrap"></TextBox>
+                            <!--<TextBox Text="{Binding Model.Id}" FontSize="12" IsReadOnly="True" Foreground="#717171" TextWrapping="Wrap"></TextBox>
+                            <TextBox Text="{Binding Model.BackgroundImagePath}" IsReadOnly="True" FontSize="12" Foreground="#717171" TextWrapping="Wrap"></TextBox>-->
                             <StackPanel Orientation="Horizontal" Spacing="10" Margin="10">
                                 <PathIcon Height="16" Width="16" Data="{StaticResource heart_regular}" Foreground="#a9a9a9"/>
                                 <PathIcon Height="16" Width="16" Data="{StaticResource more_vertical_regular}" Foreground="#a9a9a9"/>

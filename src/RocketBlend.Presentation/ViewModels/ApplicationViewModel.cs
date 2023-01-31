@@ -27,7 +27,7 @@ public partial class ApplicationViewModel : ViewModelBase, ICanShutdownProvider
         {
             if (this.IsMainWindowShown)
             {
-                this._mainWindowService.Close();
+                this._mainWindowService.Hide();
             }
             else
             {
