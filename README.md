@@ -2,9 +2,17 @@
 
 # RocketBlend Classic
 
-RocketBlend Classic is a standalone GUI software client that provides management for builds of [Blender](https://www.blender.org/) builds. Written in .Net 6 and [Avalonia UI](https://avaloniaui.net/).
+RocketBlend Classic is a standalone GUI software client that provides management for builds of [Blender](https://www.blender.org/). Written in .Net 6 using [Avalonia](https://avaloniaui.net/).
 
-I've since moved on to [RocketBlend](https://github.com/rocketblend/rocketblend) and taken a different approach to the problem. **RocketBlend Classic is not actively maintained**. There's a number of issues and is missing a lot of polish but It provides a good starting point for anyone wanting to build something similar.
+I've since moved on to [RocketBlend](https://github.com/rocketblend/rocketblend) and taken a different approach to the problem. Please note that RocketBlend Classic is no longer receiving active maintenance and has several unresolved issues and unrefined features. However, it still serves as a solid starting point for anyone seeking to create a similar solution.
+
+## Built Using
+
+- [Avalonia](https://github.com/AvaloniaUI/Avalonia) - Cross-platform UI framework for dotnet
+- [ReactiveUI](https://github.com/reactiveui/ReactiveUI) - Cross-platform model-view-viewmodel framework
+- [DynamicData](https://github.com/reactivemarbles/DynamicData) - Reactive Extensions for .NET
+- [Akavache](https://github.com/reactiveui/Akavache) - Asynchronous Key-Value Store
+- [HtmlAgilityPack](https://html-agility-pack.net/) - HTML parser/scraper
 
 ## Acknowledgments
 
@@ -14,4 +22,3 @@ I've since moved on to [RocketBlend](https://github.com/rocketblend/rocketblend)
 ![RocketBlend Classic](.docs/assets/rocketblend-classic-builds.png)
 
 ![RocketBlend Projects](.docs/assets/rocketblend-classic-projects.png)
-
